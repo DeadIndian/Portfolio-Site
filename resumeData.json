@@ -1,0 +1,503 @@
+{
+  "personalInfo": {
+    "name": "Golla Bharath",
+    "dob": "26/02/2007",
+    "email": "gollabharath2007@gmail.com",
+    "phone": "+91-9059158791",
+    "location": "Hyderabad, Telangana, India",
+    "linkedin": "linkedin.com/in/golla-bharath",
+    "github": "github.com/DeadIndian",
+    "portfolio": "https://gollabharath.me/"
+  },
+  "meta": {
+    "experienceStart": "Sep 2025",
+    "stack": "Full Stack / Infrastructure",
+    "primaryCloud": "AWS",
+    "coreProjects": [],
+    "selectableProjects": [],
+    "editableProjects": [],
+    "cannotClaim": []
+  },
+  "professionalSummary": {
+    "default": "Computer Science undergraduate and software engineer with hands-on experience in full-stack development, infrastructure, DevOps, and cybersecurity. Experienced with JavaScript, TypeScript, Python, React, Next.js, Node.js, Flask, Docker, Linux, CI/CD, cloud infrastructure, and container orchestration. Currently working on CyberParadigm's Letushack cyber-range platform, with experience in backend development, production infrastructure, CTFd plugin development, containerized workloads, and system administration.",
+    "keywords": [
+      "Software Engineer",
+      "Full Stack Developer",
+      "Infrastructure",
+      "DevOps",
+      "Cybersecurity",
+      "Linux",
+      "Docker",
+      "Kubernetes",
+      "React",
+      "Next.js",
+      "Node.js",
+      "Flask",
+      "Python",
+      "TypeScript",
+      "CI/CD"
+    ]
+  },
+  "skills": {
+    "frontend": [
+      "React.js",
+      "Next.js",
+      "TypeScript",
+      "JavaScript",
+      "HTML5",
+      "CSS3",
+      "Tailwind CSS",
+      "Vite",
+      "Redux",
+      "Responsive Design"
+    ],
+    "backend": [
+      "Node.js",
+      "Express.js",
+      "Flask",
+      "Python",
+      "PostgreSQL",
+      "MongoDB",
+      "MySQL",
+      "Redis",
+      "RabbitMQ",
+      "REST APIs",
+      "WebSockets",
+      "Socket.io",
+      "Go",
+      "Java",
+      "C",
+      "C++",
+      "Kotlin",
+      "Bash",
+      "SQLite"
+    ],
+    "toolsDevOps": [
+      "Git",
+      "GitHub",
+      "Gitea",
+      "Docker",
+      "Docker Compose",
+      "Kubernetes",
+      "K3s",
+      "MicroK8s",
+      "AWS",
+      "EC2",
+      "Nginx",
+      "Traefik",
+      "Linux",
+      "GitHub Actions",
+      "Gitea Actions",
+      "CI/CD",
+      "PM2",
+      "Locust",
+      "Postman",
+      "n8n",
+      "Cilium",
+      "Harbor"
+    ],
+    "other": [
+      "REST APIs",
+      "System Design",
+      "Database Design",
+      "Authentication",
+      "Authorization",
+      "JWT",
+      "Role-Based Access Control (RBAC)",
+      "Web Security",
+      "OWASP Top 10",
+      "Penetration Testing",
+      "CTFd",
+      "CTFd Plugin Development",
+      "Containerization",
+      "Infrastructure Automation",
+      "Networking",
+      "Reverse Proxy Configuration",
+      "CI/CD Pipelines",
+      "Hermes",
+      "MERN",
+      "Web Scraping",
+      "Microservices"
+    ]
+  },
+  "experience": [
+    {
+      "company": "CyberParadigm",
+      "title": "Software / Infrastructure Intern",
+      "duration": "Sep 2025 – Present",
+      "location": "Hyderabad, India",
+      "isCurrent": true,
+      "projects": [
+        {
+          "name": "Letushack – Cyber Range Platform",
+          "description": "Cyber-range platform for hosting and managing hands-on cybersecurity labs.",
+          "coreTech": [
+            "Cyber Range Infrastructure",
+            "CTFd Plugin Development",
+            "Containerized Lab Environments",
+            "Infrastructure Automation",
+            "CI/CD"
+          ],
+          "stackUsed": {
+            "frontend": "Next.js, React",
+            "backend": "Node.js, Express, Flask",
+            "infrastructure": "Docker, Kubernetes, Traefik, Nginx",
+            "database": "PostgreSQL"
+          }
+        }
+      ],
+      "bullets": [
+        "Developed and maintained infrastructure for Letushack, a cyber-range platform built by CyberParadigm for hosting and managing hands-on cybersecurity labs.",
+        "Worked across the full stack using Next.js, Node.js, Express, Flask, PostgreSQL, Docker, and Linux.",
+        "Built and maintained containerized lab workloads and supporting infrastructure for isolated user environments.",
+        "Worked with Kubernetes-based container orchestration and workload scheduling for cyber-range infrastructure.",
+        "Implemented and maintained CI/CD workflows using Gitea Actions for automated application and infrastructure deployment.",
+        "Managed production infrastructure involving Docker, Traefik, Nginx, PostgreSQL, PM2, and Linux systems.",
+        "Developed multiple plugins and customizations for CTFd to extend the functionality of the cyber-range platform.",
+        "Performed load testing with Locust to evaluate platform behavior and infrastructure performance under concurrent workloads.",
+        "Worked with networking, reverse proxies, service routing, container registries, and production deployment workflows.",
+        "Troubleshot and maintained Linux-based production systems across application, container, networking, and deployment layers."
+      ]
+    },
+    {
+      "company": "Recurse — KMIT Technical Club",
+      "title": "Club Head",
+      "duration": "Aug 2026 – Present",
+      "location": "Hyderabad, India",
+      "isCurrent": false,
+      "bullets": [
+        "Lead the college technical club; run workshops, hackathons, and peer-learning sessions and mentor juniors in software development and open source."
+      ]
+    },
+    {
+      "company": "Open Source",
+      "title": "Lead Maintainer — Gamify",
+      "duration": "Jul 2025 – Present",
+      "location": "Remote",
+      "isCurrent": false,
+      "featuredProject": "Gamify",
+      "bullets": [
+        "Lead maintainer of Gamify, an open-source Discord gamification platform, coordinating 30+ contributors across features, code review, and releases."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Advanced Discord Bot (ADB)",
+      "link": "https://adb.gollabharath.me",
+      "repo": "https://github.com/AdvancedDiscordBot/Advanced-Discord-Bot",
+      "description": "Self-hosted, extensible Discord bot platform built around a capability-based plugin runtime. Untrusted third-party plugins load in isolated worker_threads and reach Discord, the database, network, and AI only through a custom JSON-RPC capability broker that enforces a deny-by-default, per-method permission catalog declared in each plugin's manifest — untrusted code never directly touches the Discord client, Mongoose, or environment secrets. Engineered a two-layer sandbox: V8-level resourceLimits (heap/young-gen/stack caps that kill a runaway thread) plus a software ResourceTracker enforcing per-call timeouts, CPU-per-minute throttling, max concurrency, and memory ceilings, with a strike-based auto-suspension policy (5 violations in a rolling 60s window) and crash auto-restart. Network egress is locked to a per-plugin host allowlist with manual-redirect and response-size caps; live per-plugin metrics, health scoring, and threshold alerts run on a 60s collector. Also built a Manifest v2 contract system (single source of truth driving process model, permissions, resource limits, and an install-time risk-disclosure flow), dependency-ordered plugin loading with semver engine checks, hot-reload via file watching, per-guild plugin enable gating on the hot event path, a Fastify admin dashboard with Discord OAuth, a versioned plugin marketplace/registry, and a supervisor watchdog that reverse-proxies plugin-hosted web UIs. ~18K LOC in the core plus ~19 first-party plugins (moderation, levels, giveaways, automod/aegis, music, reminders, and more).",
+      "coreTech": [
+        "worker_threads plugin sandboxing",
+        "Capability-based security model",
+        "Custom JSON-RPC / IPC broker",
+        "Per-plugin resource limits & auto-suspension",
+        "Network egress allowlisting",
+        "Hot-reload plugin runtime",
+        "Manifest v2 contract system"
+      ],
+      "stackUsed": {
+        "frontend": "Dashboard SPA (HTML/CSS/JS), server-rendered member portal",
+        "backend": "Node.js, discord.js v14, Fastify, worker_threads, custom RPC broker, node-cron, Gemini (@google/genai)",
+        "infrastructure": "MongoDB/Mongoose, Docker, npm plugin registry, supervisor watchdog + reverse proxy"
+      }
+    },
+    {
+      "name": "Gamify",
+      "link": "https://gamify.pages.dev",
+      "repo": "https://github.com/DeadIndian/Gamify",
+      "description": "Open-source, self-hostable multi-tenant gamification platform (MERN) where organizations run point-bearing events, moderator-reviewed submissions, a redeemable reward shop, leaderboards, and levels. Enforces a five-tier RBAC model (Member/Moderator/Event Staff/Admin/Organisation) via role-derived permission flags, and awards points through a race-safe transaction service using atomic MongoDB $inc and balance-guarded conditional debits (points >= amount) with a full audit trail. Multi-auth via JWT+bcrypt, Google OAuth20 (Passport), and Discord identity linking; a companion Discord.js bot exchanges guild role IDs for scoped user JWTs through a shared bot-API-key and caches tokens/guild config. Deployed on Cloudflare Pages + Workers via GitHub Actions. Most-starred personal project (19+ stars).",
+      "coreTech": [
+        "Race-safe atomic point-ledger transactions",
+        "Five-tier role-based access control",
+        "Discord-to-backend JWT bridging (shared-secret bot auth)",
+        "Passport Google OAuth20 + JWT multi-auth",
+        "Per-endpoint rate limiting",
+        "Cloudflare Workers/Pages serverless deploy"
+      ],
+      "stackUsed": {
+        "frontend": "React 19, Vite, Tailwind CSS, React Router, Axios, Framer Motion, React Three Fiber (Three.js), PWA",
+        "backend": "Node.js, Express 5, Mongoose 8, JWT, bcryptjs, Passport (Google OAuth20), Helmet, express-rate-limit; separate Discord.js 14 bot",
+        "infrastructure": "MongoDB, Cloudflare Workers + Pages, GitHub Actions CI (Wrangler)"
+      }
+    },
+    {
+      "name": "TransitOps",
+      "link": "http://transit-odoo.gollabharath.me",
+      "repo": "https://github.com/DeadIndian/TransitOps",
+      "description": "Role-gated fleet/transport operations platform managing the full lifecycle of vehicles, drivers, trips, maintenance, and fuel/expense costs. Built on Next.js 16 (App Router) with React 19 Server Components and Server Actions as the mutation layer, it enforces a strict business-rule state machine: dispatch/complete/cancel run inside Prisma transactions using raw SELECT ... FOR UPDATE pessimistic row locks to atomically flip trip/vehicle/driver statuses, re-validate cargo-vs-capacity and license expiry against the locked rows, auto-write fuel logs, and roll the odometer. RBAC is a role x domain access matrix enforced in three layers (Next.js route-proxy guard, per-action requireRole, and Zod schemas shared by client forms and server actions). Analytics KPIs (fuel efficiency, fleet utilization, operational cost) are derived live from aggregates rather than stored, and exported to CSV.",
+      "coreTech": [
+        "Prisma transactions with SELECT FOR UPDATE pessimistic locking",
+        "Trip/vehicle/driver state-machine business rules",
+        "Role x domain RBAC (proxy + server-action + Zod triple guard)",
+        "Next.js Server Actions as mutation layer",
+        "Derived (never-stored) analytics + CSV export",
+        "Auth.js v5 credentials/JWT"
+      ],
+      "stackUsed": {
+        "frontend": "Next.js 16 App Router, React 19 (Server + Client Components), TypeScript, Tailwind CSS v4",
+        "backend": "Next.js Server Actions + route handlers, Prisma 7 ORM, Zod, Auth.js/NextAuth v5, bcryptjs, layered service/repository/schema modules",
+        "infrastructure": "PostgreSQL 16, Docker / docker-compose, DigitalOcean droplet, Prisma migrations + seed"
+      }
+    },
+    {
+      "name": "AI Content Farm",
+      "link": "",
+      "repo": "https://github.com/DeadIndian/AI-Content-Farm",
+      "description": "Go pipeline that auto-produces faceless short-form videos end-to-end: an LLM writes a multilingual (English/Hindi/Telugu) script, TTS synthesizes voiceover, and FFmpeg renders it over looping background footage into a portrait/landscape/square MP4. Engineered as a single CGO-free binary with a goroutine worker pool (buffered channel + WaitGroup, context-cancelled graceful shutdown, on-boot requeue of persisted jobs) fronted by a Go net/http API and an embedded vanilla-JS mobile UI (go:embed). Layers a fallback LLM chain (Gemini to OpenRouter to local heuristic) with resilient JSON extraction; a TTS provider router (local Piper ONNX Flask sidecar vs ElevenLabs) with language-aware routing, credit-exhaustion auto-failover, and retries; FFmpeg/ffprobe rendering with atempo-chained duration capping; yt-dlp background-clip ingestion; pure-Go SQLite persistence; and Docker-socket lifecycle control of the TTS container.",
+      "coreTech": [
+        "Go goroutine worker-pool pipeline",
+        "Multi-provider LLM fallback (Gemini/OpenRouter)",
+        "TTS provider router (Piper ONNX/ElevenLabs) with auto-failover",
+        "FFmpeg/ffprobe rendering + atempo duration capping",
+        "yt-dlp media ingestion",
+        "Docker-socket container orchestration"
+      ],
+      "stackUsed": {
+        "frontend": "Vanilla JavaScript, HTML, CSS served via go:embed (mobile-first SPA)",
+        "backend": "Go, net/http (method-based ServeMux), modernc.org/sqlite, FFmpeg + ffprobe, yt-dlp, Python Flask + piper-tts ONNX sidecar",
+        "infrastructure": "Docker, Docker Compose (api + tts services), mounted docker.sock, persistent volume"
+      }
+    },
+    {
+      "name": "Vijaya Store (E-commerce Monorepo)",
+      "link": "",
+      "repo": "https://github.com/DeadIndian/EcommerceMobileApp",
+      "description": "Flutter + Next.js e-commerce monorepo built for a real print/stationery/bookstore business selling academic books and printable PDFs. Ships two Flutter apps (a customer storefront and an admin console) plus a Next.js 14 App-Router API, sharing a flutter_shared Dart package (models, API client, token manager). Customers browse a hierarchical category/subject catalog, view PDF previews, manage a cart, and check out to COD/Razorpay orders with delivery-address snapshots; admins manage products/variants, categories, orders, users, feedback and support off a dashboard. Backend uses Prisma over PostgreSQL with modular repo/service/validator layers, Zod validation, Upstash Redis rate-limiting, hybrid auth (Firebase ID-token verification exchanged for app-issued JWT access/refresh pairs), FCM push notifications to admins on new orders, and server-side image/PDF handling (sharp, pdf-lib) that auto-generates PNG previews. Products carry COLOR/BW/DEFAULT print variants with per-variant SKUs and pricing.",
+      "coreTech": [
+        "Flutter monorepo (customer + admin apps + shared Dart package)",
+        "Next.js App-Router REST API (service/repo architecture)",
+        "Hybrid Firebase-auth-to-JWT authentication",
+        "Razorpay checkout",
+        "FCM push notifications",
+        "Server-side PDF-to-image preview generation"
+      ],
+      "stackUsed": {
+        "frontend": "Flutter, Dart, Provider, go_router, Firebase Auth, firebase_messaging, pdfx, razorpay_flutter",
+        "backend": "Next.js 14 API routes, TypeScript, Prisma ORM, Zod, JWT access/refresh, firebase-admin (token verify + FCM), sharp + pdf-lib",
+        "infrastructure": "PostgreSQL 15, Upstash Redis, Docker Compose + Nginx, Fly.io"
+      }
+    },
+    {
+      "name": "Jarvis Voice Assistant",
+      "link": "",
+      "repo": "https://github.com/DeadIndian/Jarvis",
+      "description": "Cross-platform voice assistant split across a Kotlin Android client and a Python FastAPI 'brain'. The app runs an event-driven agentic pipeline (Input-Intent-Plan-Execute-Respond) with state-gated wake-word listening, Android SpeechRecognizer STT, WebRTC VAD via C/C++ JNI, and hybrid rule+classifier intent routing. Local skills (app launch, system control, timers) run under a timeout/retry engine; LLM inference is local-first via MediaPipe LiteRT on-device (Gemma/Qwen) with Gemini/OpenAI/Anthropic cloud fallback and per-provider cooldowns, plus RAG over markdown memory with embeddings in SQLite. An optional Python brain (FastAPI, X-API-Key auth) rule-classifies requests, runs DuckDuckGo search with sentence-transformer semantic ranking, and serves llama.cpp Llama-3.2-1B through a queued single-worker inference loop.",
+      "coreTech": [
+        "On-device LLM inference (MediaPipe LiteRT / llama.cpp)",
+        "Local-first-with-cloud-fallback LLM routing (per-provider cooldowns)",
+        "Agentic Intent-Plan-Execute-Respond state machine",
+        "RAG memory (embeddings + SQLite vector store)",
+        "WebRTC VAD via NDK/JNI",
+        "Semantic-ranked web search with confidence gating"
+      ],
+      "stackUsed": {
+        "frontend": "Kotlin, Android SDK, Jetpack Compose + Material3, multi-module Gradle, SpeechRecognizer STT + Android TTS, MediaPipe tasks-genai, Ktor/OkHttp, coroutines",
+        "backend": "Python, FastAPI, Uvicorn, llama-cpp-python (Llama-3.2-1B GGUF), sentence-transformers (all-MiniLM-L6-v2), threaded inference queue, ddgs + BeautifulSoup",
+        "infrastructure": "Docker (CPU-only), REST over HTTP with API-key auth, GitHub Actions (build-apk), Hugging Face model hosting"
+      }
+    },
+    {
+      "name": "ArogyaKrishi",
+      "link": "",
+      "repo": "https://github.com/DeadIndian/ArogyaKrishi",
+      "description": "Farmer-facing crop-disease detection and advisory app pairing a Flutter frontend with an async FastAPI backend. A user photographs a leaf; the app compresses and multipart-uploads it, and the backend returns disease + crop + confidence backed by a multilingual (English/Telugu/Hindi/Kannada/Malayalam) remedy knowledge base. Layers geolocated nearby-disease alerts (Haversine radius queries over a PostgreSQL/SQLAlchemy-async store with 6h duplicate suppression), OpenStreetMap Overpass lookups for nearby pesticide shops (three-mirror failover), a product-label treatment verifier, and an OpenAI text/voice agri-chatbot (gpt-4o-mini chat + STT/TTS) with multilingual fallbacks, plus a fully offline on-device symptom-to-disease scoring mode. Image-classification pipeline built on a HuggingFace MobileNetV2 plant-disease model with an Ollama advisory layer.",
+      "coreTech": [
+        "Geospatial Haversine nearby-disease alerts (duplicate suppression)",
+        "OpenStreetMap Overpass pesticide-store discovery",
+        "5-language i18n remedy knowledge base",
+        "OpenAI voice chatbot (STT/TTS)",
+        "Offline on-device symptom scoring",
+        "MobileNetV2 image-classification pipeline"
+      ],
+      "stackUsed": {
+        "frontend": "Flutter, Dart, image_picker, geolocator, speech_to_text, flutter_tts, connectivity_plus, JSON localization packs",
+        "backend": "FastAPI, Python, Pydantic v2, SQLAlchemy 2.0 async, PostgreSQL, httpx; PyTorch + transformers (MobileNetV2), Ollama, OpenAI SDK (gpt-4o-mini)",
+        "infrastructure": "uvicorn service, local PostgreSQL, .env config"
+      }
+    },
+    {
+      "name": "Tailscale Plasma Widget",
+      "link": "",
+      "repo": "https://github.com/DeadIndian/tailscale-widget",
+      "description": "KDE Plasma 6 panel/desktop widget that controls Tailscale from the system tray. A C++/Qt6 backend (registered to QML via QML_ELEMENT) polls `tailscale status --json` every 5s, parses BackendState, Self IP, and the Peer map into a diffing QAbstractListModel (keyed by IP so inline ping results survive refresh), and drives connect/disconnect, profile switching, and exit-node routing. Commands run via QProcess with argv arrays (never shell strings) plus allowlist validation of profile/host args to prevent flag/command injection. Privilege is handled without sudo: it detects 'Access denied' and surfaces a one-time `tailscale set --operator=$USER` banner. The QML full view (Kirigami/Plasma components) offers list/grid device layouts, sort/filter, ping, and clipboard copy.",
+      "coreTech": [
+        "QML_ELEMENT C++/QML type registration",
+        "QProcess argv-array CLI invocation (injection-safe)",
+        "Tailscale status/switch JSON parsing",
+        "Argument allowlisting to prevent command injection",
+        "Operator-permission (no-sudo) privilege handling",
+        "Diffing QAbstractListModel"
+      ],
+      "stackUsed": {
+        "frontend": "QML, Qt Quick, Qt Quick Controls 2, Kirigami, Plasma components",
+        "backend": "C++17, Qt6 Core/Gui/Qml/Quick, KF6 I18n, QProcess, tailscale CLI",
+        "infrastructure": "CMake + Extra CMake Modules, KDE Plasma 6 plasmoid (KPackage), user-prefix install scripts"
+      }
+    },
+    {
+      "name": "Calico Kubernetes Observability Lab",
+      "link": "",
+      "repo": "https://github.com/DeadIndian/calico-grafana",
+      "description": "Local Kubernetes observability lab that instruments Calico's networking data plane with a Prometheus/Grafana monitoring stack. Provisions a two-node kind cluster with the default CNI disabled and a 192.168.0.0/16 pod subnet, installs Calico v3.27.0 as the active CNI, and exposes Felix metrics on port 9091. Deploys the kube-prometheus-stack via Helm, then wires a custom ServiceMonitor (k8s-app=calico-node selector, 30s scrape interval, calico-system namespaceSelector) so Prometheus auto-discovers and scrapes the calico-node target. Grafana visualizes live Felix metrics (CPU, GC, process memory/RSS, open file descriptors, datastore resyncs), closing the loop from CNI data plane to dashboards. Companion to Certified Calico Operator (Level 1 + eBPF) certifications.",
+      "coreTech": [
+        "Calico CNI + Felix metrics",
+        "Prometheus ServiceMonitor auto-discovery",
+        "Grafana dashboards",
+        "kube-prometheus-stack (Helm)",
+        "kind (Kubernetes-in-Docker)",
+        "CNI data-plane observability"
+      ],
+      "stackUsed": {
+        "frontend": "Grafana dashboards",
+        "backend": "",
+        "infrastructure": "Kubernetes (kind, 2-node), Calico v3.27.0 CNI, Prometheus, Grafana, Prometheus Operator ServiceMonitor CRD, Helm, Docker"
+      }
+    },
+    {
+      "name": "Petrol Pump Management System",
+      "link": "",
+      "repo": "https://github.com/DeadIndian/Petrol-pump-management-system",
+      "description": "Digitized fuel-delivery platform for Indian petrol pumps combining a Next.js 14 App-Router backend/admin dashboard with a Flutter (Riverpod) mobile app for customers and employees, over a Supabase Postgres database modeled in Prisma. Implements three-role RBAC (Customer/Employee/Admin) via Supabase-Auth JWT verification, an order lifecycle (pending to delivered to completed) supporting amount- or quantity-based orders, per-customer indent-number allocation enforced atomically inside Prisma transactions, daily fuel-price management with historical lookup and fallback, a running customer-balance/payment billing model, and audit logging of admin actions. Inputs are Zod-validated; the admin dashboard (25 API routes, tabbed orders/prices/billing/users/employee-activity) uses Recharts and Supabase real-time subscriptions for live order updates. Real-world software built to run the family petrol pump.",
+      "coreTech": [
+        "Prisma transactions with atomic indent allocation",
+        "Supabase-Auth JWT + three-role RBAC",
+        "Running-balance billing/payment ledger",
+        "Daily fuel-price history with fallback",
+        "Supabase real-time order subscriptions",
+        "Zod validation + admin audit logging"
+      ],
+      "stackUsed": {
+        "frontend": "Next.js 14 (App Router, React 18), TypeScript, Tailwind CSS, Radix UI, Recharts; Flutter mobile app (Dart, Riverpod, Dio, Hive, secure storage)",
+        "backend": "Next.js API route handlers (Node/TypeScript), Prisma ORM 5, Supabase Auth, Zod",
+        "infrastructure": "Supabase PostgreSQL, Prisma migrations, Vercel-target deploy"
+      }
+    },
+    {
+      "name": "Portfolio Website",
+      "link": "https://gollabharath.me/",
+      "repo": "",
+      "description": "Microservices portfolio site with a Go backend that aggregates GitHub, Discord, Spotify, and LeetCode data via REST APIs and scraping, using Redis caching for fast loads.",
+      "coreTech": [
+        "Go",
+        "REST APIs",
+        "Web Scraping",
+        "Redis",
+        "Microservices"
+      ],
+      "stackUsed": {
+        "frontend": "Next.js, React",
+        "backend": "Go",
+        "infrastructure": "Redis, Docker",
+        "database": "Redis"
+      }
+    }
+  ],
+  "education": [
+    {
+      "degree": "B.Tech in Computer Science and Engineering",
+      "field": "Computer Science and Engineering",
+      "institution": "KMIT, Hyderabad",
+      "duration": "2024 - 2028",
+      "score": "CGPA: 8.0"
+    }
+  ],
+  "certificates": [
+    {
+      "name": "Certified Calico Operator: Level 1",
+      "issuer": "Tigera (Project Calico)",
+      "date": "2026-02"
+    },
+    {
+      "name": "Certified Calico Operator: eBPF",
+      "issuer": "Tigera (Project Calico)",
+      "date": "2026-02"
+    },
+    {
+      "name": "Open Source Connect India 2025 – Project Admin",
+      "issuer": "Open Source Connect India (NexFellow · Julep)",
+      "date": "2025-08"
+    },
+    {
+      "name": "Cybersecurity Workshop – Organiser (Team Let Us Hack)",
+      "issuer": "Neil Gogte Institute of Technology",
+      "date": "2025-11"
+    },
+    {
+      "name": "Data Science with Python",
+      "issuer": "Finlatics",
+      "date": "2025-03",
+      "credentialId": "DS-8826677d36762940",
+      "url": "https://finlatics.com/credentialscheck"
+    },
+    {
+      "name": "Machine Learning Program",
+      "issuer": "Finlatics",
+      "date": "2025-03",
+      "credentialId": "DSML-882667c8644ce892",
+      "url": "https://finlatics.com/credentialscheck"
+    },
+    {
+      "name": "Inspect Rich Documents with Gemini Multimodality and Multimodal RAG",
+      "issuer": "Google Cloud",
+      "date": "2025-05"
+    },
+    {
+      "name": "Prompt Design in Vertex AI",
+      "issuer": "Google Cloud",
+      "date": "2025-05"
+    }
+  ],
+  "skillsDisplay": {
+    "Languages": [
+      "JavaScript",
+      "TypeScript",
+      "Python",
+      "Java",
+      "C",
+      "C++",
+      "Bash",
+      "Kotlin",
+      "Go"
+    ],
+    "Frameworks": [
+      "Next.js",
+      "React",
+      "Node.js",
+      "Express.js",
+      "Flask",
+      "Prisma",
+      "MERN",
+      "Tailwind CSS",
+      "REST APIs"
+    ],
+    "Tools": [
+      "Docker",
+      "Kubernetes",
+      "AWS",
+      "Git",
+      "Gitea",
+      "Nginx",
+      "Traefik",
+      "Cilium",
+      "Harbor",
+      "CI/CD",
+      "Linux"
+    ],
+    "Databases": [
+      "PostgreSQL",
+      "MySQL",
+      "SQLite",
+      "MongoDB",
+      "Redis"
+    ],
+    "Concepts": [
+      "Data Structures",
+      "Algorithms",
+      "OOP",
+      "System Design",
+      "DBMS",
+      "RBAC"
+    ]
+  }
+}
