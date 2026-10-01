@@ -1,6 +1,22 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import resume from "../../resumeData.json";
+
+/**
+ * Switch to a world if it is not already showing. The desktop opens with
+ * Bharath, so most tests that exercise studio-only UI have to switch first.
+ */
+const goTo = async (page: Page, world: "studio" | "desktop") => {
+  if ((await page.locator(".world-root").getAttribute("data-world")) === world)
+    return;
+  const label =
+    world === "studio" ? "Back to Dead Indian" : "Meet Golla Bharath";
+  await page.getByRole("button", { name: label, exact: true }).click();
+  await expect(page.locator(".world-root")).toHaveAttribute(
+    "data-world",
+    world,
+  );
+};
 
 const date = "2026-09-24T12:00:00.000Z";
 const calendar = [
@@ -103,7 +119,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto("/");
   await expect(page.locator(".world-root")).toHaveAttribute(
     "data-world",
-    "studio",
+    "desktop",
   );
 });
 
@@ -115,6 +131,7 @@ test("renders working 3D, changes the assembly, and reuses the renderer across g
     timeout: 45000,
   });
   await expect(scene).toHaveAttribute("data-webgl", "available");
+  await goTo(page, "studio");
   const canvas = scene.locator("canvas");
   await canvas.evaluate((element) =>
     element.setAttribute("data-persistent-test", "same-renderer"),
@@ -155,6 +172,7 @@ test("renders working 3D, changes the assembly, and reuses the renderer across g
 test("project directory search, nested dossiers and keyboard dismissal remain functional", async ({
   page,
 }) => {
+  await goTo(page, "studio");
   await page
     .getByRole("button", { name: "All 20 projects", exact: true })
     .click();
@@ -185,9 +203,6 @@ test("project directory search, nested dossiers and keyboard dismissal remain fu
 test("desktop windows drag, minimize, restore, maximize and open actual project files", async ({
   page,
 }, testInfo) => {
-  await page
-    .getByRole("button", { name: "Meet Golla Bharath", exact: true })
-    .click();
   await page
     .getByRole("button", { name: "Open Projects", exact: true })
     .click();
@@ -241,9 +256,6 @@ test("the handmade shelf, Linux journey, Recurse and writing are separate, detai
   page,
 }) => {
   await page
-    .getByRole("button", { name: "Meet Golla Bharath", exact: true })
-    .click();
-  await page
     .getByRole("button", { name: "Open No-AI work", exact: true })
     .click();
   const shelf = page.locator('[data-window-id="handmade"]');
@@ -283,6 +295,7 @@ test("the handmade shelf, Linux journey, Recurse and writing are separate, detai
 test("the terminal routes commands into the correct world", async ({
   page,
 }) => {
+  await goTo(page, "studio");
   await page.keyboard.press("/");
   const input = page.locator("#terminal-input");
   await expect(input).toBeFocused();
@@ -312,6 +325,7 @@ test("the terminal routes commands into the correct world", async ({
 test("real-feed UI distinguishes idle from failure and survives independent provider errors", async ({
   page,
 }) => {
+  await goTo(page, "studio");
   await page.getByRole("button", { name: /Live signals Code, music/ }).click();
   await expect(page.locator(".github-stats")).toContainText("12");
   await expect(page.locator(".discord-signal")).toContainText("offline");
@@ -343,6 +357,7 @@ test("public contact and print actions work without serializing private resume f
   expect(html).not.toContain(resume.personalInfo.dob);
   expect(html).not.toContain(resume.personalInfo.phone);
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  await goTo(page, "studio");
   await page
     .getByRole("button", { name: "Contact & links", exact: true })
     .click();
@@ -374,14 +389,12 @@ test("motion preferences and narrow viewports keep both experiences usable", asy
     "data-motion",
     "off",
   );
+  await goTo(page, "studio");
   await page.locator(".alternate-process").scrollIntoViewIfNeeded();
   await page.waitForTimeout(4500);
   await expect(page.locator(".alternate-process")).not.toHaveClass(
     /is-peeking/,
   );
-  expect(
-    await page.evaluate(() => sessionStorage.getItem("world-glimpse")),
-  ).toBeNull();
   for (const width of [320, 390, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await expect
@@ -407,17 +420,17 @@ test("motion preferences and narrow viewports keep both experiences usable", asy
   ).toBeInViewport();
 });
 
-test("the automatic glimpse and dimensional transition do not get stuck", async ({
+test("the studio teaser stays suppressed and the dimensional transition does not get stuck", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
+  await goTo(page, "studio");
+  // Bharath is the entry world now, so reaching the studio always happens via a
+  // switch, and a switch marks the teaser as already seen. It must not fire.
   await page.locator(".alternate-process").scrollIntoViewIfNeeded();
-  await expect(page.locator(".alternate-process")).toHaveClass(/is-peeking/, {
-    timeout: 12000,
-  });
+  await page.waitForTimeout(6000);
   await expect(page.locator(".alternate-process")).not.toHaveClass(
     /is-peeking/,
-    { timeout: 6000 },
   );
   await page
     .getByRole("button", { name: "Meet Golla Bharath", exact: true })
@@ -454,6 +467,8 @@ test("both worlds and their content pass automated accessibility checks", async 
     ).toEqual([]);
   };
   await check();
+  await goTo(page, "studio");
+  await check();
   await page
     .getByRole("button", { name: "CyberParadigm", exact: true })
     .click();
@@ -487,6 +502,7 @@ test("a missing WebGL context leaves an honest static preview and working conten
     "unavailable",
   );
   await expect(page.locator(".scene-fallback")).toContainText("Static preview");
+  await goTo(page, "studio");
   await page
     .getByRole("button", { name: "All 20 projects", exact: true })
     .click();

@@ -183,7 +183,7 @@ export function PanelContents({
     ) : (
       <div className="file-browser">
         <div className="file-browser-path">
-          /home/dead/projects <span>{projects.length} items</span>
+          /home/bharath/projects <span>{projects.length} items</span>
         </div>
         <div className="file-columns">
           <span>Name</span>

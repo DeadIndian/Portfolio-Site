@@ -24,7 +24,7 @@ function subscribeMotion(callback: () => void) {
 }
 
 export function Portfolio({ profile }: { profile: PublicProfile }) {
-  const [world, setWorld] = useState<"studio" | "desktop">("studio");
+  const [world, setWorld] = useState<"studio" | "desktop">("desktop");
   const [panel, setPanel] = useState<PanelId | null>(null);
   const [terminal, setTerminal] = useState(false);
   const [motion, setMotion] = useState(true);
