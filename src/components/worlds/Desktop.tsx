@@ -6,6 +6,7 @@ import {
   useRef,
   useState,
   type CSSProperties,
+  type PointerEvent as ReactPointerEvent,
   type ReactNode,
   type Ref,
 } from "react";
@@ -29,6 +30,7 @@ import {
   Waveform,
   X,
 } from "@phosphor-icons/react";
+import { FedoraMark } from "./FedoraMark";
 import { PanelContents } from "./PanelContents";
 import { panelNames, type PanelId, type PublicProfile } from "./types";
 
@@ -80,6 +82,10 @@ function Clock() {
   );
 }
 
+function cssLimit(value: string) {
+  return value === "none" ? Infinity : Number.parseFloat(value) || Infinity;
+}
+
 function DesktopWindow({
   entry,
   order,
@@ -101,6 +107,10 @@ function DesktopWindow({
 }) {
   const ref = useRef<HTMLElement>(null);
   const [offset, setOffset] = useState([0, 0]);
+  const [size, setSize] = useState<{ w: number; h: number } | null>(null);
+  const [place, setPlace] = useState<{ left: number; top: number } | null>(
+    null,
+  );
   const drag = useRef<{
     x: number;
     y: number;
@@ -112,6 +122,17 @@ function DesktopWindow({
     height: number;
     nextX: number;
     nextY: number;
+  } | null>(null);
+  const resize = useRef<{
+    edge: string;
+    x: number;
+    y: number;
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+    maxWidth: number;
+    maxHeight: number;
   } | null>(null);
   useEffect(() => {
     const reset = () => setOffset([0, 0]);
@@ -140,6 +161,56 @@ function DesktopWindow({
     );
     ref.current.style.transform = `translate3d(${state.nextX}px, ${state.nextY}px, 0)`;
   };
+  const startResize = (event: ReactPointerEvent<HTMLSpanElement>) => {
+    const edge = event.currentTarget.dataset.edge ?? "";
+    const node = ref.current;
+    if (!node || entry.maximized || innerWidth < 760 || event.button !== 0)
+      return;
+    const bounds = node.getBoundingClientRect();
+    const shell = node.closest(".personal-desktop")?.getBoundingClientRect();
+    const styles = getComputedStyle(node);
+    resize.current = {
+      edge,
+      x: event.clientX,
+      y: event.clientY,
+      left: bounds.left,
+      top: bounds.top,
+      width: bounds.width,
+      height: bounds.height,
+      maxWidth: Math.min(
+        (shell?.width ?? innerWidth) - 60,
+        cssLimit(styles.maxWidth),
+      ),
+      maxHeight: Math.min(
+        (shell?.height ?? innerHeight) - 150,
+        cssLimit(styles.maxHeight),
+      ),
+    };
+    event.preventDefault();
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+  const resizeTo = (event: ReactPointerEvent<HTMLSpanElement>) => {
+    const state = resize.current;
+    if (!state) return;
+    const growX = state.edge.includes("e")
+      ? event.clientX - state.x
+      : state.edge.includes("w")
+        ? state.x - event.clientX
+        : 0;
+    const growY = state.edge.includes("s")
+      ? event.clientY - state.y
+      : state.edge.includes("n")
+        ? state.y - event.clientY
+        : 0;
+    const w = Math.max(360, Math.min(state.maxWidth, state.width + growX));
+    const h = Math.max(240, Math.min(state.maxHeight, state.height + growY));
+    setSize({ w, h });
+    if (state.edge.includes("n") || state.edge.includes("w"))
+      setPlace({ left: state.left - growX, top: state.top - growY });
+  };
+  const endResize = () => {
+    resize.current = null;
+  };
   return (
     <section
       ref={ref}
@@ -164,7 +235,15 @@ function DesktopWindow({
       style={
         {
           "--slot": entry.slot % 4,
-          zIndex: 10 + order,
+          // Above the dock (z-index 60) when maximized, so the dock drops
+          // behind it; inline z-index would otherwise beat the stylesheet.
+          zIndex: entry.maximized ? 62 : 10 + order,
+          ...(!entry.maximized && size
+            ? { width: size.w, height: size.h }
+            : {}),
+          ...(!entry.maximized && place
+            ? { left: place.left, top: place.top }
+            : {}),
           transform: entry.maximized
             ? "none"
             : `translate3d(${offset[0]}px,${offset[1]}px,0)`,
@@ -240,6 +319,19 @@ function DesktopWindow({
         </span>
         <span>bharath@home</span>
       </footer>
+      {!entry.maximized &&
+        (["n", "s", "e", "w", "ne", "nw", "se", "sw"] as const).map((edge) => (
+          <span
+            key={edge}
+            className="desktop-window-resize"
+            data-edge={edge}
+            aria-hidden="true"
+            onPointerDown={startResize}
+            onPointerMove={resizeTo}
+            onPointerUp={endResize}
+            onPointerCancel={endResize}
+          />
+        ))}
     </section>
   );
 }
@@ -313,7 +405,7 @@ export function Desktop({
             aria-expanded={menu}
             onClick={() => setMenu(!menu)}
           >
-            <LinuxLogo size={22} weight="duotone" />
+            <FedoraMark className="desktop-brand-mark" />
             <span>Applications</span>
           </button>
           <span className="desktop-session">
@@ -462,7 +554,7 @@ export function Desktop({
           onClick={() => open("welcome")}
           aria-label="Open welcome"
         >
-          <LinuxLogo weight="duotone" />
+          <FedoraMark className="desktop-brand-mark desktop-brand-mark-dock" />
         </button>
         <span className="dock-divider" />
         {apps.map((app) => (

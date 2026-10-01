@@ -38,10 +38,17 @@ export default function Credits() {
       </p>
       <h2>3D objects</h2>
       <p>
-        The hardware assembly, circuit graphics, CRT, keyboard, disks and
-        penguin sculpture are procedural Three.js geometry and artwork authored
-        for this portfolio. The penguin is an interpretation of the Linux
-        mascot; the original Tux concept is by Larry Ewing.
+        The hardware assembly, circuit graphics, CRT, keyboard, disks and Fedora
+        badge are procedural Three.js geometry and artwork authored for this
+        portfolio.
+      </p>
+      <h2>Fedora marks</h2>
+      <p>
+        The Fedora name and marks are trademarks of Red Hat, Inc. and are used
+        here only to label the desktop environment this world is depicting. The
+        official vectors are not published by the Fedora Project, so the badge
+        shipped in the 3D scene and in the interface is a procedurally drawn
+        placeholder in the brand colours, not the official artwork.
       </p>
       <h2>Interface & type</h2>
       <p>

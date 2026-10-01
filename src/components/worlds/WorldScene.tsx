@@ -5,6 +5,7 @@ import {
   Suspense,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
   type ReactNode,
@@ -22,7 +23,9 @@ import {
   useTexture,
 } from "@react-three/drei";
 import {
+  CanvasTexture,
   Color,
+  DoubleSide,
   Group,
   MathUtils,
   ShaderMaterial,
@@ -304,59 +307,60 @@ function StudioObject({
   );
 }
 
-function Penguin() {
+/**
+ * Fedora marks are trademarks of Red Hat, Inc. and the official vectors are not
+ * published: they must be requested from logo@fedoraproject.org. This draws the
+ * brand-coloured badge procedurally so the scene needs no external asset. To use
+ * the official artwork, drop it at public/brands/fedora.svg and replace this
+ * canvas paint with that file.
+ */
+function fedoraBadgeTexture() {
+  const size = 256;
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d");
+  if (ctx) {
+    ctx.clearRect(0, 0, size, size);
+    ctx.beginPath();
+    ctx.arc(size / 2, size / 2, size / 2 - 4, 0, Math.PI * 2);
+    ctx.fillStyle = "#294172";
+    ctx.fill();
+    ctx.lineWidth = 6;
+    ctx.strokeStyle = "#3c6eb4";
+    ctx.stroke();
+    ctx.fillStyle = "#e8eef7";
+    ctx.font = "800 168px Manrope, system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("f", size / 2, size * 0.74);
+  }
+  const texture = new CanvasTexture(canvas);
+  texture.colorSpace = SRGBColorSpace;
+  return texture;
+}
+
+function FedoraBadge() {
+  const texture = useMemo(() => fedoraBadgeTexture(), []);
+  useEffect(() => () => texture.dispose(), [texture]);
   return (
     <group
-      position={[2, -0.65, 1.15]}
-      scale={0.48}
-      rotation={[0, -0.23, -0.07]}
+      position={[2.05, -0.5, 1.05]}
+      rotation={[0, -0.34, 0.04]}
+      scale={0.62}
     >
-      <mesh position={[0, 0.63, 0]} scale={[0.69, 0.95, 0.64]}>
-        <sphereGeometry args={[1, 28, 24]} />
-        <meshStandardMaterial color="#1b2528" roughness={0.34} />
+      <mesh position={[0, 0, -0.02]}>
+        <circleGeometry args={[1.06, 56]} />
+        <meshStandardMaterial color="#16233d" roughness={0.4} metalness={0.5} />
       </mesh>
-      <mesh position={[0, 0.42, 0.47]} scale={[0.48, 0.64, 0.24]}>
-        <sphereGeometry args={[1, 24, 20]} />
-        <meshStandardMaterial color="#fff4d9" roughness={0.7} />
-      </mesh>
-      <mesh position={[0, 1.35, 0.06]} scale={[0.55, 0.55, 0.52]}>
-        <sphereGeometry args={[1, 28, 24]} />
-        <meshStandardMaterial color="#1b2528" roughness={0.35} />
-      </mesh>
-      {[-1, 1].map((side) => (
-        <group key={side}>
-          <mesh position={[side * 0.21, 1.47, 0.5]} scale={[0.16, 0.2, 0.06]}>
-            <sphereGeometry args={[1, 20, 16]} />
-            <meshStandardMaterial color="#fff8e9" />
-          </mesh>
-          <mesh
-            position={[side * 0.205, 1.47, 0.556]}
-            scale={[0.055, 0.08, 0.03]}
-          >
-            <sphereGeometry args={[1, 16, 12]} />
-            <meshStandardMaterial color="#213230" />
-          </mesh>
-          <mesh
-            position={[side * 0.35, -0.17, 0.24]}
-            scale={[0.33, 0.12, 0.48]}
-            rotation={[0, side * -0.23, 0]}
-          >
-            <sphereGeometry args={[1, 20, 16]} />
-            <meshStandardMaterial color="#f5b446" roughness={0.5} />
-          </mesh>
-          <mesh
-            position={[side * 0.63, 0.5, 0]}
-            scale={[0.18, 0.6, 0.32]}
-            rotation={[0, 0, side * 0.2]}
-          >
-            <sphereGeometry args={[1, 20, 16]} />
-            <meshStandardMaterial color="#1b2528" roughness={0.4} />
-          </mesh>
-        </group>
-      ))}
-      <mesh position={[0, 1.23, 0.59]} rotation={[Math.PI / 2, 0, 0]}>
-        <coneGeometry args={[0.21, 0.39, 24]} />
-        <meshStandardMaterial color="#f2b040" roughness={0.42} />
+      <mesh>
+        <circleGeometry args={[1, 56]} />
+        <meshStandardMaterial
+          map={texture}
+          transparent
+          roughness={0.28}
+          metalness={0.1}
+          side={DoubleSide}
+        />
       </mesh>
     </group>
   );
@@ -494,7 +498,7 @@ function Computer({ motion, rotation = 0, onInteract }: SceneProps) {
           </group>
         ))}
       </group>
-      <Penguin />
+      <FedoraBadge />
     </group>
   );
 }
@@ -584,7 +588,7 @@ export default function WorldScene(props: SceneProps) {
       aria-label={
         studio
           ? "Exploded computer sculpture"
-          : "Retro computer and Linux penguin sculpture"
+          : "Retro computer and Fedora desktop sculpture"
       }
     >
       {supported && !lost && (
