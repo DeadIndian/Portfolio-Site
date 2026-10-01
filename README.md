@@ -13,7 +13,7 @@ npm ci
 npm run dev -- --port 3100
 ```
 
-Open **http://127.0.0.1:3100**. The port avoids the existing services on 3000-3002.
+Open **http://localhost:3100**. The port avoids the existing services on 3000-3002.
 
 For a production server:
 
@@ -25,10 +25,23 @@ npm run start -- --port 3100
 The API routes require a Node server. This is not a static-export/GitHub Pages
 build. No database or API credentials are required for the default public feeds.
 
+## Deployment
+
+The production target is Vercel at **https://gollabharath.me**. Import this project
+with Vercel's Next.js preset and the default `npm run build` command; `package.json`
+pins the tested Node.js 22 runtime. Add the domain in the Vercel project settings
+and configure its DNS after deployment. No deployment is performed by the test tools.
+
+Keep `stats.gollabharath.me` running independently when changing the main site's
+DNS: the GitHub contribution calendar and LeetCode feed depend on it. Both feeds
+must respond successfully before launch. `MEDIUM_USERNAME` remains optional and
+can be configured later; the portfolio clearly labels its unconnected state.
+
 ## What's Here
 
-- Bharath is the default: a reflective 3D hardware assembly with real explode,
-  assemble and rotation controls, project dossiers, and a professional directory.
+- Bharath is the default: a detailed 3D arc reactor with copper windings, an
+  illuminated core, and five explodable layers. Assembly and rotation controls sit
+  alongside project dossiers and a professional directory.
 - Dead Indian is a separate desktop: KDE Flow wallpaper, a 3D CRT, keyboard and
   penguin, application icons, a dock, and movable windows. Windows minimize,
   restore, maximize and retain their position when minimized.
@@ -119,19 +132,51 @@ the distinction between KDE community projects and core KDE.
 npm run typecheck
 npm run lint
 npm test
-npx playwright install chromium
+npx playwright install chromium firefox webkit
 npm run test:e2e
-npm run build
 ```
 
-Playwright starts the dev server if needed and tests desktop/mobile Chromium,
-including 320-1440px layouts, genuine 3D rendering and renderer reuse, desktop
-window interactions, nested dialogs, identity transitions, terminal commands,
-privacy, WebGL fallback, service failures and axe accessibility. Browser tests use
-software WebGL so a physical GPU is not required; these are not hardware FPS tests.
-Browser tests intercept provider requests with clearly marked deterministic
-fixtures; live-provider checks are separate and depend on external availability.
-Set `PLAYWRIGHT_BASE_URL` to test an already-running production build.
+On Linux, install missing system libraries with `npx playwright install-deps`.
+If elevated privileges are needed, use your own terminal or CI provisioning;
+do not share a sudo password with an agent.
+
+By default, `npm run test:e2e` runs `npm run build` and then
+`npm run start -- --port 3101`, testing a fresh production build at
+**http://localhost:3101**. Keep port 3101 free: Playwright never reuses an existing
+server. Tests run with one worker to avoid software-3D resource contention.
+
+- `worlds.spec.ts` runs only in the existing `desktop` and `mobile` Chromium
+  projects. It covers 320-1440px layouts, genuine 3D rendering and renderer reuse,
+  desktop windows, nested dialogs, identity transitions, terminal commands,
+  privacy, WebGL fallback, service failures and axe accessibility.
+- `release.spec.ts` runs in all five projects: `desktop`, `mobile`, `firefox`,
+  `webkit`, and `mobile-webkit` (iPhone emulation). Its three smoke tests cover
+  security headers and 404s, canonical metadata and decodable local share/icon
+  images, and the critical project-search/dossier, keyboard focus, desktop,
+  terminal and resume journey under reduced motion.
+- Release smoke tests record ready WebGL or an explicit static fallback in test
+  annotations and fail on uncaught browser errors or unexpected console errors.
+  A recorded fallback is not proof of 3D rendering; the Chromium suite still
+  requires genuine 3D. Chromium uses SwiftShader and mobile DPR is capped at 1.
+  These headless/emulated checks make no real-device GPU or hardware FPS claims.
+
+An explicit `PLAYWRIGHT_BASE_URL` skips the local build and server startup and
+targets an existing server, including the Vercel deployment:
+
+```bash
+PLAYWRIGHT_BASE_URL=https://gollabharath.me npm run test:e2e -- tests/e2e/release.spec.ts
+```
+
+The terminal list reporter is accompanied by an HTML report that does not open
+automatically. Review it with `npx playwright show-report`; retain
+`playwright-report/` and `test-results/` for release review, including failure
+screenshots and traces.
+
+Header, metadata, local image and 404 checks use real responses from the selected
+server. Browser UI tests intercept provider/writing requests with deterministic
+fixtures, including honest unavailable/unconfigured states, even when targeting
+Vercel. Live external-feed availability and deployment API/asset checks are
+separate release checks; mocked UI success does not verify those services.
 
 Fonts are bundled locally, so builds and page rendering do not depend on Google
 Fonts. The app makes no analytics or tracking requests. Nothing is automatically

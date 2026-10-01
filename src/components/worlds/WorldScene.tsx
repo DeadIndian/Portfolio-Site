@@ -21,14 +21,8 @@ import {
   useProgress,
   useTexture,
 } from "@react-three/drei";
-import {
-  Color,
-  Group,
-  MathUtils,
-  ShaderMaterial,
-  SRGBColorSpace,
-  type Texture,
-} from "three";
+import { Color, Group, MathUtils, ShaderMaterial, type Texture } from "three";
+import { ArcReactor } from "./ArcReactor";
 
 type SceneProps = {
   kind: "studio" | "desktop";
@@ -68,240 +62,6 @@ function ContentReady({ onReady }: { onReady: (ready: boolean) => void }) {
     };
   }, [invalidate, onReady]);
   return null;
-}
-
-function StudioObject({
-  exploded = true,
-  rotation = 0,
-  motion,
-  onInteract,
-}: SceneProps) {
-  const root = useRef<Group>(null);
-  const board = useRef<Group>(null);
-  const cover = useRef<Group>(null);
-  const [circuit, core] = useTexture(
-    ["/3d/circuit.svg", "/3d/core.svg"],
-    (textures) => {
-      for (const texture of Array.isArray(textures) ? textures : [textures])
-        texture.colorSpace = SRGBColorSpace;
-    },
-  );
-  useFrame(({ pointer, clock }, delta) => {
-    if (!root.current || !board.current || !cover.current) return;
-    const t = Math.min(delta, 0.05);
-    root.current.rotation.y = motion
-      ? MathUtils.damp(
-          root.current.rotation.y,
-          -0.4 + rotation + pointer.x * 0.15,
-          4,
-          t,
-        )
-      : -0.4 + rotation;
-    root.current.rotation.z = motion
-      ? Math.sin(clock.elapsedTime * 0.38) * 0.025 - 0.055
-      : -0.055;
-    board.current.position.y = motion
-      ? MathUtils.damp(board.current.position.y, exploded ? 0.7 : -0.45, 4, t)
-      : exploded
-        ? 0.7
-        : -0.45;
-    cover.current.position.y = motion
-      ? MathUtils.damp(cover.current.position.y, exploded ? 2.2 : 0.15, 4, t)
-      : exploded
-        ? 2.2
-        : 0.15;
-  });
-  return (
-    <group ref={root} rotation={[0.08, -0.4, -0.055]} position={[0, -0.45, 0]}>
-      <group position={[0, -0.85, 0]}>
-        <RoundedBox
-          args={[3.5, 0.42, 2.8]}
-          radius={0.13}
-          smoothness={4}
-          castShadow
-          receiveShadow
-        >
-          <meshStandardMaterial
-            color="#b9c1cc"
-            metalness={0.85}
-            roughness={0.27}
-          />
-        </RoundedBox>
-        <RoundedBox
-          args={[3.2, 0.09, 2.53]}
-          radius={0.1}
-          position={[0, 0.24, 0]}
-        >
-          <meshStandardMaterial
-            color="#1b2738"
-            metalness={0.65}
-            roughness={0.35}
-          />
-        </RoundedBox>
-        <Instances limit={26}>
-          <boxGeometry args={[0.085, 0.105, 0.035]} />
-          <meshStandardMaterial color="#243240" />
-          {Array.from({ length: 26 }, (_, i) => (
-            <Instance key={i} position={[-1.36 + i * 0.095, -0.005, 1.408]} />
-          ))}
-        </Instances>
-        <mesh position={[1.5, 0, 1.409]} rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[0.045, 0.045, 0.015, 20]} />
-          <meshStandardMaterial
-            color="#7392ff"
-            emissive="#365cf1"
-            emissiveIntensity={1.6}
-          />
-        </mesh>
-        {[-1.48, 1.48].flatMap((x) =>
-          [-1.12, 1.12].map((z) => (
-            <mesh key={`${x}:${z}`} position={[x, 0.3, z]}>
-              <cylinderGeometry args={[0.055, 0.055, 0.15, 12]} />
-              <meshStandardMaterial
-                color="#5b6678"
-                metalness={0.9}
-                roughness={0.2}
-              />
-            </mesh>
-          )),
-        )}
-      </group>
-      <group
-        ref={board}
-        position={[0, 0.7, 0]}
-        onClick={(event) => {
-          event.stopPropagation();
-          onInteract();
-        }}
-      >
-        <RoundedBox args={[3.15, 0.16, 2.45]} radius={0.09}>
-          <meshStandardMaterial
-            color="#1e414d"
-            metalness={0.5}
-            roughness={0.5}
-          />
-        </RoundedBox>
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.085, 0]}>
-          <planeGeometry args={[3.06, 2.3]} />
-          <meshBasicMaterial map={circuit} toneMapped={false} />
-        </mesh>
-        <RoundedBox
-          args={[1.35, 0.29, 1.3]}
-          radius={0.045}
-          position={[0, 0.24, 0]}
-          castShadow
-        >
-          <meshStandardMaterial
-            color="#abb3c2"
-            metalness={0.8}
-            roughness={0.3}
-          />
-        </RoundedBox>
-        <mesh position={[0, 0.39, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[1.29, 1.25]} />
-          <meshBasicMaterial map={core} toneMapped={false} />
-        </mesh>
-        <Instances limit={48}>
-          <boxGeometry args={[0.045, 0.055, 0.17]} />
-          <meshStandardMaterial
-            color="#d5b56f"
-            metalness={0.7}
-            roughness={0.3}
-          />
-          {Array.from({ length: 12 }, (_, i) =>
-            [-1, 1].flatMap((side) => [
-              <Instance
-                key={`a${side}${i}`}
-                position={[-0.55 + i * 0.1, 0.15, side * 0.73]}
-              />,
-              <Instance
-                key={`b${side}${i}`}
-                position={[side * 0.77, 0.15, -0.55 + i * 0.1]}
-                rotation={[0, Math.PI / 2, 0]}
-              />,
-            ]),
-          )}
-        </Instances>
-        {[-1.12, 1.12].map((x) => (
-          <group key={x} position={[x, 0.17, -0.52]}>
-            {[0, 0.4, 0.8].map((z) => (
-              <RoundedBox
-                key={z}
-                args={[0.32, 0.14, 0.28]}
-                radius={0.025}
-                position={[0, 0, z]}
-              >
-                <meshStandardMaterial
-                  color="#182a32"
-                  metalness={0.4}
-                  roughness={0.45}
-                />
-              </RoundedBox>
-            ))}
-          </group>
-        ))}
-      </group>
-      <group ref={cover} position={[0, 2.2, 0]}>
-        <RoundedBox args={[3.5, 0.16, 2.8]} radius={0.14} smoothness={4}>
-          <meshPhysicalMaterial
-            color="#b7d5f4"
-            metalness={0.1}
-            roughness={0.12}
-            transparent
-            opacity={0.43}
-            clearcoat={1}
-            side={2}
-          />
-        </RoundedBox>
-        <RoundedBox
-          args={[3.54, 0.08, 0.035]}
-          position={[0, -0.025, 1.385]}
-          radius={0.016}
-        >
-          <meshStandardMaterial
-            color="#7994cd"
-            metalness={0.8}
-            roughness={0.3}
-          />
-        </RoundedBox>
-        <RoundedBox
-          args={[0.035, 0.08, 2.76]}
-          position={[-1.745, -0.025, 0]}
-          radius={0.016}
-        >
-          <meshStandardMaterial
-            color="#b5c4e3"
-            metalness={0.8}
-            roughness={0.3}
-          />
-        </RoundedBox>
-        {[-1.48, 1.48].flatMap((x) =>
-          [-1.12, 1.12].map((z) => (
-            <mesh key={`${x}:${z}`} position={[x, -0.09, z]}>
-              <cylinderGeometry args={[0.06, 0.06, 0.08, 20]} />
-              <meshStandardMaterial
-                color="#8c9aaf"
-                metalness={0.95}
-                roughness={0.25}
-              />
-            </mesh>
-          )),
-        )}
-      </group>
-      {[-1.48, 1.48].flatMap((x) =>
-        [-1.12, 1.12].map((z) => (
-          <mesh key={`${x}:${z}`} position={[x, 0.5, z]}>
-            <cylinderGeometry args={[0.007, 0.007, 3.7, 6]} />
-            <meshBasicMaterial
-              color="#8194b4"
-              transparent
-              opacity={exploded ? 0.33 : 0}
-            />
-          </mesh>
-        )),
-      )}
-    </group>
-  );
 }
 
 function Penguin() {
@@ -362,7 +122,7 @@ function Penguin() {
   );
 }
 
-function Computer({ motion, rotation = 0, onInteract }: SceneProps) {
+function Computer({ kind, motion, rotation = 0, onInteract }: SceneProps) {
   const ref = useRef<Group>(null);
   const screen = useTexture("/3d/crt-screen.svg");
   const material = useRef<ShaderMaterial>(null);
@@ -387,6 +147,7 @@ function Computer({ motion, rotation = 0, onInteract }: SceneProps) {
     <group ref={ref} rotation={[0.04, -0.35, 0.02]} position={[-0.3, 0.25, 0]}>
       <group
         onClick={(event) => {
+          if (kind !== "desktop") return;
           event.stopPropagation();
           onInteract();
         }}
@@ -583,10 +344,18 @@ export default function WorldScene(props: SceneProps) {
       role="img"
       aria-label={
         studio
-          ? "Exploded computer sculpture"
+          ? "Arc reactor with copper coils and an illuminated core"
           : "Retro computer and Linux penguin sculpture"
       }
+      aria-describedby={studio ? "reactor-description" : undefined}
     >
+      {studio && (
+        <span id="reactor-description" className="sr-only">
+          Five separable layers: containment housing, copper induction coils,
+          palladium core, optical shield, and locking bezel. Use the assembly
+          and rotation controls to inspect the reactor.
+        </span>
+      )}
       {supported && !lost && (
         <Image
           className={`scene-poster ${ready ? "scene-poster-ready" : ""}`}
@@ -618,7 +387,7 @@ export default function WorldScene(props: SceneProps) {
             fallback={<Fallback kind={props.kind} />}
           >
             <CameraPlacement kind={props.kind} />
-            <ambientLight intensity={studio ? 1.5 : 1.3} />
+            <ambientLight intensity={studio ? 0.8 : 1.3} />
             <directionalLight
               position={[3, 7, 5]}
               intensity={studio ? 2.7 : 2}
@@ -631,10 +400,10 @@ export default function WorldScene(props: SceneProps) {
             <Suspense fallback={null}>
               <Environment
                 files="/3d/studio.hdr"
-                environmentIntensity={studio ? 1.5 : 0.6}
+                environmentIntensity={studio ? 1.1 : 0.6}
               />
               <group visible={studio}>
-                <StudioObject {...props} />
+                <ArcReactor {...props} active={studio} />
               </group>
               <group visible={!studio}>
                 <Computer {...props} />
@@ -643,7 +412,7 @@ export default function WorldScene(props: SceneProps) {
             </Suspense>
             <ContactShadows
               key={props.kind}
-              position={[0, studio ? -1.8 : -1.33, 0]}
+              position={[0, studio ? -2.1 : -1.33, 0]}
               opacity={studio ? 0.3 : 0.3}
               scale={10}
               blur={2.8}

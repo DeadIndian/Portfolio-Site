@@ -16,17 +16,28 @@ visual direction, not its researched content or provider contracts.
 
 - Porcelain `#edf0f2`, aluminum `#b9c0cc`, graphite `#19232c`, ink blue `#314fc4`.
 - Manrope for substantial, left-aligned type. Quiet supporting copy, not serif slogans.
-- A bespoke exploded hardware sculpture is the principal visual. Reflective layers,
-  real geometry, circuitry, a physical core and a glass cover respond to interaction.
+- A detailed circular Mark I arc reactor is the principal visual, inspired by Tony
+  Stark's fictional arc reactor from Iron Man / Marvel. It replaces the earlier chip.
+- Five layers start assembled: containment housing, copper induction coils,
+  palladium core, optical shield, and locking bezel. Copper windings, reflective
+  metal and an illuminated core provide the visual focus.
+- This is a procedural fan-art study created for this portfolio, not an imported
+  model or a Marvel-endorsed work.
+- Drag to orbit. Clicking the reactor or the `Explode reactor` / `Assemble reactor`
+  button toggles assembly, not project navigation. The button's `aria-pressed`
+  matches `exploded`, initially `false`.
 - Assembly and rotation controls work without depending on pointer input.
+- The scene contract remains `exploded?: boolean`, `rotation`, `motion`, and
+  `onInteract`. Desktop scene interaction still opens the terminal; switching
+  worlds reuses the renderer.
 - Open directory, project and experience dossiers preserve a quick recruiter path.
 
 ```text
   Bharath / Software engineer                Directory   Meet Dead Indian
   +---------------------------------------------------------------+
-  | Clear, substantial type          Explodable reflective         |
-  | Actual role and context          3D hardware sculpture          |
-  | Work / Resume                    [assemble] [rotate]           |
+  | Clear, substantial type          Circular, five-layer          |
+  | Actual role and context          Mark I arc reactor            |
+  | Work / Resume                    [explode] [rotate]            |
   |                            alternate process briefly surfaces  |
   +---------------------------------------------------------------+
   Selected project index          Experience / public integrations
@@ -53,6 +64,6 @@ Reduced motion removes the automatic reveal and transition, not the functionalit
 ## Review
 
 The distinctive subject is Bharath's full-stack/infrastructure work and Dead
-Indian's actual Linux ecosystem. The focal assets are a hardware assembly and a
+Indian's actual Linux ecosystem. The focal assets are a Mark I arc reactor and a
 personal computer, not abstract blobs. The two compositions and navigation models
 remain recognizably different even if every color is removed.

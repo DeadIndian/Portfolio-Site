@@ -7,8 +7,8 @@ import {
   ArrowRight,
   ArrowUpRight,
   Article,
+  Atom,
   BracketsCurly,
-  Cpu,
   Folder,
   GithubLogo,
   LinuxLogo,
@@ -164,13 +164,15 @@ export function Studio({
           </div>
         </div>
         <div className="studio-specimen" data-scene-anchor>
-          <div className="specimen-orbit orbit-a" aria-hidden="true" />
-          <div className="specimen-orbit orbit-b" aria-hidden="true" />
           <span className="specimen-caption">
-            <Cpu size={14} />A system is more than the sum of its layers.
+            <Atom size={18} />
+            <span>
+              <strong>Arc reactor</strong>
+              <small>MARK I / INTERACTIVE ASSEMBLY</small>
+            </span>
           </span>
           <div className="assembly-control">
-            <span>Look under the surface</span>
+            <span>Five layers. Look inside.</span>
             <div>
               <button
                 aria-label="Rotate model left"
@@ -184,7 +186,7 @@ export function Studio({
                 onClick={onExplode}
               >
                 <Stack size={18} />
-                {exploded ? "Assemble" : "Explode the view"}
+                {exploded ? "Assemble reactor" : "Explode reactor"}
               </button>
               <button
                 aria-label="Rotate model right"
@@ -193,7 +195,11 @@ export function Studio({
                 <ArrowRight size={18} />
               </button>
             </div>
-            <small>Drag to orbit. Click the core to explore.</small>
+            <small>
+              {exploded
+                ? "Drag to orbit. Click the reactor to assemble."
+                : "Drag to orbit. Click the reactor to open it."}
+            </small>
           </div>
         </div>
         <button

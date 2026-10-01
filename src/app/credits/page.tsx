@@ -38,8 +38,18 @@ export default function Credits() {
       </p>
       <h2>3D objects</h2>
       <p>
-        The hardware assembly, circuit graphics, CRT, keyboard, disks and
-        penguin sculpture are procedural Three.js geometry and artwork authored
+        The studio's circular Mark I arc reactor is a procedural Three.js
+        fan-art study created for this portfolio, inspired by Tony Stark's
+        fictional arc reactor from Iron Man / Marvel. No imported model is
+        used. Marvel does not endorse this portfolio.
+      </p>
+      <p>
+        Its five layers are the containment housing, copper induction coils,
+        palladium core, optical shield, and locking bezel.
+      </p>
+      <p>
+        The CRT, keyboard, disks and penguin sculpture are procedural Three.js
+        geometry and artwork authored
         for this portfolio. The penguin is an interpretation of the Linux
         mascot; the original Tux concept is by Larry Ewing.
       </p>

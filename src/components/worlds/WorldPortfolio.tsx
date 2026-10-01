@@ -8,7 +8,7 @@ import {
   useSyncExternalStore,
 } from "react";
 import gsap from "gsap";
-import { BracketsCurly, Cpu, IconContext } from "@phosphor-icons/react";
+import { Atom, BracketsCurly, IconContext } from "@phosphor-icons/react";
 import { Dialog } from "../Dialog";
 import { Terminal } from "../Terminal";
 import { Studio } from "./Studio";
@@ -33,7 +33,7 @@ export function Portfolio({ profile }: { profile: PublicProfile }) {
   const [destination, setDestination] = useState<"studio" | "desktop">(
     "desktop",
   );
-  const [exploded, setExploded] = useState(true);
+  const [exploded, setExploded] = useState(false);
   const [rotation, setRotation] = useState(0);
   const reduced = useSyncExternalStore(
     subscribeMotion,
@@ -244,7 +244,7 @@ export function Portfolio({ profile }: { profile: PublicProfile }) {
               peek={peek && animated}
               switching={switching}
               exploded={exploded}
-              onExplode={() => setExploded(!exploded)}
+              onExplode={() => setExploded((value) => !value)}
               onRotate={(delta) => setRotation((value) => value + delta)}
             />
           ) : (
@@ -272,7 +272,9 @@ export function Portfolio({ profile }: { profile: PublicProfile }) {
             rotation={rotation}
             motion={animated && !switching && !panel && !terminal}
             onInteract={() =>
-              world === "studio" ? open("projects") : setTerminal(true)
+              world === "studio"
+                ? setExploded((value) => !value)
+                : setTerminal(true)
             }
           />
         </div>
@@ -308,7 +310,7 @@ export function Portfolio({ profile }: { profile: PublicProfile }) {
             {destination === "desktop" ? (
               <BracketsCurly size={64} weight="light" />
             ) : (
-              <Cpu size={64} weight="light" />
+              <Atom size={64} weight="light" />
             )}
             <span>
               {destination === "desktop"

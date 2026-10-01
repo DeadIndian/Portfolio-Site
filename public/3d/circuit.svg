@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="768" viewBox="0 0 1024 768">
-<rect width="1024" height="768" rx="45" fill="#193340"/>
-<g fill="none" stroke="#70b7bc" stroke-width="4" opacity=".7"><path d="M60 100h240l90 90v160M40 160h215l80 80v115M60 700h180l180-180M40 610h130l180-180M960 100H740l-80 80v170M975 160H820l-120 120v80M960 700H820L670 550M960 600H820l-95-95M520 40v180M450 40v170M520 735V570M590 735V570"/></g>
-<g fill="#edc684"><circle cx="60" cy="100" r="9"/><circle cx="40" cy="160" r="9"/><circle cx="60" cy="700" r="9"/><circle cx="40" cy="610" r="9"/><circle cx="960" cy="100" r="9"/><circle cx="975" cy="160" r="9"/><circle cx="960" cy="700" r="9"/><circle cx="960" cy="600" r="9"/></g>
-<rect x="370" y="255" width="290" height="275" rx="10" fill="#142833" stroke="#90a8b5" stroke-width="3"/>
-<g fill="#567e88"><rect x="70" y="240" width="125" height="65" rx="4"/><rect x="70" y="330" width="125" height="65" rx="4"/><rect x="830" y="280" width="110" height="65" rx="4"/><rect x="830" y="370" width="110" height="65" rx="4"/></g>
-<text x="70" y="515" fill="#a9cad0" font-size="26" font-family="monospace">Systems / services / software</text><text x="70" y="557" fill="#a9cad0" font-size="20" font-family="monospace">Designed to work together.</text>
-</svg>
