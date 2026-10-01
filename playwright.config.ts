@@ -1,6 +1,9 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:3100";
+// Must use localhost, not 127.0.0.1. Next 16 blocks dev resources from other
+// origins by default, and a blocked /_next/hmr leaves the page server-rendered
+// but never hydrated, which fails every interaction test.
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3100";
 
 export default defineConfig({
   testDir: "./tests/e2e",
