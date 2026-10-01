@@ -290,7 +290,8 @@ test("the terminal routes commands into the correct world", async ({
   await page.keyboard.press("Tab");
   await expect(input).toHaveValue("whoami");
   await page.keyboard.press("Enter");
-  await expect(page.getByRole("log")).toContainText("Club Head, Recurse");
+  // The studio is Dead Indian's world, so its terminal must answer as him.
+  await expect(page.getByRole("log")).toContainText("KDE Plasma tinkerer");
   await input.fill("theme");
   await page.keyboard.press("Enter");
   await expect(page.locator(".personal-desktop")).toBeVisible();
@@ -298,6 +299,10 @@ test("the terminal routes commands into the correct world", async ({
   await page.keyboard.press("/");
   await expect(page.locator(".terminal-dialog")).toBeVisible();
   await expect(input).toBeFocused();
+  // The desktop is Bharath's world, so the same terminal must answer as him.
+  await input.fill("whoami");
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("log")).toContainText("Club Head, Recurse");
   await input.fill("projects");
   await page.keyboard.press("Enter");
   await expect(page.locator(".terminal-dialog")).not.toBeVisible();
