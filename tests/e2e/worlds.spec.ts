@@ -131,7 +131,7 @@ test("renders working 3D, changes the assembly, and reuses the renderer across g
   });
   expect(after.equals(before)).toBe(false);
   await page
-    .getByRole("button", { name: "Meet Dead Indian", exact: true })
+    .getByRole("button", { name: "Meet Golla Bharath", exact: true })
     .click();
   await expect(page.locator(".personal-desktop")).toBeVisible();
   await expect(page.locator(".engineering-studio")).toHaveCount(0);
@@ -143,7 +143,7 @@ test("renders working 3D, changes the assembly, and reuses the renderer across g
     "same-renderer",
   );
   await page
-    .getByRole("button", { name: "Back to Bharath", exact: true })
+    .getByRole("button", { name: "Back to Dead Indian", exact: true })
     .click();
   await expect(page.locator(".engineering-studio")).toBeVisible();
   await expect(page.locator(".world-scene canvas")).toHaveAttribute(
@@ -186,7 +186,7 @@ test("desktop windows drag, minimize, restore, maximize and open actual project 
   page,
 }, testInfo) => {
   await page
-    .getByRole("button", { name: "Meet Dead Indian", exact: true })
+    .getByRole("button", { name: "Meet Golla Bharath", exact: true })
     .click();
   await page
     .getByRole("button", { name: "Open Projects", exact: true })
@@ -241,7 +241,7 @@ test("the handmade shelf, Linux journey, Recurse and writing are separate, detai
   page,
 }) => {
   await page
-    .getByRole("button", { name: "Meet Dead Indian", exact: true })
+    .getByRole("button", { name: "Meet Golla Bharath", exact: true })
     .click();
   await page
     .getByRole("button", { name: "Open No-AI work", exact: true })
@@ -387,7 +387,7 @@ test("motion preferences and narrow viewports keep both experiences usable", asy
   }
   await page.setViewportSize({ width: 390, height: 844 });
   await page
-    .getByRole("button", { name: "Meet Dead Indian", exact: true })
+    .getByRole("button", { name: "Meet Golla Bharath", exact: true })
     .click();
   await expect(page.locator(".desktop-dock")).toBeInViewport();
   await page
@@ -415,7 +415,7 @@ test("the automatic glimpse and dimensional transition do not get stuck", async 
     { timeout: 6000 },
   );
   await page
-    .getByRole("button", { name: "Meet Dead Indian", exact: true })
+    .getByRole("button", { name: "Meet Golla Bharath", exact: true })
     .click();
   await expect(page.locator(".personal-desktop")).toBeVisible({
     timeout: 15000,
@@ -424,7 +424,7 @@ test("the automatic glimpse and dimensional transition do not get stuck", async 
     timeout: 15000,
   });
   await page
-    .getByRole("button", { name: "Back to Bharath", exact: true })
+    .getByRole("button", { name: "Back to Dead Indian", exact: true })
     .click();
   await expect(page.locator(".engineering-studio")).toBeVisible({
     timeout: 15000,
@@ -455,7 +455,7 @@ test("both worlds and their content pass automated accessibility checks", async 
   await check();
   await page.keyboard.press("Escape");
   await page
-    .getByRole("button", { name: "Meet Dead Indian", exact: true })
+    .getByRole("button", { name: "Meet Golla Bharath", exact: true })
     .click();
   await check();
   await page

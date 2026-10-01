@@ -299,7 +299,7 @@ export function Portfolio({ profile }: { profile: PublicProfile }) {
         <Terminal
           open={terminal}
           onClose={() => setTerminal(false)}
-          mode={world === "studio" ? "bharath" : "dead"}
+          mode={world === "studio" ? "dead" : "bharath"}
           onSwitch={changeWorld}
           onNavigate={navigate}
         />
@@ -317,15 +317,15 @@ export function Portfolio({ profile }: { profile: PublicProfile }) {
             </span>
             <small>
               {destination === "desktop"
-                ? "Entering Dead Indian's workspace"
-                : "Returning to Bharath's studio"}
+                ? "Entering Bharath's workspace"
+                : "Returning to Dead Indian's studio"}
             </small>
           </div>
         </div>
         <span className="sr-only" role="status" aria-live="polite">
           {world === "studio"
-            ? "Bharath. Engineering studio."
-            : "Dead Indian. Open-source desktop."}
+            ? "Dead Indian. Engineering studio."
+            : "Bharath. Open-source desktop."}
         </span>
       </div>
     </IconContext.Provider>

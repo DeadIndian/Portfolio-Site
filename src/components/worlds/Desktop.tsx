@@ -238,7 +238,7 @@ function DesktopWindow({
             ? "Markdown document"
             : "Read-only portfolio content"}
         </span>
-        <span>dead@home</span>
+        <span>bharath@home</span>
       </footer>
     </section>
   );
@@ -317,7 +317,7 @@ export function Desktop({
             <span>Applications</span>
           </button>
           <span className="desktop-session">
-            dead@fedora <span>/ personal space</span>
+            bharath@fedora <span>/ personal space</span>
           </span>
         </div>
         <div className="desktop-tray">
@@ -335,7 +335,7 @@ export function Desktop({
             disabled={switching}
           >
             <Power size={17} />
-            <span>Back to Bharath</span>
+            <span>Back to Dead Indian</span>
           </button>
         </div>
       </header>
@@ -372,7 +372,7 @@ export function Desktop({
       </div>
       <div className="desktop-identity">
         <h1>
-          Dead Indian<span>_</span>
+          Golla Bharath<span>_</span>
         </h1>
         <p>Open source. Open mind. My machine.</p>
       </div>
@@ -417,7 +417,7 @@ export function Desktop({
         >
           {entry.id === "welcome" ? (
             <article className="welcome-document">
-              <div className="readme-path">/home/dead/readme.md</div>
+              <div className="readme-path">/home/bharath/readme.md</div>
               <p className="welcome-comment"># hello, fellow human.</p>
               <h2>
                 Make yourself
@@ -425,11 +425,11 @@ export function Desktop({
                 at home.
               </h2>
               <p>
-                I'm Dead Indian. I build for KDE Plasma, contribute to open
+                I'm Golla Bharath. I build for KDE Plasma, contribute to open
                 source, and run the things I depend on. This is the side of me
                 that can't leave a perfectly good desktop alone.
               </p>
-              <p>Same Bharath. A different workspace.</p>
+              <p>Same person. A different workspace.</p>
               <div className="welcome-actions">
                 <button onClick={() => open("projects")}>
                   Open my projects

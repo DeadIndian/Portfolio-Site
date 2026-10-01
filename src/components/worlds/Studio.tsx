@@ -95,13 +95,13 @@ export function Studio({
         <a
           className="studio-wordmark"
           href="#studio-home"
-          aria-label="Golla Bharath home"
+          aria-label="Dead Indian home"
         >
           <span className="studio-monogram">
-            b<span>/</span>
+            d<span>/</span>
           </span>
           <span>
-            Golla Bharath<small>Software & infrastructure</small>
+            Dead Indian<small>Anime, arcs & side quests</small>
           </span>
         </a>
         <nav aria-label="Studio navigation">
@@ -115,7 +115,7 @@ export function Studio({
           disabled={switching}
         >
           <TerminalWindow size={18} />
-          <span>Meet Dead Indian</span>
+          <span>Meet Golla Bharath</span>
           <ArrowUpRight size={17} />
         </button>
       </header>
@@ -206,11 +206,11 @@ export function Studio({
           </span>
           <span>
             <small>Also running as</small>
-            <strong>Dead Indian</strong>
+            <strong>Golla Bharath</strong>
           </span>
           <ArrowUpRight size={20} />
           <span className="process-reveal" aria-hidden="true">
-            <span>dead@fedora:~$</span>
+            <span>bharath@fedora:~$</span>
             <b>
               Free software.
               <br />A different state of mind.
