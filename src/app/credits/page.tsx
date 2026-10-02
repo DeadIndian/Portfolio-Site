@@ -38,17 +38,23 @@ export default function Credits() {
       </p>
       <h2>3D objects</h2>
       <p>
-        The hardware assembly, circuit graphics, CRT, keyboard, disks and Fedora
-        badge are procedural Three.js geometry and artwork authored for this
-        portfolio.
+        The studio's circular Mark I arc reactor is a procedural Three.js
+        fan-art study created for this portfolio, inspired by Tony Stark's
+        fictional arc reactor from Iron Man / Marvel. No imported model is
+        used. Marvel does not endorse this portfolio.
+      </p>
+      <p>
+        Its five layers are the containment housing, copper induction coils,
+        palladium core, optical shield, and locking bezel.
+      </p>
+      <p>
+        The CRT, keyboard, disks and Fedora badge are procedural Three.js
+        geometry and artwork authored for this portfolio.
       </p>
       <h2>Fedora marks</h2>
       <p>
-        The Fedora name and marks are trademarks of Red Hat, Inc. and are used
-        here only to label the desktop environment this world is depicting. The
-        official vectors are not published by the Fedora Project, so the badge
-        shipped in the 3D scene and in the interface is a procedurally drawn
-        placeholder in the brand colours, not the official artwork.
+        Fedora is a trademark of Red Hat, Inc. The desktop uses a small
+        brand-coloured placeholder to identify Fedora; it is not official artwork.
       </p>
       <h2>Interface & type</h2>
       <p>

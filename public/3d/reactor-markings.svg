@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 600 600">
+  <defs>
+    <path id="upper" d="M 48,300 A 252,252 0 0,1 552,300"/>
+    <path id="lower" d="M 552,300 A 252,252 0 0,1 48,300"/>
+  </defs>
+  <g fill="#304551" font-family="monospace" font-size="7.5" letter-spacing="2.5">
+    <text><textPath href="#upper" startOffset="50%" text-anchor="middle">STARK INDUSTRIES / ARC REACTOR</textPath></text>
+    <text><textPath href="#lower" startOffset="50%" text-anchor="middle">MK I / PALLADIUM CORE</textPath></text>
+  </g>
+</svg>

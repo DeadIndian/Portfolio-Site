@@ -123,30 +123,71 @@ test.beforeEach(async ({ page }) => {
   );
 });
 
-test("renders working 3D, changes the assembly, and reuses the renderer across genuinely different worlds", async ({
+test("renders the arc reactor, explodes and assembles it, and reuses the renderer across genuinely different worlds", async ({
   page,
-}) => {
+}, testInfo) => {
   const scene = page.locator(".world-scene");
   await expect(scene).toHaveAttribute("data-scene-ready", "true", {
     timeout: 45000,
   });
   await expect(scene).toHaveAttribute("data-webgl", "available");
   await goTo(page, "studio");
+  await expect(scene).toHaveAttribute(
+    "aria-label",
+    "Arc reactor with copper coils and an illuminated core",
+  );
   const canvas = scene.locator("canvas");
   await canvas.evaluate((element) =>
     element.setAttribute("data-persistent-test", "same-renderer"),
   );
+  const explodeButton = page.getByRole("button", {
+    name: "Explode reactor",
+    exact: true,
+  });
+  const assembleButton = page.getByRole("button", {
+    name: "Assemble reactor",
+    exact: true,
+  });
+  await expect(explodeButton).toHaveAttribute("aria-pressed", "false");
   const before = await canvas.screenshot({
     style: "main { visibility: hidden !important; }",
   });
-  await page.getByRole("button", { name: "Assemble", exact: true }).click();
-  await expect(
-    page.getByRole("button", { name: "Explode the view", exact: true }),
-  ).toHaveAttribute("aria-pressed", "false");
-  const after = await canvas.screenshot({
+  await explodeButton.click();
+  await expect(assembleButton).toHaveAttribute("aria-pressed", "true");
+  const exploded = await canvas.screenshot({
     style: "main { visibility: hidden !important; }",
   });
-  expect(after.equals(before)).toBe(false);
+  expect(exploded.equals(before)).toBe(false);
+  await assembleButton.click();
+  await expect(explodeButton).toHaveAttribute("aria-pressed", "false");
+  const assembled = await canvas.screenshot({
+    style: "main { visibility: hidden !important; }",
+  });
+  expect(assembled.equals(exploded)).toBe(false);
+  const bounds = (await canvas.boundingBox())!;
+  await canvas.click({
+    position: { x: bounds.width / 2, y: bounds.height * 0.4 },
+  });
+  await expect(assembleButton).toHaveAttribute("aria-pressed", "true");
+  await assembleButton.click();
+  await expect(explodeButton).toHaveAttribute("aria-pressed", "false");
+  if (testInfo.project.name === "desktop") {
+    const x = bounds.x + bounds.width / 2;
+    const y = bounds.y + bounds.height * 0.4;
+    await page.mouse.move(x, y);
+    await page.mouse.down();
+    await page.mouse.move(x + 70, y - 25, { steps: 8 });
+    await page.mouse.move(x, y, { steps: 8 });
+    await page.mouse.up();
+    await expect(explodeButton).toHaveAttribute("aria-pressed", "false");
+  }
+  await page
+    .getByRole("button", { name: "Rotate model right", exact: true })
+    .click();
+  const rotated = await canvas.screenshot({
+    style: "main { visibility: hidden !important; }",
+  });
+  expect(rotated.equals(assembled)).toBe(false);
   await page
     .getByRole("button", { name: "Meet Golla Bharath", exact: true })
     .click();
@@ -167,6 +208,51 @@ test("renders working 3D, changes the assembly, and reuses the renderer across g
     "data-persistent-test",
     "same-renderer",
   );
+});
+
+test("reactor motion separates all five layers and the pause control stops movement", async ({
+  page,
+}) => {
+  await goTo(page, "studio");
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  const scene = page.locator(".world-scene");
+  await expect(scene).toHaveAttribute("data-scene-ready", "true", {
+    timeout: 45000,
+  });
+  await page
+    .getByRole("button", { name: "Explode reactor", exact: true })
+    .click();
+  const layers = page.locator(".reactor-layer-anchor");
+  await expect(layers).toHaveCount(5);
+  await expect
+    .poll(
+      () =>
+        layers.evaluateAll((elements) => {
+          const heights = elements
+            .map((element) => element.getBoundingClientRect().y)
+            .sort((a, b) => a - b);
+          return Math.min(
+            ...heights.slice(1).map((height, i) => height - heights[i]),
+          );
+        }),
+      { timeout: 15000 },
+    )
+    .toBeGreaterThan(25);
+  await page.getByRole("button", { name: "Pause motion", exact: true }).click();
+  await expect(page.locator(".world-root")).toHaveAttribute(
+    "data-motion",
+    "off",
+  );
+  await scene.scrollIntoViewIfNeeded();
+  const canvas = scene.locator("canvas");
+  const paused = await canvas.screenshot({
+    style: "main { visibility: hidden !important; }",
+  });
+  await page.waitForTimeout(500);
+  const stillPaused = await canvas.screenshot({
+    style: "main { visibility: hidden !important; }",
+  });
+  expect(stillPaused.equals(paused)).toBe(true);
 });
 
 test("project directory search, nested dossiers and keyboard dismissal remain functional", async ({
@@ -402,6 +488,21 @@ test("motion preferences and narrow viewports keep both experiences usable", asy
         page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
       )
       .toBe(true);
+    const controlsOverlapSwitch = await page.evaluate(() => {
+      const controls = document
+        .querySelector(".assembly-control")!
+        .getBoundingClientRect();
+      const gateway = document
+        .querySelector(".alternate-process")!
+        .getBoundingClientRect();
+      return (
+        controls.left < gateway.right &&
+        controls.right > gateway.left &&
+        controls.top < gateway.bottom &&
+        controls.bottom > gateway.top
+      );
+    });
+    expect(controlsOverlapSwitch).toBe(false);
   }
   await page.setViewportSize({ width: 390, height: 844 });
   await page

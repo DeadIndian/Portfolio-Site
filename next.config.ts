@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ["arena21", "127.0.0.1"],
   devIndicators: false,
   poweredByHeader: false,
   async headers() {
@@ -20,10 +21,5 @@ const nextConfig: NextConfig = {
     ];
   },
 };
-
-module.exports = {
-  allowedDevOrigins: ['arena21'],
-}
-
 
 export default nextConfig;

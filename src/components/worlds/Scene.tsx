@@ -12,7 +12,7 @@ export const Scene = dynamic(() => import("./WorldScene"), {
         src="/3d/studio-poster.webp"
         width={900}
         height={720}
-        alt="Exploded hardware sculpture"
+        alt="Arc reactor with copper coils and an illuminated core"
         priority
       />
       <span>Preparing the interactive scene...</span>

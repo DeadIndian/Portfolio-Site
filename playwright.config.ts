@@ -1,18 +1,15 @@
 import { defineConfig, devices } from "@playwright/test";
 
-// Must use localhost, not 127.0.0.1. Next 16 blocks dev resources from other
-// origins by default, and a blocked /_next/hmr leaves the page server-rendered
-// but never hydrated, which fails every interaction test.
-const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3100";
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3101";
 
 export default defineConfig({
   testDir: "./tests/e2e",
   fullyParallel: true,
-  workers: 2,
+  workers: 1,
   retries: 0,
   timeout: 60_000,
   expect: { timeout: 8_000 },
-  reporter: "list",
+  reporter: [["list"], ["html", { open: "never" }]],
   use: {
     launchOptions: {
       args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"],
@@ -38,13 +35,38 @@ export default defineConfig({
         viewport: { width: 390, height: 844 },
       },
     },
+    {
+      name: "firefox",
+      testMatch: "**/release.spec.ts",
+      use: {
+        ...devices["Desktop Firefox"],
+        launchOptions: { args: [] },
+      },
+    },
+    {
+      name: "webkit",
+      testMatch: "**/release.spec.ts",
+      use: {
+        ...devices["Desktop Safari"],
+        launchOptions: { args: [] },
+      },
+    },
+    {
+      name: "mobile-webkit",
+      testMatch: "**/release.spec.ts",
+      use: {
+        ...devices["iPhone 13"],
+        deviceScaleFactor: 1,
+        launchOptions: { args: [] },
+      },
+    },
   ],
   webServer: process.env.PLAYWRIGHT_BASE_URL
     ? undefined
     : {
-        command: "npm run dev -- --port 3100",
+        command: "npm run build && npm run start -- --port 3101",
         url: baseURL,
-        reuseExistingServer: !process.env.CI,
-        timeout: 120_000,
+        reuseExistingServer: false,
+        timeout: 180_000,
       },
 });
