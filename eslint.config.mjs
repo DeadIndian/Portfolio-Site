@@ -8,6 +8,7 @@ export default defineConfig([
   { rules: { "react/no-unescaped-entities": "off" } },
   globalIgnores([
     ".next/**",
+    ".workshop/**",
     "out/**",
     "coverage/**",
     "playwright-report/**",

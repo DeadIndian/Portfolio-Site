@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
+<defs><linearGradient id="night" x2="0" y2="1"><stop stop-color="#242444"/><stop offset="1" stop-color="#754e65"/></linearGradient></defs>
+<rect width="1280" height="800" fill="url(#night)"/><g fill="#dfd6cf"><circle cx="169" cy="147" r="2"/><circle cx="269" cy="247" r="2"/><circle cx="968" cy="197" r="2"/><circle cx="1089" cy="327" r="2"/><circle cx="1109" cy="120" r="3"/><circle cx="690" cy="120" r="2"/></g><circle cx="1001" cy="240" r="72" fill="#d9baa7"/>
+<path d="M0 620L270 320 542 680 816 495 1280 710V800H0" fill="#33324a"/><path d="M0 790L180 560 345 710 640 440 800 670 1020 595 1280 760V800H0" fill="#202a36"/>
+<rect x="22" y="18" width="1236" height="40" rx="13" fill="#181e30"/><text x="47" y="45" fill="#cdd4de" font-size="17" font-family="monospace">1  2  3                         Hyprland                                     dead@arch</text>
+<rect x="130" y="185" width="715" height="374" rx="12" fill="#191f32" stroke="#abb7d1" stroke-width="2"/><g font-family="monospace"><text x="174" y="245" font-size="21" fill="#adc7d4">~/a-desktop-of-my-own</text><text x="174" y="335" font-size="50" fill="#e7d9d4">Arch + Hyprland</text><text x="174" y="404" font-size="24" fill="#cdb1be">The Celestia rice rabbit hole.</text><text x="174" y="508" font-size="16" fill="#a4b1c6">PERSONAL DESKTOP STUDY</text></g>
+</svg>

@@ -395,7 +395,7 @@ export function Desktop({
         : panelNames[id];
 
   return (
-    <main className="personal-desktop" id="main">
+    <main className="personal-desktop" id="main" tabIndex={-1}>
       <div className="desktop-wallpaper" />
       <header className="desktop-panel">
         <div>
@@ -427,7 +427,7 @@ export function Desktop({
             disabled={switching}
           >
             <Power size={17} />
-            <span>Back to Dead Indian</span>
+            <span>Meet DeadIndian</span>
           </button>
         </div>
       </header>

@@ -4,6 +4,7 @@ import "@fontsource/space-mono/latin-400.css";
 import "@fontsource/space-mono/latin-700.css";
 import "./globals.css";
 import "./worlds.css";
+import "./workshop.css";
 
 const siteUrl = "https://gollabharath.me";
 
