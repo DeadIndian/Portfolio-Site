@@ -1,8 +1,9 @@
 # Golla Bharath / Dead Indian
 
-Two different experiences, not a light/dark theme: Bharath's 3D engineering
-studio and Dead Indian's interactive Linux desktop. Built with Next.js 16,
-React 19, Three.js, React Three Fiber, Drei, GSAP and hand-authored CSS.
+Bharath's Fedora/KDE desktop opens first. **Meet DeadIndian** enters an original,
+evolving 3D workshop: five personal chapters about learning, Linux, sharing useful
+tools, his people, and the JARVIS ambition. Built with Next.js 16, React 19,
+Three.js, React Three Fiber, Drei, GSAP and hand-authored CSS.
 
 ## Run
 
@@ -10,16 +11,20 @@ Requires Node.js 22 and npm.
 
 ```bash
 npm ci
-npm run dev -- --port 3100
+mkdir -p .workshop/tmp
+export TMPDIR="$PWD/.workshop/tmp"
+npm run dev -- --port 3110
 ```
 
-Open **http://localhost:3100**. The port avoids the existing services on 3000-3002.
+Open **http://localhost:3110** for Bharath's desktop or
+**http://localhost:3110/#workshop-learning** for the personal journey.
+The dev server binds to `0.0.0.0` for access from other devices.
 
 For a production server:
 
 ```bash
 npm run build
-npm run start -- --port 3100
+npm run start -- --port 3110
 ```
 
 The API routes require a Node server. This is not a static-export/GitHub Pages
@@ -39,20 +44,25 @@ can be configured later; the portfolio clearly labels its unconnected state.
 
 ## What's Here
 
-- Bharath is the default: a detailed 3D arc reactor with copper windings, an
-  illuminated core, and five explodable layers. Assembly and rotation controls sit
-  alongside project dossiers and a professional directory.
-- Dead Indian is a separate desktop: KDE Flow wallpaper, a 3D CRT, keyboard and
-  penguin, application icons, a dock, and movable windows. Windows minimize,
-  restore, maximize and retain their position when minimized.
-- A gateway briefly reveals the alternate identity once per browser session.
-  The persona transition replaces the layout, navigation and objects. Reduced
-  motion disables the automatic reveal and animated transition.
-- One persistent WebGL renderer serves both scenes, avoiding repeated context and
-  environment initialization. Local poster renders prevent an empty loading area;
-  devices without WebGL still get every content section.
-- Twenty projects: a searchable directory in the studio, an application-style
-  file browser in the desktop, and detailed source-linked case studies.
+- Bharath's dark desktop has KDE Flow wallpaper, a 3D CRT, application icons,
+  a dock, and windows that drag, resize, minimize, restore, and maximize.
+  The desktop stays mounted across persona switches, preserving its open windows.
+- DeadIndian's workshop is a detailed miniature room with a learning desk,
+  handmade collection, monitor, task lamp, home server, guest seat, and an
+  unfinished JARVIS workbench. The room develops as the chapters progress.
+- The monitor cycles through illustrated Kubuntu, Arch/Hyprland, and Fedora/KDE
+  desktop memories. The handmade shelf opens the six Odin builds. Tools link to
+  real projects. The guest seat pulls up to the desk. The five-layer arc reactor
+  can be taken apart and reassembled; JARVIS links to the actual prototype.
+- Direct chapter links: `#workshop-learning`, `#workshop-linux`, `#workshop-tools`,
+  `#workshop-people`, and `#workshop-future`. Browser back/forward keeps the story
+  and scene together. `#desktop` returns to Bharath.
+- One persistent WebGL renderer serves both worlds. It switches to on-demand
+  rendering for reduced motion, manual pause, overlays, and hidden documents.
+  Local scene posters and readable text remain available if WebGL is unavailable
+  or its context is lost. Every 3D interaction has an ordinary button alternative.
+- Twenty projects: an application-style file browser in the desktop, a searchable
+  directory under the workshop's **Project files**, and source-linked case studies.
 - Six no-AI Odin builds presented as a physical-looking floppy-disk collection.
   The owner's claim applies only to these builds, not to the portfolio or assets.
 - Experience, education, skills, certificates, Recurse leadership, Linux desktop,
@@ -66,9 +76,10 @@ can be configured later; the portfolio clearly labels its unconnected state.
 - An updated `/resume` page with print/PDF styles. It does not link to the old,
   outdated Drive resume.
 
-The old portfolio's content and useful interactions were rebuilt rather than its
-blocking boot sequence. The studio uses dossiers; the desktop uses applications.
-The 3D interactions have ordinary button alternatives. There is no real shell
+The workshop's **Full story** opens an accessible, continuous reading view.
+The room is an artistic interpretation of owner-confirmed accounts. Its desktop
+studies are illustrations; the calculator screenshot and portrait are actual
+portfolio artifacts. The name's origin stays undisclosed. There is no real shell
 execution, fake contact submission, invented activity count or listening state.
 
 ## Connect Medium
@@ -112,15 +123,18 @@ The memory server is research input only: its notes, addresses, credentials and
 administrative endpoints are not part of the app or its runtime integrations.
 
 Edit project case studies, Odin entries, writing links, community links and socials
-in `src/data/portfolio.ts`. The two interfaces and shared content live in
-`src/components/worlds/`; their design system is in `src/app/worlds.css`.
+in `src/data/portfolio.ts`. Personal chapters and desktop memories live in
+`src/data/workshop.ts`. The interfaces and shared content live in
+`src/components/worlds/`; workshop styling is in `src/app/workshop.css` and
+desktop/shared styling is in `src/app/worlds.css`.
 The original photo and project screenshots were recovered from the previous
 portfolio. The 3D geometry and poster renders were built for this site.
 
 KDE's Flow wallpaper is by Sandra Smukaste (CC BY-SA 4.0); the studio HDR lighting
 is from Poly Haven (CC0). Public attribution and source links are at `/credits`.
-The new direction is documented in [design-v2.md](docs/design-v2.md), informed by
-Anthropic's canonical frontend-design guidance and the Taste skills.
+The accepted personal context is in [deadindian-direction.md](docs/deadindian-direction.md).
+The active design and implementation notes are in [workshop-build.md](docs/workshop-build.md).
+The earlier [design-v2.md](docs/design-v2.md) is historical.
 
 See [content sources](docs/content-sources.md) for provenance and important
 corrections, including archived Gamify, prototype status, upstream credits and
@@ -129,6 +143,8 @@ the distinction between KDE community projects and core KDE.
 ## Verify
 
 ```bash
+mkdir -p .workshop/tmp
+export TMPDIR="$PWD/.workshop/tmp"
 npm run typecheck
 npm run lint
 npm test
@@ -141,14 +157,17 @@ If elevated privileges are needed, use your own terminal or CI provisioning;
 do not share a sudo password with an agent.
 
 By default, `npm run test:e2e` runs `npm run build` and then
-`npm run start -- --port 3101`, testing a fresh production build at
-**http://localhost:3101**. Keep port 3101 free: Playwright never reuses an existing
+`npm run start -- --port 3111`, testing a fresh production build at
+**http://localhost:3111**. Keep port 3111 free: Playwright never reuses an existing
 server. Tests run with one worker to avoid software-3D resource contention.
 
 - `worlds.spec.ts` runs only in the existing `desktop` and `mobile` Chromium
-  projects. It covers 320-1440px layouts, genuine 3D rendering and renderer reuse,
-  desktop windows, nested dialogs, identity transitions, terminal commands,
-  privacy, WebGL fallback, service failures and axe accessibility.
+  projects. It covers 320-1440px layouts, real desktop 3D, window geometry,
+  nested dialogs, identity transitions, terminal commands, privacy, feed failure
+  states and axe accessibility.
+- `workshop.spec.ts` covers real 3D monitor clicks, all five chapters, URL/history
+  navigation, project links, chair and reactor interactions, retained desktop
+  windows/renderer, motion controls, the reading overlay, and WebGL loss/fallback.
 - `release.spec.ts` runs in all five projects: `desktop`, `mobile`, `firefox`,
   `webkit`, and `mobile-webkit` (iPhone emulation). Its three smoke tests cover
   security headers and 404s, canonical metadata and decodable local share/icon
@@ -171,6 +190,16 @@ The terminal list reporter is accompanied by an HTML report that does not open
 automatically. Review it with `npx playwright show-report`; retain
 `playwright-report/` and `test-results/` for release review, including failure
 screenshots and traces.
+
+Use the production test server for release metadata checks. Next.js development
+mode can emit local-origin generated image URLs. Visual review uses viewport
+screenshots and individual canvas captures: on this host, SwiftShader can truncate
+WebGL layers in full-page captures even when the live viewport renders correctly.
+
+Development source, assets, and plans belong in the persistent Git worktree.
+`.workshop/` holds local browser profiles, test-only libraries, logs, and review
+screenshots on disk and is excluded from Git. Keep `TMPDIR` set as above and push
+completed feature-branch milestones.
 
 Header, metadata, local image and 404 checks use real responses from the selected
 server. Browser UI tests intercept provider/writing requests with deterministic

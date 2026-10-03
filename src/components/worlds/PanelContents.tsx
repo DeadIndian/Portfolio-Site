@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import {
   ArrowUpRight,
   Check,
@@ -75,10 +74,10 @@ function Contact({ profile }: { profile: PublicProfile }) {
           </a>
         ))}
       </div>
-      <Link className="world-button secondary" href="/resume">
+      <a className="world-button secondary" href="/resume">
         Read / download my resume
         <ArrowUpRight />
-      </Link>
+      </a>
     </div>
   );
 }
@@ -317,10 +316,10 @@ export function PanelContents({
             ))}
           </div>
         </section>
-        <Link href="/resume" className="world-button">
+        <a href="/resume" className="world-button">
           The full resume
           <ArrowUpRight />
-        </Link>
+        </a>
       </article>
     );
 

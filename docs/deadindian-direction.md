@@ -25,8 +25,8 @@ Anime is an optional personal influence. Implementation lives in
 - Commit and push completed implementation milestones to the working feature
   branch, including before ending a work session. Verify each pushed commit
   against the remote so work is recoverable beyond the local machine.
-- For the current checkpoint, save the existing work on both feature branches.
-  Present the proposed flow before starting workshop implementation, as requested.
+- The initial two-branch checkpoint and flow review are complete. The owner then
+  approved implementation; subsequent milestones belong on the workshop branch.
 
 ## The Point Of This Experience
 
@@ -300,27 +300,27 @@ always-running canvases for every chapter.
 - The lost prototype lived under `/tmp`. The owner now requires persistent disk
   for all project work and review artifacts, including disposable previews.
 
-## Proposed Flow For Owner Review
+## Implementation Progress
 
 - [x] Select one visual direction and record the choice here. **Verified:** the
   owner chose the evolving 3D workshop; anime is an optional personal influence.
 - [x] Review this implementation flow with the owner after the remote checkpoint.
   The owner approved implementation after both starting branches were pushed.
-- [ ] Establish the persistent implementation baseline. **Verify:** Bharath's
+- [x] Establish the persistent implementation baseline. **Verified:** Bharath's
   current dark desktop loads first and existing work is accounted for. Integrate
   useful saved reactor/QA work deliberately and check the combined result.
-- [ ] Write the five short chapter accounts, inventory available artifacts, and
-  sketch the workshop's camera compositions and lighting. **Verify:** every
+- [x] Write the five short chapter accounts, inventory available artifacts, and
+  sketch the workshop's camera compositions and lighting. **Verified:** every
   personal claim has a source and each chapter has a clear visual purpose.
-- [ ] Build one representative chapter, preferably “I wiped Windows,” to the
-  intended visual quality. **Verify:** inspect real desktop and mobile renders for
+- [x] Build one representative chapter, “I wiped Windows,” to the intended visual
+  quality. **Verified:** inspect real desktop and mobile renders for
   convincing 3D, composition, legible text, and a meaningful interaction. Save a
   persistent preview and commit/push this first working milestone.
-- [ ] Extend the coherent environment and narrative to the remaining chapters.
-  **Verify:** each chapter communicates something specific about him and has a
+- [x] Extend the coherent environment and narrative to the remaining chapters.
+  **Verified:** each chapter communicates something specific about him and has a
   distinct emotional purpose. Commit/push completed chapters incrementally.
-- [ ] Integrate the personal world, chapter navigation, and persona transition.
-  **Verify:** desktop windows retain state, links work, and focus moves correctly.
+- [x] Integrate the personal world, chapter navigation, and persona transition.
+  **Verified:** desktop windows retain state, links work, and focus moves correctly.
 - [ ] Complete final verification. **Verify:** run the repository's typecheck,
   lint, unit tests, production build, and relevant browser tests; visually review
   mobile/desktop scenes, reduced motion, and WebGL fallback. Passing automated

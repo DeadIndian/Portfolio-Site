@@ -38,7 +38,7 @@ export default function Credits() {
       </p>
       <h2>3D objects</h2>
       <p>
-        The studio's circular Mark I arc reactor is a procedural Three.js
+        The workshop's circular Mark I arc reactor is a procedural Three.js
         fan-art study created for this portfolio, inspired by Tony Stark's
         fictional arc reactor from Iron Man / Marvel. No imported model is
         used. Marvel does not endorse this portfolio.
@@ -55,6 +55,19 @@ export default function Credits() {
       <p>
         Fedora is a trademark of Red Hat, Inc. The desktop uses a small
         brand-coloured placeholder to identify Fedora; it is not official artwork.
+      </p>
+      <h2>DeadIndian's workshop</h2>
+      <p>
+        The miniature room, furniture, task lamp, handmade collection, home server,
+        guest seat and material textures were built for this portfolio. The space
+        is an artistic interpretation of the owner's accounts, rather than a
+        reconstruction of his actual room.
+      </p>
+      <p>
+        The Kubuntu, Arch/Hyprland and Fedora/KDE screens are original desktop
+        studies. They are illustrations, not archived screenshots or live sessions.
+        The calculator screenshot and photograph of Bharath are from his previous
+        portfolio. The personal story follows his own interview answers.
       </p>
       <h2>Interface & type</h2>
       <p>

@@ -61,7 +61,8 @@ function CameraPlacement({ kind, chapter, motion, resetKey }: { kind: SceneProps
     if (kind === "workshop") {
       target.target.set(0, 1.35, -.1);
       target.position.set(chapter === "linux" ? 7.8 : 8.2, chapter === "linux" ? 6.1 : 7, 10.1);
-      if (size.width / size.height < 1.05) target.position.sub(target.target).multiplyScalar(1.15).add(target.target);
+      const fit = Math.max(1, 1.12 / (size.width / size.height));
+      target.position.sub(target.target).multiplyScalar(fit).add(target.target);
     } else { target.position.set(4.3, 2.2, 7.6); target.target.set(0, 0, 0); }
     target.moving = motion && kind === "workshop";
     if (!target.moving) {
@@ -389,6 +390,7 @@ export default function WorldScene(props: SceneProps) {
       data-scene-ready={ready}
       data-webgl={supported && !lost ? "available" : "unavailable"}
       data-chapter={workshop ? props.workshop.chapter : undefined}
+      data-rendering={visible && documentVisible && props.motion ? "continuous" : "on-demand"}
       role="img"
       aria-label={
         workshop

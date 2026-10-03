@@ -54,12 +54,39 @@ stored under `/tmp`. Push each verified milestone and check the remote commit.
 
 - [x] Integrate the saved desktop, reactor, QA, and plan branches; build and push.
 - [x] Working Linux chapter, original 3D room, direct chapter URL, and controls.
-- [ ] Five complete chapters and all object interactions.
+- [x] Five complete chapters and all object interactions.
 - [ ] Browser/visual review, persistence, mobile, reduced motion, and fallback QA.
 - [ ] Final documentation and verified remote checkpoint.
 
 First chapter verification: six Chromium checks passed across desktop and mobile,
 including mesh clicks, desktop-history changes, URL/back navigation, retained
 desktop windows and renderer, and the readable WebGL fallback. Screenshots were
-reviewed from `.workshop/qa/`. The legacy studio tests are being migrated as the
-remaining workshop interactions replace the old studio interface.
+reviewed from `.workshop/qa/`. At that checkpoint the remaining chapter objects
+and migration of the legacy studio tests were still pending.
+
+The complete chapter interaction checks now pass on desktop and mobile. The
+regression suite was migrated to the professional desktop and workshop, preserving
+coverage for projects, writing, feeds, contact, the terminal, and accessibility.
+
+## QA Findings And Fixes
+
+- Persona focus was scheduled before the destination left `inert`. Restore it
+  after the transition ends, using the next animation frame.
+- The inherited desktop's west/north resize placement counted drag offsets twice.
+  Use coordinates relative to the shell and actual clamped size deltas; reset
+  geometry on viewport changes.
+- Inactive chapter numbers needed full-opacity muted text to meet contrast.
+- After a workshop round trip, Next.js soft navigation to the printable resume
+  could stall despite a successful RSC response. Resume links now use native
+  document navigation; the reproduced release journey passes.
+- Remove the background probe for absent Fedora artwork, which caused a 404 on
+  every session. The existing local identity badge still renders.
+- SwiftShader full-page screenshots can truncate the WebGL layer on this host.
+  Viewport and canvas captures show the actual live scene correctly; use those
+  for visual review, and check lower-page content in a separate viewport capture.
+
+For this Debian host, WebKit's bundled launcher overrides `LD_LIBRARY_PATH`.
+The missing Enchant, Manette and HIDAPI packages were downloaded from the system
+APT repository and extracted under `.workshop/system-deps/root`. Test runs use
+`LD_PRELOAD` with their absolute library paths. The normal portable setup remains
+`npx playwright install-deps`; no system package changes are required by the app.

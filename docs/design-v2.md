@@ -1,5 +1,9 @@
 # Two People, One Engineer
 
+Historical design: the subsequent persona swap and evolving workshop supersede
+this visual direction. See [workshop-build.md](workshop-build.md) for the current
+implementation and [deadindian-direction.md](deadindian-direction.md) for context.
+
 The owner rejected the first editorial design. This specification supersedes its
 visual direction, not its researched content or provider contracts.
 

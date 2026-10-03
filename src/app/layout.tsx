@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Golla Bharath / Dead Indian - Software, Systems & Open Source",
   description:
-    "Software engineer, infrastructure builder, KDE Plasma contributor, and Recurse Club Head. Two sides of Golla Bharath: professional work and open-source curiosity.",
+    "Explore Golla Bharath's Linux desktop and DeadIndian's evolving 3D workshop: engineering projects, open-source work, and the person behind them.",
   alternates: { canonical: "/" },
   icons: { icon: "/icon.svg", apple: "/icon.svg" },
   openGraph: {
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     siteName: "Bharath / Dead Indian",
     title: "Golla Bharath. Same human. Different shell.",
     description:
-      "Full-stack software, infrastructure, Linux, and the open-source work in between.",
+      "An engineer's desktop. A personal workshop. Software, Linux, and the stories behind the work.",
     images: [
       {
         url: "/opengraph-image",

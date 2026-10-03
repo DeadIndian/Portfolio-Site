@@ -170,13 +170,14 @@ test("critical portfolio journey works without live providers", async ({
   await page.goto("/");
   const world = page.locator(".world-root");
   await expect(world).toHaveAttribute("data-world", "desktop");
-  await page.getByRole("button", { name: "Back to Dead Indian", exact: true }).click();
-  await expect(world).toHaveAttribute("data-world", "studio");
+  await checkScene("desktop");
+  await page.getByRole("button", { name: "Meet DeadIndian", exact: true }).click();
+  await expect(world).toHaveAttribute("data-world", "workshop");
   await expect(world).toHaveAttribute("data-motion", "off");
-  await checkScene("studio");
+  await checkScene("workshop");
 
   const directoryTrigger = page.getByRole("button", {
-    name: /^All \d+ projects$/,
+    name: "Project files", exact: true,
   });
   // Keyboard activation makes focus return independent of Safari's click policy.
   await directoryTrigger.press("Enter");
@@ -210,7 +211,7 @@ test("critical portfolio journey works without live providers", async ({
   await expect(directoryTrigger).toBeFocused();
 
   await page
-    .getByRole("button", { name: "Meet Golla Bharath", exact: true })
+    .getByRole("button", { name: "Bharath's desktop", exact: true })
     .click();
   await expect(world).toHaveAttribute("data-world", "desktop");
   await checkScene("desktop");
@@ -244,13 +245,8 @@ test("critical portfolio journey works without live providers", async ({
   await writing
     .getByRole("button", { name: "Close Technical writing", exact: true })
     .click();
-  await page
-    .getByRole("button", { name: "Back to Dead Indian", exact: true })
-    .click();
-  await expect(world).toHaveAttribute("data-world", "studio");
-  await checkScene("studio (return)");
-
-  await page.getByRole("link", { name: "The resume", exact: true }).click();
+  await page.getByRole("navigation", { name: "Workspace dock" }).getByRole("button", { name: "Contact", exact: true }).click();
+  await page.getByRole("link", { name: "Read / download my resume", exact: true }).click();
   await expect(page).toHaveURL(/\/resume$/);
   await expect(
     page.getByRole("heading", { name: /Golla Bharath/, level: 1 }),

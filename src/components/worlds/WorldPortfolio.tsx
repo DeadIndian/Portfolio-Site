@@ -87,14 +87,19 @@ export function Portfolio({ profile }: { profile: PublicProfile }) {
 
   useEffect(() => {
     if (firstWorld.current) { firstWorld.current = false; return; }
-    const timer = setTimeout(() => {
+    if (switching) return;
+    // Wait for the destination shell to leave inert before restoring focus.
+    const frame = requestAnimationFrame(() => {
       root.current?.querySelector<HTMLElement>(world === "workshop" ? ".workshop-back" : ".desktop-logout")?.focus({ preventScroll: true });
-    }, 450);
-    return () => clearTimeout(timer);
-  }, [world]);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [world, switching]);
 
   useEffect(() => {
-    const navigation = () => { setPanel(null); setTerminal(false); setReader(false); };
+    const navigation = () => {
+      setPanel(null); setTerminal(false); setReader(false);
+      window.scrollTo({ top: 0, behavior: "instant" });
+    };
     window.addEventListener("hashchange", navigation);
     const handle = (event: KeyboardEvent) => {
       if (transition.current?.style.visibility === "visible") return;

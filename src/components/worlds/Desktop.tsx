@@ -135,7 +135,7 @@ function DesktopWindow({
     maxHeight: number;
   } | null>(null);
   useEffect(() => {
-    const reset = () => setOffset([0, 0]);
+    const reset = () => { setOffset([0, 0]); setSize(null); setPlace(null); };
     window.addEventListener("resize", reset);
     return () => window.removeEventListener("resize", reset);
   }, []);
@@ -173,8 +173,8 @@ function DesktopWindow({
       edge,
       x: event.clientX,
       y: event.clientY,
-      left: bounds.left,
-      top: bounds.top,
+      left: bounds.left - (shell?.left ?? 0) - offset[0],
+      top: bounds.top - (shell?.top ?? 0) - offset[1],
       width: bounds.width,
       height: bounds.height,
       maxWidth: Math.min(
@@ -206,7 +206,10 @@ function DesktopWindow({
     const h = Math.max(240, Math.min(state.maxHeight, state.height + growY));
     setSize({ w, h });
     if (state.edge.includes("n") || state.edge.includes("w"))
-      setPlace({ left: state.left - growX, top: state.top - growY });
+      setPlace({
+        left: state.left - (state.edge.includes("w") ? w - state.width : 0),
+        top: state.top - (state.edge.includes("n") ? h - state.height : 0),
+      });
   };
   const endResize = () => {
     resize.current = null;

@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useFrame, type ThreeEvent } from "@react-three/fiber";
 import { Instance, Instances, RoundedBox, useTexture } from "@react-three/drei";
 import { CanvasTexture, CatmullRomCurve3, Group, MathUtils, Quaternion, RepeatWrapping, SRGBColorSpace, Vector3, type Texture } from "three";
 import type { ChapterId, WorkshopAction } from "@/data/workshop";
+import { ArcReactor } from "./ArcReactor";
 
 type Point = [number, number, number];
 const wood = "#b28a60";
@@ -211,6 +212,99 @@ function Details({ photo, note, grain }: { photo: Texture; note: Texture; grain:
   </group>;
 }
 
+function Growing({ visible, motion, children }: { visible: boolean; motion: boolean; children: ReactNode }) {
+  const group = useRef<Group>(null);
+  const [initial] = useState(visible ? 1 : 0);
+  useFrame((_, delta) => {
+    if (!group.current) return;
+    const size = motion ? MathUtils.damp(group.current.scale.x, visible ? 1 : 0, 6, Math.min(delta, .05)) : visible ? 1 : 0;
+    group.current.scale.setScalar(size);
+    group.current.visible = size > .002;
+  });
+  return <group ref={group} scale={initial} visible={initial > 0}>{children}</group>;
+}
+
+function HandmadeShelf({ onOpen, grain }: { onOpen: () => void; grain: Texture }) {
+  const labels = ["RECIPES", "ROCK / PAPER", "CALCULATOR", "SIGN-UP", "DASHBOARD", "LIBRARY"];
+  return <group position={[-2.49, 0, .27]} onClick={(event) => { event.stopPropagation(); if (event.delta < 5) onOpen(); }}>
+    <Block size={[.89, 1.12, .72]} at={[0, .63, 0]} color="#9c7b54" map={grain} />
+    <Block size={[.96, .06, .78]} at={[0, 1.22, 0]} color="#bb9969" map={grain} />
+    {[.3, .61, .92].map((y) => <group key={y}>
+      <Block size={[.78, .265, .03]} at={[0, y, .378]} color="#746249" />
+      <Block size={[.2, .035, .045]} at={[0, y + .04, .41]} color="#bab08e" metal={.5} />
+      <Block size={[.16, .05, .005]} at={[0, y - .05, .397]} color={paper} />
+    </group>)}
+    <Block size={[.75, .11, .52]} at={[0, 1.32, 0]} color="#344b3b" />
+    {labels.map((label, i) => <group key={label} position={[-.28 + i * .107, 1.53, -.04]} rotation={[-.15, -.1, -.1 + i * .025]}>
+      <Block size={[.065, .38, .38]} color={["#b98657", "#798b6c", "#b6ae8d"][i % 3]} />
+      <mesh position={[.034, .025, 0]} rotation={[0, Math.PI / 2, 0]}><planeGeometry args={[.3, .22]} /><meshStandardMaterial color={paper} /></mesh>
+      <Block size={[.07, .075, .21]} at={[0, .13, -.02]} color="#a8a794" metal={.55} />
+    </group>)}
+    <Caption text={"THE ODIN PROJECT\nSIX HANDMADE BUILDS"} at={[0, 1.055, .399]} size={[.63, .12]} />
+    <mesh position={[.32, 1.065, .401]}><sphereGeometry args={[.019, 12, 8]} /><meshBasicMaterial color="#e0af77" /></mesh>
+  </group>;
+}
+
+function HomeLab({ onOpen }: { onOpen: () => void }) {
+  return <group position={[2.58, 0, .32]} rotation={[0, -.1, 0]} onClick={(event) => { event.stopPropagation(); if (event.delta < 5) onOpen(); }}>
+    <Block size={[.74, 1.22, 1.02]} at={[0, .69, 0]} color="#253c36" metal={.65} />
+    <Block size={[.66, 1.11, .026]} at={[0, .68, .522]} color="#162a25" metal={.4} />
+    {[-.26, .26].flatMap((x) => [-.35, .35].map((z) => <Block key={`${x}:${z}`} size={[.09, .08, .12]} at={[x, .04, z]} color="#152a22" />))}
+    <Instances limit={63} frames={1}><boxGeometry args={[.047, .024, .012]} /><meshStandardMaterial color="#4b6155" roughness={.6} />
+      {Array.from({ length: 63 }, (_, i) => <Instance key={i} position={[-.24 + i % 9 * .059, .35 + Math.floor(i / 9) * .056, .543]} />)}
+    </Instances>
+    <Block size={[.52, .13, .025]} at={[0, .94, .55]} color="#294539" />
+    {[0, 1, 2].map((i) => <group key={i} position={[-.2 + i * .18, .94, .567]}>
+      <Block size={[.065, .028, .008]} color="#10251c" />
+      <mesh position={[.035, .044, 0]}><sphereGeometry args={[.009, 10, 6]} /><meshBasicMaterial color={i === 0 ? "#e2b67c" : "#84bfa2"} /></mesh>
+    </group>)}
+    <Caption text={"dead@home\nDEBIAN / SELF-HOSTED"} at={[0, 1.14, .542]} size={[.54, .135]} background="#344f3f" color="#cec7a9" />
+    <Cable points={[[0, 1.2, -.43], [-.07, 1.41, -.7], [-.25, 1.4, -1], [-.32, .16, -1.67], [-1.05, .15, -1.85]]} color="#ac8156" radius={.021} />
+  </group>;
+}
+
+function SharedTools({ onAction }: { onAction: (action: WorkshopAction) => void }) {
+  return <group position={[2.65, 2.55, -2.055]}>
+    {[{ name: "TAILSCALE", id: "tailscale-widget", color: "#9aa78e" }, { name: "STICKY NOTES", id: "sticky-notes", color: "#c7ac73" }, { name: "WALLPAPERS", id: "wallpaper-carousel", color: "#7ca6a0" }].map((tool, i) => <group key={tool.id} position={[0, .3 - i * .34, 0]} onClick={(event) => { event.stopPropagation(); if (event.delta < 5) onAction(`project:${tool.id}`); }}>
+      <Block size={[.62, .245, .035]} color={tool.color} />
+      <Caption text={tool.name} at={[0, 0, .02]} size={[.57, .18]} background={tool.color} />
+      <mesh position={[0, .137, 0]} rotation={[Math.PI / 2, 0, 0]}><cylinderGeometry args={[.022, .022, .04, 12]} /><meshStandardMaterial color="#c9b283" metalness={.7} /></mesh>
+    </group>)}
+  </group>;
+}
+
+function GuestSeat({ pulled, motion, onPull }: { pulled: boolean; motion: boolean; onPull: () => void }) {
+  const group = useRef<Group>(null);
+  useFrame((_, delta) => {
+    if (!group.current) return;
+    const approach = (value: number, target: number) => motion ? MathUtils.damp(value, target, 5, Math.min(delta, .05)) : target;
+    group.current.position.x = approach(group.current.position.x, pulled ? 1 : 2.1);
+    group.current.position.z = approach(group.current.position.z, pulled ? 1.05 : 1.67);
+    group.current.rotation.y = approach(group.current.rotation.y, pulled ? -.2 : .3);
+  });
+  return <group ref={group} position={[2.1, 0, 1.67]} onClick={(event) => { event.stopPropagation(); if (event.delta < 5) onPull(); }}>
+    <mesh position={[0, .61, 0]} castShadow><cylinderGeometry args={[.32, .3, .13, 40]} /><meshStandardMaterial color="#bb8759" roughness={.8} /></mesh>
+    <mesh position={[0, .681, 0]} rotation={[-Math.PI / 2, 0, 0]}><torusGeometry args={[.297, .004, 6, 40]} /><meshStandardMaterial color="#dcc59b" /></mesh>
+    {[-1, 1].flatMap((x) => [-1, 1].map((z) => <Rod key={`${x}:${z}`} from={[x * .22, .06, z * .22]} to={[x * .17, .56, z * .17]} radius={.029} color="#bda072" metal={0} />))}
+    {[-1, 1].map((x) => <Rod key={x} from={[x * .19, .24, -.19]} to={[x * .19, .24, .19]} radius={.013} color="#5c6b50" />)}
+  </group>;
+}
+
+function FutureBench({ active, exploded, motion, onOpen }: { active: boolean; exploded: boolean; motion: boolean; onOpen: () => void }) {
+  return <group position={[1.62, 1.45, -1.01]}>
+    <Block size={[1.3, .1, 1.07]} at={[0, .04, 0]} color="#354c43" metal={.5} />
+    <Block size={[1.15, .026, .95]} at={[0, .104, 0]} color="#566656" metal={.6} />
+    <group scale={.31} position={[0, .245, 0]}>
+      <ArcReactor active={active} exploded={exploded} motion={motion} rotation={.4} onInteract={onOpen} />
+    </group>
+    <Caption text={"JARVIS / THE LONG GAME"} at={[0, .04, .548]} size={[1.16, .08]} background="#243c31" color="#d5caa5" />
+    <group position={[-.78, .11, .11]} rotation={[-Math.PI / 2, 0, .14]}>
+      <Block size={[.19, .36, .025]} color="#21372e" metal={.5} />
+      <mesh position={[0, 0, .015]}><planeGeometry args={[.157, .3]} /><meshBasicMaterial color="#71a7a0" /></mesh>
+    </group>
+  </group>;
+}
+
 export interface WorkshopModelProps {
   chapter: ChapterId;
   era: number;
@@ -221,7 +315,7 @@ export interface WorkshopModelProps {
   onAction: (action: WorkshopAction) => void;
 }
 
-export function WorkshopModels({ chapter, era, rotation, motion, onAction }: WorkshopModelProps) {
+export function WorkshopModels({ chapter, era, rotation, motion, chairPulled, exploded, onAction }: WorkshopModelProps) {
   const root = useRef<Group>(null);
   const [grain] = useState(makeWood);
   useEffect(() => () => grain.dispose(), [grain]);
@@ -235,6 +329,7 @@ export function WorkshopModels({ chapter, era, rotation, motion, onAction }: Wor
     if (root.current) root.current.rotation.y = motion ? MathUtils.damp(root.current.rotation.y, rotation, 6, Math.min(delta, .05)) : rotation;
   });
   const screen = chapter === "learning" ? calculator : [kubuntu, arch, fedora][era];
+  const stage = ["learning", "linux", "tools", "people", "future"].indexOf(chapter);
   return <group ref={root}>
     <Room grain={grain} />
     <Desk grain={grain} />
@@ -243,5 +338,16 @@ export function WorkshopModels({ chapter, era, rotation, motion, onAction }: Wor
     <TaskLamp />
     <Chair />
     <Details photo={photo} note={note} grain={grain} />
+    <HandmadeShelf grain={grain} onOpen={() => onAction("handmade")} />
+    <Growing visible={stage >= 2} motion={motion}>
+      <HomeLab onOpen={() => onAction("linux")} />
+      <SharedTools onAction={onAction} />
+    </Growing>
+    <Growing visible={stage >= 3} motion={motion}>
+      <GuestSeat pulled={chairPulled} motion={motion} onPull={() => onAction("chair")} />
+    </Growing>
+    <Growing visible={stage >= 4} motion={motion}>
+      <FutureBench active={stage >= 4} exploded={exploded} motion={motion} onOpen={() => onAction("reactor")} />
+    </Growing>
   </group>;
 }
