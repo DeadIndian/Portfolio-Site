@@ -55,8 +55,8 @@ stored under `/tmp`. Push each verified milestone and check the remote commit.
 - [x] Integrate the saved desktop, reactor, QA, and plan branches; build and push.
 - [x] Working Linux chapter, original 3D room, direct chapter URL, and controls.
 - [x] Five complete chapters and all object interactions.
-- [ ] Browser/visual review, persistence, mobile, reduced motion, and fallback QA.
-- [ ] Final documentation and verified remote checkpoint.
+- [x] Browser/visual review, persistence, mobile, reduced motion, and fallback QA.
+- [x] Final documentation and verified remote checkpoint.
 
 First chapter verification: six Chromium checks passed across desktop and mobile,
 including mesh clicks, desktop-history changes, URL/back navigation, retained
@@ -90,3 +90,21 @@ The missing Enchant, Manette and HIDAPI packages were downloaded from the system
 APT repository and extracted under `.workshop/system-deps/root`. Test runs use
 `LD_PRELOAD` with their absolute library paths. The normal portable setup remains
 `npx playwright install-deps`; no system package changes are required by the app.
+
+## Final Verification — 3 October 2026
+
+The complete implementation is saved in `10307c2`. Its production browser run
+passed all 47 tests across desktop/mobile Chromium, Firefox, and desktop/mobile
+WebKit, with no failures, retries, or skipped tests. Type checking, lint, all
+96 unit tests, and the production build passed before the final handoff.
+
+The continuation checked the saved HTML report, reviewed the final 320/768/1440px
+viewport captures and narrow-screen footers, and rechecked the live providers.
+All five providers returned healthy data; Medium remains intentionally
+unconfigured. These finishing changes update documentation only.
+
+See [release-qa.md](release-qa.md) for test counts, visual evidence, browser
+limitations, and deployment verification commands. Local preview:
+`http://localhost:3110/#workshop-learning`. The source and review artifacts remain
+in the persistent worktree; the final documentation checkpoint is saved to the
+same feature branch.

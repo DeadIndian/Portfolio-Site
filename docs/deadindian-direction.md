@@ -8,6 +8,8 @@ Recorded: **1 October 2026**.
 flow after the verified remote checkpoint, and authorized implementation.
 Anime is an optional personal influence. Implementation lives in
 `/home/dead/work/deadindian-workshop` on `deadindian/feat/evolving-workshop`.
+The five chapters and local QA are complete as of 3 October 2026; see
+[release-qa.md](release-qa.md) for the verification record.
 
 ## Confirmed Direction And Working Rules
 
@@ -285,20 +287,20 @@ Keep narrative content separate from scene rendering, and keep readable content
 in the DOM. Prefer a coherent stage with chapter-aware composition over separate
 always-running canvases for every chapter.
 
-### Checkout State At The Time Of This Note
+### Persistent Checkpoints
 
 - `/home/dead/Portfolio ` has a **trailing space** in its directory name. Its
-  branch is `deadindian/feat/anime-character-portfolio`; it contains ongoing
-  ArcReactor and release-QA changes and the earlier persona mapping.
-- `/home/dead/work/anime-world` is the persistent worktree on
-  `deadindian/feat/anime-character-worlds`. At `e8bef31`, it contains the latest
-  Bharath-first desktop mapping, dark desktop chrome, resizable windows, and
-  dock-stacking changes.
-- The current request saves this document in the original checkout's `docs/`.
-  Establish the current working baseline before implementing the personal world;
-  older documents in this checkout still describe the previous persona mapping.
-- The lost prototype lived under `/tmp`. The owner now requires persistent disk
-  for all project work and review artifacts, including disposable previews.
+  `deadindian/feat/anime-character-portfolio` branch preserves the reactor/QA
+  work and selected workshop plan at `380fa2d`.
+- `/home/dead/work/anime-world` preserves the Bharath-first desktop, dark chrome,
+  resizing, and dock-stacking work at `e8bef31` on
+  `deadindian/feat/anime-character-worlds`.
+- `/home/dead/work/deadindian-workshop` is the active implementation worktree on
+  `deadindian/feat/evolving-workshop`. `60239f3` combines the starting branches,
+  `9b65542` saves the first Linux chapter, and `10307c2` saves all five chapters
+  and the interaction/QA fixes. These implementation milestones were pushed.
+- Review screenshots, browser profiles, and logs live in the persistent
+  `.workshop/` directory. The earlier lost prototype under `/tmp` is superseded.
 
 ## Implementation Progress
 
@@ -321,11 +323,12 @@ always-running canvases for every chapter.
   distinct emotional purpose. Commit/push completed chapters incrementally.
 - [x] Integrate the personal world, chapter navigation, and persona transition.
   **Verified:** desktop windows retain state, links work, and focus moves correctly.
-- [ ] Complete final verification. **Verify:** run the repository's typecheck,
-  lint, unit tests, production build, and relevant browser tests; visually review
-  mobile/desktop scenes, reduced motion, and WebGL fallback. Passing automated
-  checks accompanies visual review; it does not establish the artistic result.
-  Commit/push the verified result and confirm the remote branch points to it.
+- [x] Complete final verification. **Verified:** typecheck, lint, 96 unit tests,
+  the production build, and all 47 browser checks passed. Final viewport captures
+  at 320/768/1440px and mobile footers were reviewed; reduced motion and WebGL
+  fallback passed their browser checks. The five live providers returned healthy
+  data. The implementation and final QA record are committed to the workshop
+  feature branch with a verified remote checkpoint. See [release-qa.md](release-qa.md).
 
 ## Success Criteria
 
@@ -349,8 +352,8 @@ always-running canvases for every chapter.
 - Current conversation, 1 October 2026: owner confirms the personal synthesis
   covers everything, selects option 1 (the evolving 3D workshop), requires
   persistent disk instead of `/tmp`, and asks for a commit/push checkpoint.
-  He then clarifies: save first, explain the flow, and wait for his decision
-  before implementing.
+  He first requested a checkpoint and flow review, then explicitly approved
+  implementation. Subsequent continuation requests carried that work through QA.
 - [Content sources](content-sources.md) and `src/data/portfolio.ts`: researched
   project evidence and attribution. Their September snapshot is not a live status.
 - [Earlier specification](portfolio-spec.md) and [design v2](design-v2.md): useful
@@ -358,5 +361,5 @@ always-running canvases for every chapter.
   owner-directed swap.
 
 Later explicit owner decisions take precedence. The personal context and workshop
-direction are confirmed. The working title, exact compositions, interactions, and
-implementation flow remain proposals for the owner's review.
+direction are confirmed. The five chapters and their interactions are implemented;
+the running preview is available for the owner's visual review and future changes.
