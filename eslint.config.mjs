@@ -9,6 +9,7 @@ export default defineConfig([
   globalIgnores([
     ".next/**",
     ".workshop/**",
+    "design-demos/vendor/**",
     "out/**",
     "coverage/**",
     "playwright-report/**",

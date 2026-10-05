@@ -1,5 +1,20 @@
 # Golla Bharath / Dead Indian
 
+## Current visual preview
+
+The latest design is a standalone 3D journey through six themed worlds. Open
+[the demo instructions](design-demos/README.md) and
+[the review checkpoint](design-demos/REVIEW.md) for the current work.
+
+```sh
+python3 -m http.server 3120 --bind 0.0.0.0 --directory design-demos
+```
+
+Review it at **http://localhost:3120/**. Application integration follows the
+owner's visual feedback and approval.
+
+## Existing application
+
 Bharath's Fedora/KDE desktop opens first. **Meet DeadIndian** enters an original,
 evolving 3D workshop: five personal chapters about learning, Linux, sharing useful
 tools, his people, and the JARVIS ambition. Built with Next.js 16, React 19,

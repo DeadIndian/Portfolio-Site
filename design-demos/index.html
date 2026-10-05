@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b1e20">
+  <meta name="description" content="From building farms to building things that matter. Explore the worlds that shaped Bharath, the person behind DeadIndian.">
+  <title>DeadIndian — A universe in the making</title>
+  <link rel="icon" href="assets/icon.svg">
+  <link rel="preload" href="assets/fonts/manrope.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/silkscreen.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="styles/journey.css">
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+</head>
+<body data-world="blocks">
+  <a class="skip-link" href="#journey-controls">Skip to world navigation</a>
+  <div class="universe" id="universe" aria-hidden="true">
+    <div class="sky-fallback"></div>
+    <picture class="scene-poster" id="scene-poster"><img src="assets/posters/blocks.webp" alt="" width="800" height="800"></picture>
+  </div>
+  <div class="scene-shade" aria-hidden="true"></div>
+  <div class="film-grain" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="wordmark" href="#blocks" aria-label="DeadIndian, the beginning"><svg class="brand-symbol" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="m16 2 3.7 10.3L30 16l-10.3 3.7L16 30l-3.7-10.3L2 16l10.3-3.7L16 2Z" fill="currentColor"/><circle cx="16" cy="16" r="13" stroke="currentColor" stroke-width=".6"/></svg><span>DEADINDIAN<small>A UNIVERSE IN THE MAKING</small></span></a>
+    <nav class="header-navigation" aria-label="Main navigation">
+      <button id="map-button" class="header-link" aria-label="All worlds" aria-haspopup="dialog"><span data-icon="orbit"></span><span>All worlds</span></button>
+      <button id="motion-button" class="motion-button" aria-label="Pause motion" aria-pressed="false"><span data-icon="pause"></span></button>
+      <a class="connect-link" href="#beyond">Let’s connect <span data-icon="diagonal"></span></a>
+    </nav>
+  </header>
+  <main id="journey" aria-label="The worlds that shaped me"></main>
+  <p id="chapter-announcement" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+  <div class="world-caption" aria-hidden="true"><span class="caption-rule"></span><span id="world-place">THE OVERWORLD</span><span class="world-caption-small" id="world-subtitle">A FEW BLOCKS. A BEGINNING.</span></div>
+  <button class="inspect-hint" id="inspect-button" aria-label="Interact with the current world"><span data-icon="hand"></span><span>Drag to look around</span></button>
+  <footer class="journey-footer" id="journey-controls" tabindex="-1">
+    <div class="scroll-cue"><span class="scroll-line" aria-hidden="true"></span><span>SCROLL TO EXPLORE<small>SIX WORLDS. ONE STORY.</small></span></div>
+    <nav class="world-navigation" id="world-navigation" aria-label="Choose a world"></nav>
+    <button class="next-world" id="next-world"><span><small id="next-prefix">UP NEXT</small><span id="next-label">The dreamer</span></span><span class="next-circle" data-icon="arrow"></span></button>
+  </footer>
+  <div class="journey-progress" aria-hidden="true"><span id="journey-progress"></span></div>
+  <p class="render-status" id="render-status" role="status">A universe is taking shape…</p>
+  <button class="credits-button" id="credits-button" aria-label="About the artwork and this journey">i</button>
+  <dialog class="story-dialog" id="story-dialog" aria-labelledby="story-title"></dialog>
+  <dialog class="map-dialog" id="map-dialog" aria-labelledby="map-title"></dialog>
+  <noscript><div class="no-script"><h1>DeadIndian. Still becoming.</h1><p>From Minecraft farms to programming, Linux, open source, and JARVIS. The interactive journey needs JavaScript, but the work is always here.</p><a href="https://github.com/DeadIndian">Explore my GitHub →</a></div></noscript>
+  <script type="module" src="scripts/main.js"></script>
+</body>
+</html>
