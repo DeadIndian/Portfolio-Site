@@ -28,7 +28,7 @@ or use the rotation button; motion can be paused. The full story is available
 in each chapter. Hash links and browser back/forward navigation work.
 
 The Iron Man world starts with a complete red-and-gold suit. Its faceplate,
-chest, shoulders, gauntlets, and leg armor separate into 27 independently moving
+chest, shoulders, gauntlets, and leg armor separate into 28 independently moving
 sections, exposing the mechanical frame. Select **Reassemble the suit** to bring
 everything back. The camera fits both states; reduced motion changes the pose
 immediately, and the static fallback has separate assembled and exploded images.
@@ -40,12 +40,18 @@ the established portfolio content. The origin of the handle remains undisclosed.
 
 ## Artwork and licenses
 
-All six worlds are procedural original 3D illustrations. The Minecraft, One
-Piece, and Iron Man scenes are fan-art homages, not imported game or film models.
-Their properties belong to their respective owners; no endorsement is implied.
-The Linux screens illustrate the owner's account and are not recovered captures.
-The supplied Fedora logo is retained. The calculator image is an existing real
-portfolio artifact. See the in-page artwork information for the same attribution.
+Five worlds are procedural original 3D illustrations. The Iron Man world uses
+**Iron-Man Mark 85 | Rigged** by **9A Films / Nihar Arora**, under **CC BY 4.0**.
+It replaces the rejected procedural suit. The owner's Mark 43 image informed
+the requested realism; the actual imported model is Mark 85. The mesh was
+simplified, divided into rigid armor sections, and given original internal
+fittings and disassembly paths. Source, license, and modification details are
+in [the model credits](assets/iron-man/CREDITS.md) and the in-page credits.
+
+The Minecraft and One Piece scenes are fan-art homages. These properties belong
+to their respective owners; no endorsement is implied. The Linux screens
+illustrate the owner's account and are not recovered captures. The supplied
+Fedora logo is retained. The calculator image is an existing real artifact.
 
 Three.js is MIT licensed (`vendor/THREE-LICENSE.txt`). Font licenses are included
 under `assets/fonts/`. Transparent renders of the six worlds are fitted to the
@@ -89,3 +95,21 @@ Source lives in the persistent `/home/dead/work/portfolio-demos` worktree on
 `deadindian/design/html-directions`. Review artifacts live under
 `.workshop/journey-review/qa`.
 There is no portfolio application integration or production deployment here.
+
+## Rebuilding the suit asset
+
+The shipped suit is local: a 2.7 MB GLB plus WebP texture maps (about 6.6 MB total).
+The source rig is baked into its resting pose; the browser animates rigid panels.
+The scene stays below 100,000 triangles including its added internal fittings.
+The existing poster remains usable while the asset loads or if loading fails.
+
+To repeat the conversion, save the credited source GLB to persistent disk and run:
+
+```sh
+node design-demos/checks/prepare-iron-man.mjs /absolute/path/to/source-ironman.glb
+```
+
+The script verifies the source SHA-256, uses the installed Three.js, sharp, and
+meshoptimizer packages, and writes the runtime asset under `assets/iron-man/`.
+Conversion reports go under `.workshop/journey-review/`. Regenerate the two suit
+posters afterward using the commands above. The 187 MB source stays out of Git.

@@ -39,7 +39,7 @@ export const chapters = [
       'I want to make everyone’s life easier. That’s the point of the long game.'
     ],
     link: 'https://github.com/DeadIndian/Jarvis', linkLabel: 'The actual JARVIS prototype',
-    detail: 'An original Iron Man armor study. Separate the gold faceplate, red chest armor, shoulders, gauntlets, and leg armor to reveal the mechanical frame. Select it again to bring the suit back together.'
+    detail: 'A detailed Mark 85 armor study, based on the model by 9A Films / Nihar Arora. Separate the gold faceplate, red chest armor, shoulders, gauntlets, and leg armor to reveal the mechanical frame. Select it again to bring the suit back together.'
   },
   {
     id: 'linux', name: 'The tinkerer', theme: 'Linux / KDE', place: 'My own orbit',

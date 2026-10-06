@@ -6,8 +6,8 @@ export async function reviewSuit({browser,base,root,mode}) {
   async function instrument(page){
     await page.route('**/scripts/main.js',async route=>{
       const response=await route.fetch();let source=await response.text();
-      assert.ok(source.includes('const worlds=createWorlds();'),'Scene review hook changed');
-      source=source.replace('const worlds=createWorlds();','const worlds=createWorlds();window.__suitReview={worlds,camera,THREE};');
+      assert.ok(source.includes('const worlds=await createWorlds();'),'Scene review hook changed');
+      source=source.replace('const worlds=await createWorlds();','const worlds=await createWorlds();window.__suitReview={worlds,camera,THREE};');
       if(objects)source=source.replace('alpha:false','alpha:true').replace('scene.add(stars);','scene.add(stars);sky.visible=false;stars.visible=false;');
       await route.fulfill({response,body:source});
     });
@@ -89,7 +89,7 @@ export async function reviewSuit({browser,base,root,mode}) {
     const delayedContext=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});const delayed=await delayedContext.newPage();
     let releaseModel;const modelGate=new Promise(resolve=>{releaseModel=resolve;});
     try{
-      await instrument(delayed);await delayed.route('**/scripts/worlds.js',async route=>{await modelGate;await route.continue();});
+      await instrument(delayed);await delayed.route('**/assets/iron-man/suit.glb',async route=>{await modelGate;await route.continue();});
       await delayed.goto(base+'/#reactor',{waitUntil:'domcontentloaded'});
       await delayed.locator('[data-action="2"]').click();releaseModel();await ready(delayed,true);
       fits(await geometry(delayed),'Suit opened while loading');
@@ -97,6 +97,17 @@ export async function reviewSuit({browser,base,root,mode}) {
       fits(await geometry(delayed),'Suit reassembled after loading');
       results.push({suitEarlyInteraction:true,bothStatesFramed:true});
     }finally{releaseModel();await delayedContext.close();}
+    const failedContext=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});const failed=await failedContext.newPage();
+    try{
+      await failed.route('**/assets/iron-man/suit.glb',route=>route.abort('failed'));
+      await failed.goto(base+'/#reactor',{waitUntil:'networkidle'});
+      await failed.waitForFunction(()=>document.querySelector('#universe').dataset.fallback==='true');
+      await failed.locator('[data-action="2"]').click();
+      await failed.waitForFunction(()=>{const img=document.querySelector('#scene-poster img');return img.src.endsWith('reactor-open.webp')&&img.complete&&img.naturalWidth>100;});
+      await failed.locator('.world-node[data-index="3"]').click();
+      await failed.waitForFunction(()=>document.body.dataset.world==='linux');
+      results.push({suitAssetFailure:true,workingPosterAndNavigation:true});
+    }finally{await failedContext.close();}
     const fallbackContext=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});const fallback=await fallbackContext.newPage(),errors=[];
     fallback.on('pageerror',error=>errors.push(error.message));
     try{

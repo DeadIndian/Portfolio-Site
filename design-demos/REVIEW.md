@@ -1,26 +1,35 @@
 # Journey demo review
 
-## Iron Man armor update — 6 October 2026
+## Detailed Iron Man suit — 6 October 2026
 
-The owner's requested replacement for the standalone arc reactor is a complete
-red-and-gold Iron Man suit. Its gold faceplate, chest armor, shoulder caps,
-gauntlets, abdominal plates, and leg armor separate into 27 moving sections.
-The articulated mechanical frame remains in the center. A second click
-reassembles the suit; the animation can reverse while it is moving.
+The owner rejected the procedural suit and supplied a Mark 43 reference. This
+revision uses the detailed **Mark 85** model by **9A Films / Nihar Arora**, licensed
+under **CC BY 4.0**, with the creator and license recorded inside the source GLB.
+The exact suit variant differs from the reference; the imported model supplies
+the fitted proportions, curved armor, modeled seams, and textured materials.
+Full provenance and adaptation details are in `assets/iron-man/CREDITS.md`.
 
-The camera interpolates between the assembled and exploded framing. Reduced
-motion and the pause control switch poses immediately. The no-WebGL view uses
-two new, locally rendered transparent images, so the same button works there.
+The 187 MB source was converted to a local GLB and WebP textures, about 6.6 MiB
+in total. Connected armor surfaces form 28 moving sections. The faceplate,
+helmet, chest, shoulders, arms, abdomen, hips, and leg armor follow separate
+release paths. Original internal fittings support the exposed frame. The scene
+uses 57 draw calls and 83,425 triangles; these are counts, not a device FPS claim.
 
-The armor checks cover 1440×1000, 390×844, 320×568, and 844×390: both poses stay
-inside the scene area, the individual sections move, and reassembly restores
-their original positions. Keyboard activation, motion reversal, leaving and
-returning to the chapter, paused interaction, and static image switching pass.
-The live scene records 89 draw calls and 41,938 triangles. This is an original
-procedural fan-art model rather than an imported film asset.
+Both assembled and separated poses have newly rendered transparent fallbacks.
+The existing poster remains available while the model loads. Keyboard activation,
+reassembly, mid-animation reversal, chapter state retention, paused interaction,
+reduced motion, and interaction before the asset finishes loading are covered
+by `node design-demos/checks/browser.mjs suit`. The checks also simulate a failed
+model request and unavailable WebGL, retaining the posters and navigation.
 
-Run `node design-demos/checks/browser.mjs suit` to repeat the armor checks.
-The README also documents regeneration of the two fallback images.
+Desktop (1440×1000), phone (390×844), short phone (320×568), and landscape
+(844×390) framing was checked in both poses. Desktop and phone screenshots were
+visually inspected. The complete suit suite and six-world interaction checks
+passed, including keyboard focus, dialogs, map/history navigation, and static
+fallback. Accessibility checks report zero violations across all six worlds and
+both dialogs at desktop and phone widths. Authored scripts pass ESLint. The conversion script verifies the original file checksum
+and reproduces the shipped model from the credited source. This revision is a
+standalone visual preview; the professional application is unchanged.
 
 ## Original journey review — 5 October 2026
 

@@ -449,8 +449,8 @@ function buildBeyond(){
   return w;
 }
 
-export function createWorlds(){
-  return [buildBlocks(),buildVoyage(),buildIronMan(),buildLinux(),buildConnections(),buildBeyond()];
+export async function createWorlds(){
+  return [buildBlocks(),buildVoyage(),await buildIronMan(),buildLinux(),buildConnections(),buildBeyond()];
 }
 
 export function createEnvironment(renderer){
