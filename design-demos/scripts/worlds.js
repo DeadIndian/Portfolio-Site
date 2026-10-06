@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { buildIronMan } from './iron-man.js';
 
 const TAU = Math.PI * 2;
 const geometryCache = new Map();
@@ -305,79 +306,6 @@ function buildVoyage() {
   return w;
 }
 
-function buildReactor() {
-  const w=world(),root=w.model;
-  root.rotation.set(-.10,-.22,.10);
-  const housing=new THREE.Group(),coils=new THREE.Group(),core=new THREE.Group(),shield=new THREE.Group();
-  root.add(housing,coils,core,shield);
-  const red=material('#8e302c',.82,.28),steel=material('#748895',.94,.25),dark=material('#1d2b35',.8,.34),gold=material('#c5a46b',.87,.28),copper=material('#ce8c59',.88,.24);
-  mesh(housing,cylinderGeometry(3.03,3.17,.57,96),red,[0,0,-.51],[Math.PI/2,0,0]);
-  mesh(housing,torusGeometry(3.02,.19,100),gold,[0,0,-.05]);
-  mesh(housing,torusGeometry(2.70,.23,100),steel,[0,0,.02]);
-  mesh(housing,cylinderGeometry(2.49,2.49,.19,96),dark,[0,0,.01],[Math.PI/2,0,0]);
-  mesh(housing,torusGeometry(2.48,.045,100),gold,[0,0,.17]);
-  mesh(housing,torusGeometry(3.26,.025,100),emissive('#702f2c',.5),[0,0,-.48]);
-  const fasteners=new THREE.InstancedMesh(cylinderGeometry(.065,.065,.13,6),steel,24);
-  const slots=new THREE.InstancedMesh(boxGeometry(),dark,24);
-  for(let i=0;i<24;i++){
-    const angle=i/24*TAU,position=new THREE.Vector3(Math.cos(angle)*2.85,Math.sin(angle)*2.85,.14);
-    const matrix=new THREE.Matrix4().compose(position,new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI/2,0,angle)),new THREE.Vector3(1,1,1));fasteners.setMatrixAt(i,matrix);
-    position.z=.211;matrix.compose(position,new THREE.Quaternion().setFromEuler(new THREE.Euler(0,0,angle)),new THREE.Vector3(.069,.011,.006));slots.setMatrixAt(i,matrix);
-  }
-  housing.add(fasteners,slots);
-  // A dozen copper induction coils: 96 individual windings in one draw call.
-  const windings=new THREE.InstancedMesh(torusGeometry(.165,.039,28),copper,96);
-  const cages=new THREE.InstancedMesh(boxGeometry(),dark,12);
-  for(let i=0;i<12;i++){
-    const angle=i/12*TAU;
-    const transform=new THREE.Matrix4().compose(new THREE.Vector3(Math.cos(angle)*1.95,Math.sin(angle)*1.95,0),new THREE.Quaternion().setFromEuler(new THREE.Euler(0,0,angle)),new THREE.Vector3(1,1,1));
-    for(let j=0;j<8;j++){
-      const local=new THREE.Matrix4().compose(new THREE.Vector3(0,-.315+j*.09,.14),new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI/2,0,0)),new THREE.Vector3(1,1,1));windings.setMatrixAt(i*8+j,transform.clone().multiply(local));
-    }
-    cages.setMatrixAt(i,transform.clone().multiply(new THREE.Matrix4().makeScale(.38,.87,.14)));
-    const angle2=angle+Math.PI/12;
-    box(coils,[.12,.34,.12],gold,[Math.cos(angle2)*1.93,Math.sin(angle2)*1.93,.13],[0,0,angle2]);
-  }
-  coils.add(windings,cages);
-  mesh(coils,torusGeometry(2.26,.06,100),steel,[0,0,.22]);
-  mesh(coils,torusGeometry(1.57,.058,100),gold,[0,0,.22]);
-  mesh(core,cylinderGeometry(1.45,1.42,.22,80),steel,[0,0,.2],[Math.PI/2,0,0]);
-  mesh(core,torusGeometry(1.36,.045,100),emissive('#72dfff',1),[0,0,.36]);
-  mesh(core,new THREE.CircleGeometry(1.20,80),emissive('#85def0',1),[0,0,.34]);
-  mesh(core,new THREE.CircleGeometry(.98,80),emissive('#e0ffff',1),[0,0,.36]);
-  const coreRing=mesh(core,torusGeometry(.72,.035,64),steel,[0,0,.39]);
-  mesh(core,torusGeometry(.43,.022,64),emissive('#58c9df',.8),[0,0,.40]);
-  for(let i=0;i<9;i++){
-    const angle=i/9*TAU;
-    box(core,[.035,.35,.025],steel,[Math.cos(angle)*1.10,Math.sin(angle)*1.10,.42],[0,0,angle-Math.PI/2]);
-  }
-  glow(core,'#5acef2',5.6,[0,0,.24],.4);
-  mesh(shield,torusGeometry(1.60,.067,96),steel,[0,0,.05]);
-  mesh(shield,torusGeometry(1.46,.016,96),gold,[0,0,.08]);
-  mesh(shield,new THREE.CircleGeometry(1.47,80),new THREE.MeshPhysicalMaterial({color:'#b1e8fb',metalness:.18,roughness:.07,transparent:true,opacity:.10,side:THREE.DoubleSide,depthWrite:false}),[0,0,.05]);
-  for(let i=0;i<3;i++){
-    const angle=i/3*TAU-Math.PI/2;
-    box(shield,[.38,.18,.13],red,[Math.cos(angle)*1.62,Math.sin(angle)*1.62,.05],[0,0,angle]);
-  }
-  label(housing,'J.A.R.V.I.S.',1.24,.30,[0,-2.56,.27],'#bad0d4');
-  const orbit=new THREE.Group();root.add(orbit);
-  ring(orbit,3.86,'#729fae',[0,0,-.4],[.26,-.42,.1],.009);
-  ring(orbit,4.00,'#964843',[0,0,-.4],[.26,-.42,.1],.004);
-  for(let i=0;i<3;i++){
-    const angle=i/3*TAU;
-    const satellite=new THREE.Group();satellite.position.set(Math.cos(angle)*3.84,Math.sin(angle)*3.84,-.5);satellite.rotation.set(.2,-.3,angle);orbit.add(satellite);
-    box(satellite,[.32,.75,.24],red,[0,0,0]);box(satellite,[.35,.07,.27],gold,[0,.12,.02]);box(satellite,[.09,.31,.025],emissive('#8ad6e8',.8),[0,-.13,.14]);
-  }
-  let exploded=0;
-  w.update=(time,delta,state)=>{
-    exploded=THREE.MathUtils.damp(exploded,state.active?1:0,4,delta);
-    housing.position.z=-.42*exploded;coils.position.z=.31+exploded*.60;core.position.z=.55+exploded*1.47;shield.position.z=.98+exploded*2.0;
-    root.rotation.y=-.22-exploded*.47;root.rotation.x=-.10-exploded*.16;
-    coreRing.rotation.z=time*.08;orbit.rotation.z=Math.sin(time*.08)*.045;
-  };
-  return w;
-}
-
 function buildLinux() {
   const w=world(),root=w.model;root.rotation.y=-.13;
   const bodyMat=material('#142f34',.65,.43);
@@ -522,7 +450,7 @@ function buildBeyond(){
 }
 
 export function createWorlds(){
-  return [buildBlocks(),buildVoyage(),buildReactor(),buildLinux(),buildConnections(),buildBeyond()];
+  return [buildBlocks(),buildVoyage(),buildIronMan(),buildLinux(),buildConnections(),buildBeyond()];
 }
 
 export function createEnvironment(renderer){

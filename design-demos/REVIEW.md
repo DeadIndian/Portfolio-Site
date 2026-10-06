@@ -1,4 +1,28 @@
-# Journey demo review — 5 October 2026
+# Journey demo review
+
+## Iron Man armor update — 6 October 2026
+
+The owner's requested replacement for the standalone arc reactor is a complete
+red-and-gold Iron Man suit. Its gold faceplate, chest armor, shoulder caps,
+gauntlets, abdominal plates, and leg armor separate into 27 moving sections.
+The articulated mechanical frame remains in the center. A second click
+reassembles the suit; the animation can reverse while it is moving.
+
+The camera interpolates between the assembled and exploded framing. Reduced
+motion and the pause control switch poses immediately. The no-WebGL view uses
+two new, locally rendered transparent images, so the same button works there.
+
+The armor checks cover 1440×1000, 390×844, 320×568, and 844×390: both poses stay
+inside the scene area, the individual sections move, and reassembly restores
+their original positions. Keyboard activation, motion reversal, leaving and
+returning to the chapter, paused interaction, and static image switching pass.
+The live scene records 89 draw calls and 41,938 triangles. This is an original
+procedural fan-art model rather than an imported film asset.
+
+Run `node design-demos/checks/browser.mjs suit` to repeat the armor checks.
+The README also documents regeneration of the two fallback images.
+
+## Original journey review — 5 October 2026
 
 ## Current checkpoint
 
@@ -21,7 +45,7 @@ and fallback artwork locally. No build, API, or credentials are needed to view i
 
 - Six original 3D worlds, with a continuous camera journey, themed typography,
   lighting, colors, and personal accounts.
-- Minecraft farm, sailing world, exploded reactor, switchable Linux desktops,
+- Minecraft farm, sailing world, separable Iron Man suit, switchable Linux desktops,
   community constellation, and a closing invitation to follow the journey.
 - Scroll and Next navigation, direct chapter links, browser history, keyboard
   navigation, world map, story dialogs, rotation, and motion controls.

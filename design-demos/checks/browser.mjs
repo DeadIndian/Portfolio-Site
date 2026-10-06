@@ -10,7 +10,7 @@ const root=path.resolve(demoRoot,'..','.workshop','journey-review');
 process.env.TMPDIR=path.join(root,'tmp');
 await mkdir(process.env.TMPDIR,{recursive:true});
 const mode=process.argv[2]||'check';
-const base=process.env.JOURNEY_BASE_URL||'http://127.0.0.1:3120';
+const base=process.argv[3]||process.env.JOURNEY_BASE_URL||'http://127.0.0.1:3120';
 const names=['blocks','voyage','reactor','linux','connections','beyond'];
 const results=[];
 await mkdir(path.join(root,'qa'),{recursive:true});
@@ -68,6 +68,7 @@ async function captureObjects(){
       assert.ok(source.includes('alpha:false')&&source.includes('scene.add(stars);'),'Poster capture hooks changed');
       await route.fulfill({response,body:source.replace('alpha:false','alpha:true').replace('scene.add(stars);','scene.add(stars);sky.visible=false;stars.visible=false;')});
     });
+    await page.route('**/assets/posters/reactor-open.webp',route=>route.fulfill({contentType:'image/svg+xml',body:'<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/>'}));
     await page.goto(base+'/#blocks',{waitUntil:'networkidle'});
     await page.addStyleTag({content:'html,body,.universe {background:transparent!important}.site-header,.chapter-copy,.world-caption,.inspect-hint,.journey-footer,.journey-progress,.render-status,.credits-button,.scene-shade,.film-grain,.sky-fallback,.scene-poster {visibility:hidden!important}'});
     for(const name of names){
@@ -75,8 +76,15 @@ async function captureObjects(){
       await ready(page,name);
       await page.screenshot({path:path.join(root,'qa',`${name}-object.png`),omitBackground:true,animations:'disabled',timeout:45000});
       results.push({object:name,transparent:true});
+      if(name==='reactor'){
+        await page.locator('[data-action="2"]').evaluate(element=>element.click());
+        await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+        await page.screenshot({path:path.join(root,'qa','reactor-open-object.png'),omitBackground:true,animations:'disabled',timeout:45000});
+        results.push({object:'reactor-open',transparent:true});
+        await page.locator('[data-action="2"]').evaluate(element=>element.click());
+      }
     }
-    assert.deepEqual(errors,[]);console.log('Captured all six worlds on transparent backgrounds.');
+    assert.deepEqual(errors,[]);console.log('Captured all six worlds, including the disassembled armor, on transparent backgrounds.');
   }finally{await context.close();}
 }
 
@@ -225,6 +233,7 @@ async function otherBrowsers(engines=[firefox,webkit]){
 }
 
 try{
+  if(['suit','suit-preview','suit-objects'].includes(mode)){const {reviewSuit}=await import('./suit.mjs');results.push(...await reviewSuit({browser,base,root,mode}));}
   if(mode==='objects')await captureObjects();
   if(mode==='capture'||mode==='desktop')await captureProfile('desktop',{width:1440,height:1000});
   if(mode==='capture'||mode==='mobile')await captureProfile('mobile',{width:390,height:844});

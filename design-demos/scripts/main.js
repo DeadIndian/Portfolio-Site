@@ -77,6 +77,8 @@ function sceneArea(index){
 function layoutScenePoster(){
   const area=sceneArea(active);
   for(const property of ['left','top','width','height'])scenePoster.style[property]=`${area[property]}px`;
+  const source=`assets/posters/${chapters[active].id}${active===2&&states[2].active?'-open':''}.webp`;
+  const image=scenePoster.querySelector('img');if(image.getAttribute('src')!==source)image.src=source;
 }
 function updateUI(){
   uiFrame=0;const scrollPosition=scrollProgress();const next=Math.max(0,Math.min(5,Math.round(scrollPosition)));
@@ -105,7 +107,6 @@ function updateUI(){
   document.querySelector('#next-world').setAttribute('aria-label',active===5?'Return to the beginning':`Next world: ${chapters[active+1].name}`);
   document.querySelector('#journey-progress').style.width=`${progress/5*100}%`;
   if(changed||!sceneHost.dataset.ready){
-    scenePoster.querySelector('img').src=`assets/posters/${chapters[active].id}.webp`;
     sceneHost.style.setProperty('--scene-base',chapters[active].background);
     sceneHost.style.setProperty('--scene-glow',chapters[active].glow);
   }
@@ -134,7 +135,7 @@ function activateWorld(index){
   if(index===5)return;
   const state=states[index];state.active=!state.active;state.count++;
   const button=sections[index].querySelector('.world-action');if(index!==3)button.setAttribute('aria-pressed',String(state.active));button.querySelector('span:last-child').textContent=state.active?chapters[index].activeAction:chapters[index].action;
-  const messages=[state.active?'Build once. Let it work.':'A few pieces, waiting to come together.',state.active?'A little conviction. A little wind in the sails.':'Choose a heading. Keep going.',state.active?'The housing, coils, core, and shield.':'One idea, brought back together.',['Kubuntu · KDE Plasma','Arch Linux · Hyprland / Celestia','Fedora · KDE Plasma'][(2+state.count)%3],state.active?'Tools. Communities. Good people.':'Every connection starts somewhere.'];
+  const messages=[state.active?'Build once. Let it work.':'A few pieces, waiting to come together.',state.active?'A little conviction. A little wind in the sails.':'Choose a heading. Keep going.',state.active?'Armor apart. The engineering underneath.':'All pieces back in place.',['Kubuntu · KDE Plasma','Arch Linux · Hyprland / Celestia','Fedora · KDE Plasma'][(2+state.count)%3],state.active?'Tools. Communities. Good people.':'Every connection starts somewhere.'];
   sections[index].querySelector('.action-status').textContent=messages[index];layoutScenePoster();rendererController?.request();
 }
 
@@ -180,8 +181,8 @@ async function startUniverse(){
     const worlds=createWorlds();
     // Frame the actual geometry, excluding atmospheric glow sprites. Each world
     // gets a composition in the space left by its own text and the navigation.
-    const bounds=worlds.map((world,index)=>{
-      world.update(0,1,states[index]);world.group.updateMatrixWorld(true);
+    function measureWorld(world){
+      world.group.updateMatrixWorld(true);
       const result=new THREE.Box3();
       world.model.traverse(object=>{
         if(!object.isMesh)return;
@@ -189,6 +190,15 @@ async function startUniverse(){
         else{object.geometry.computeBoundingBox();result.union(object.geometry.boundingBox.clone().applyMatrix4(object.matrixWorld));}
       });
       return result;
+    }
+    const bounds=worlds.map((world,index)=>{
+      world.update(0,1,world.explodedView?{...states[index],active:false}:states[index]);
+      const bound=measureWorld(world);world.update(0,1,states[index]);return bound;
+    });
+    const expandedBounds=worlds.map((world,index)=>{
+      if(!world.explodedView)return bounds[index];
+      world.update(0,1,{...states[index],active:true});const expanded=measureWorld(world);
+      world.update(0,1,states[index]);return expanded;
     });
     const path=worlds.map((_,index)=>new THREE.Vector3(index*29,Math.sin(index*1.4)*2.7,-index*6+Math.sin(index*.9)*3));
     worlds.forEach((world,index)=>{world.group.position.copy(path[index]);scene.add(world.group);});
@@ -208,16 +218,16 @@ async function startUniverse(){
       fragmentShader:`uniform float uBlock;varying float vAlpha;void main(){float d=length(gl_PointCoord-.5);float shape=mix(1.-smoothstep(.1,.5,d),1.,uBlock);gl_FragColor=vec4(.72,.82,.83,shape*vAlpha);}`
     });
     const stars=new THREE.Points(starGeometry,starMaterial);stars.position.x=70;scene.add(stars);
-    let frame=0,previous=performance.now(),elapsed=0,stopped=false,suspended=false,yaw=0,pitch=0,targetYaw=0,targetPitch=0,drag=null,compositions=[];
+    let frame=0,previous=performance.now(),elapsed=0,stopped=false,suspended=false,yaw=0,pitch=0,targetYaw=0,targetPitch=0,drag=null,compositions=[],expandedCompositions=[];
     const look=new THREE.Vector3(),point=new THREE.Vector3(),raycaster=new THREE.Raycaster(),mouse=new THREE.Vector2();
-    const direction=new THREE.Vector3();
+    const direction=new THREE.Vector3(),fromCenter=new THREE.Vector3(),toCenter=new THREE.Vector3();
     const themeBases=chapters.map(chapter=>new THREE.Color(chapter.background));
     const themeGlows=chapters.map(chapter=>new THREE.Color(chapter.glow));
     const canDraw=()=>!stopped&&!suspended&&!document.hidden&&!document.querySelector('dialog[open]');
     function compose(){
       const width=innerWidth,height=innerHeight,stacked=stackedLayout.matches;
       direction.set(stacked?-1.2:-1.4,stacked?3.2:4.15,stacked?19.7:16.9).normalize();
-      compositions=bounds.map((bound,index)=>{
+      function frameBounds(bound,index){
         const center=bound.getCenter(new THREE.Vector3());
         const area=sceneArea(index);
         const corners=[];
@@ -236,7 +246,8 @@ async function startUniverse(){
         }
         distance*=index===2?1.07:1.025;projected=project();
         return{center,distance,offsetX:width/2-(area.left+area.width/2)+(projected.left+projected.right-width)/2,offsetY:height/2-(area.top+area.height/2)+(projected.top+projected.bottom-height)/2,area};
-      });
+      }
+      compositions=bounds.map(frameBounds);expandedCompositions=expandedBounds.map(frameBounds);
     }
     function resize(){
       renderer.setPixelRatio(Math.min(devicePixelRatio,stackedLayout.matches?1:1.5));renderer.setSize(innerWidth,innerHeight,false);camera.aspect=innerWidth/innerHeight;camera.fov=stackedLayout.matches?45:42;camera.updateProjectionMatrix();skyMaterial.uniforms.uMobile.value=stackedLayout.matches?1:0;starMaterial.uniforms.uDpr.value=renderer.getPixelRatio();compose();request();
@@ -246,13 +257,6 @@ async function startUniverse(){
       const delta=Math.min((now-previous)/1000,.055);previous=now;if(motion)elapsed+=delta;
       const p=progress,index=Math.min(4,Math.floor(p)),fraction=p-index;
       point.copy(path[index]).lerp(path[index+1],fraction);
-      const travel=Math.sin(fraction*Math.PI),from=compositions[index],to=compositions[index+1];
-      const distance=THREE.MathUtils.lerp(from.distance,to.distance,fraction)+travel*10;
-      look.copy(from.center).lerp(to.center,fraction).add(point);
-      camera.position.copy(look).addScaledVector(direction,distance);camera.position.y+=travel*2.2;camera.lookAt(look);
-      camera.setViewOffset(innerWidth,innerHeight,THREE.MathUtils.lerp(from.offsetX,to.offsetX,fraction)*(1-travel*.45),THREE.MathUtils.lerp(from.offsetY,to.offsetY,fraction)*(1-travel*.35),innerWidth,innerHeight);
-      key.position.set(point.x-8,point.y+13,point.z+12);key.target.position.copy(point);key.target.updateMatrixWorld();
-      rim.position.set(point.x+8,point.y+4,point.z-4);rim.target.position.copy(point);rim.target.updateMatrixWorld();warm.position.set(point.x,point.y+2,point.z+6);
       yaw=motion?THREE.MathUtils.damp(yaw,targetYaw,7,delta):targetYaw;pitch=motion?THREE.MathUtils.damp(pitch,targetPitch,7,delta):targetPitch;
       worlds.forEach((world,i)=>{
         world.group.visible=Math.abs(i-p)<.999;
@@ -260,6 +264,17 @@ async function startUniverse(){
         world.group.rotation.y=yaw+Math.sin(elapsed*.10+i)*.035;world.group.rotation.x=pitch;
         world.update(elapsed,motion?delta:1,states[i]);
       });
+      const travel=Math.sin(fraction*Math.PI),from=compositions[index],to=compositions[index+1];
+      const openFrom=expandedCompositions[index],openTo=expandedCompositions[index+1];
+      const expansionFrom=worlds[index].expansion||0,expansionTo=worlds[index+1].expansion||0;
+      const blend=(key)=>THREE.MathUtils.lerp(THREE.MathUtils.lerp(from[key],openFrom[key],expansionFrom),THREE.MathUtils.lerp(to[key],openTo[key],expansionTo),fraction);
+      const distance=blend('distance')+travel*10;
+      fromCenter.copy(from.center).lerp(openFrom.center,expansionFrom);toCenter.copy(to.center).lerp(openTo.center,expansionTo);
+      look.copy(fromCenter).lerp(toCenter,fraction).add(point);
+      camera.position.copy(look).addScaledVector(direction,distance);camera.position.y+=travel*2.2;camera.lookAt(look);
+      camera.setViewOffset(innerWidth,innerHeight,blend('offsetX')*(1-travel*.45),blend('offsetY')*(1-travel*.35),innerWidth,innerHeight);
+      key.position.set(point.x-8,point.y+13,point.z+12);key.target.position.copy(point);key.target.updateMatrixWorld();
+      rim.position.set(point.x+8,point.y+4,point.z-4);rim.target.position.copy(point);rim.target.updateMatrixWorld();warm.position.set(point.x,point.y+2,point.z+6);
       skyMaterial.uniforms.uBase.value.copy(themeBases[index]).lerp(themeBases[index+1],fraction);
       skyMaterial.uniforms.uGlow.value.copy(themeGlows[index]).lerp(themeGlows[index+1],fraction);skyMaterial.uniforms.uTime.value=elapsed;
       starMaterial.uniforms.uTime.value=elapsed;starMaterial.uniforms.uBlock.value=1-Math.min(1,p);

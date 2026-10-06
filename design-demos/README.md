@@ -23,9 +23,15 @@ CDN, or API. Fonts, Three.js, and rendered fallback artwork are local.
 6. **Beyond / what's next:** an open ending with real GitHub, LinkedIn, and email links.
 
 Scroll, choose a world, or use the next arrow. Start the farm, catch the wind,
-open the reactor, cycle the desktops, and light the connections. Drag a world
+disassemble the Iron Man suit, cycle the desktops, and light the connections. Drag a world
 or use the rotation button; motion can be paused. The full story is available
 in each chapter. Hash links and browser back/forward navigation work.
+
+The Iron Man world starts with a complete red-and-gold suit. Its faceplate,
+chest, shoulders, gauntlets, and leg armor separate into 27 independently moving
+sections, exposing the mechanical frame. Select **Reassemble the suit** to bring
+everything back. The camera fits both states; reduced motion changes the pose
+immediately, and the static fallback has separate assembled and exploded images.
 
 The chapter order is a narrative arrangement, without invented dates. The owner
 supplied the Minecraft/building/farming and One Piece/programming connections in
@@ -57,6 +63,7 @@ node design-demos/checks/browser.mjs motion
 node design-demos/checks/browser.mjs layout
 node design-demos/checks/browser.mjs a11y
 node design-demos/checks/browser.mjs firefox
+node design-demos/checks/browser.mjs suit
 ```
 
 Use `capture` for desktop/phone screenshots, or `webkit` / `engines` when the
@@ -70,6 +77,10 @@ After changing the models, regenerate the transparent fallback artwork:
 node design-demos/checks/browser.mjs objects
 node design-demos/checks/assets.mjs posters
 ```
+
+For an armor-only update, use `browser.mjs suit-objects` followed by
+`assets.mjs suit-posters`. This regenerates both suit poses without replacing
+the other worlds' artwork.
 
 The object capture changes the renderer only in the review browser. The shipped
 scene keeps its normal background, lighting, and star field.

@@ -32,14 +32,14 @@ export const chapters = [
     title: ['What if', 'I could?'], accent: '#9be7ff', background: '#0b1425', glow: '#34425e',
     intro: 'Iron Man put an idea in my head: what if I could talk to an AI and actually get things done?',
     thought: 'That idea became JARVIS. A real prototype, and a much bigger ambition.',
-    action: 'Look inside the reactor', activeAction: 'Reassemble the reactor',
+    action: 'Disassemble the suit', activeAction: 'Reassemble the suit',
     paragraphs: [
       'Iron Man’s JARVIS stuck with me. Speak naturally, and have something help turn the intention into action. A little less friction in everyday life.',
       'I started building toward that. There is an Android prototype; there is also a lot more I want it to become.',
       'I want to make everyone’s life easier. That’s the point of the long game.'
     ],
     link: 'https://github.com/DeadIndian/Jarvis', linkLabel: 'The actual JARVIS prototype',
-    detail: 'An original procedural arc-reactor study inspired by Iron Man. Open the copper coils, core, shield, and containment rings.'
+    detail: 'An original Iron Man armor study. Separate the gold faceplate, red chest armor, shoulders, gauntlets, and leg armor to reveal the mechanical frame. Select it again to bring the suit back together.'
   },
   {
     id: 'linux', name: 'The tinkerer', theme: 'Linux / KDE', place: 'My own orbit',
