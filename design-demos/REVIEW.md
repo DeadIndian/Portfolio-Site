@@ -1,5 +1,19 @@
 # Journey demo review
 
+## Final visual correction — 7 October 2026
+
+Removed the added black support figure from the expanded Iron Man suit, as
+requested in the last review. All 28 armor sections still separate and
+reassemble. Both fallback posters match the corrected model, and the credits
+no longer describe the removed fittings. The six-world standalone HTML is ready
+for visual review; porting it into the main site remains a later task.
+
+Rechecked the suit at desktop, phone, short-phone, and landscape sizes; keyboard
+activation, reassembly, reversing the animation, state retention, reduced motion,
+and fallback behavior passed. Desktop and phone renders were visually inspected.
+The two changed JavaScript files pass ESLint. Results and screenshots are saved
+under `.workshop/journey-review/qa/`.
+
 ## Detailed Iron Man suit — 6 October 2026
 
 The owner rejected the procedural suit and supplied a Mark 43 reference. This
@@ -12,8 +26,9 @@ Full provenance and adaptation details are in `assets/iron-man/CREDITS.md`.
 The 187 MB source was converted to a local GLB and WebP textures, about 6.6 MiB
 in total. Connected armor surfaces form 28 moving sections. The faceplate,
 helmet, chest, shoulders, arms, abdomen, hips, and leg armor follow separate
-release paths. Original internal fittings support the exposed frame. The scene
-uses 57 draw calls and 83,425 triangles; these are counts, not a device FPS claim.
+release paths. The added black support figure was removed at the owner’s
+request; the original model’s metallic details remain. The scene
+uses 54 draw calls and 79,009 triangles; these are counts, not a device FPS claim.
 
 Both assembled and separated poses have newly rendered transparent fallbacks.
 The existing poster remains available while the model loads. Keyboard activation,

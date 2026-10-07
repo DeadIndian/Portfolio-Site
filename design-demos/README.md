@@ -44,9 +44,9 @@ Five worlds are procedural original 3D illustrations. The Iron Man world uses
 **Iron-Man Mark 85 | Rigged** by **9A Films / Nihar Arora**, under **CC BY 4.0**.
 It replaces the rejected procedural suit. The owner's Mark 43 image informed
 the requested realism; the actual imported model is Mark 85. The mesh was
-simplified, divided into rigid armor sections, and given original internal
-fittings and disassembly paths. Source, license, and modification details are
-in [the model credits](assets/iron-man/CREDITS.md) and the in-page credits.
+simplified, divided into rigid armor sections, and given disassembly paths.
+Source, license, and modification details are in
+[the model credits](assets/iron-man/CREDITS.md) and the in-page credits.
 
 The Minecraft and One Piece scenes are fan-art homages. These properties belong
 to their respective owners; no endorsement is implied. The Linux screens
@@ -100,7 +100,7 @@ There is no portfolio application integration or production deployment here.
 
 The shipped suit is local: a 2.7 MB GLB plus WebP texture maps (about 6.6 MB total).
 The source rig is baked into its resting pose; the browser animates rigid panels.
-The scene stays below 100,000 triangles including its added internal fittings.
+The scene stays below 100,000 triangles with its original mechanical details.
 The existing poster remains usable while the asset loads or if loading fails.
 
 To repeat the conversion, save the credited source GLB to persistent disk and run:

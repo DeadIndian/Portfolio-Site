@@ -16,7 +16,7 @@ not substituted for it.
 Changes: baked the resting rig pose; normalized scale; grouped connected armor
 surfaces into anatomical sections; simplified geometry with meshoptimizer;
 resized and converted textures to WebP; omitted the invisible glass; adjusted
-materials; added original internal fittings, lighting, and rigid disassembly
+materials; added lighting and rigid disassembly
 paths. Both static suit posters are renders of this adaptation and carry the
 same attribution. The original authors do not endorse this portfolio.
 
