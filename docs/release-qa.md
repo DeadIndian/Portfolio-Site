@@ -1,5 +1,59 @@
 # Release QA
 
+Date: 2026-10-07
+
+**Verdict: the approved six-world journey is integrated as DeadIndian; Bharath's
+Fedora/KDE desktop is preserved.** The owner approved the rendered HTML and
+requested integration and publication to `main` on 7 October.
+
+## Current verification
+
+| Check | Result |
+| --- | --- |
+| ESLint and TypeScript | Passed |
+| Unit tests | 96 passed |
+| Fresh production build after the final CSS correction | Passed |
+| Desktop/content suite | 18 passed across desktop/mobile Chromium |
+| Journey integration suite | 8 passed; 4 intentional viewport-specific skips |
+| Final release suite | 15 passed across all five browser profiles, no retries |
+| Final accessibility rerun | Desktop/mobile checks passed after the CSS correction |
+| Approved asset comparison | All 42 integrated assets match the approved demo |
+| Final visual capture | All six worlds and both personas at 1440×1000 and 390×844; no overflow or page errors |
+
+The desktop/content and journey results come from the saved run before this
+continuation. They cover retained window position, size, minimization,
+maximization, scroll and content settings; chapter links and browser history;
+offscreen suit loading; armor disassembly; motion suspension; focus; terminal
+commands; fallback; and automated accessibility. Application logic did not change
+after those checks. The final visual review found inherited global header and
+social-link styles; scoped overrides restore the approved journey appearance.
+The production build and all release tests were repeated after that correction.
+
+Chrome desktop/mobile and WebKit desktop/iPhone rendered live WebGL for both
+personas. Firefox used and verified the explicit static fallback because this
+host cannot create its WebGL context. Browser emulation does not establish
+physical-device frame rates. WebKit used the existing local `libenchant`,
+`libhidapi`, and `libmanette` libraries via `LD_PRELOAD`, since its bundled
+launcher overwrites `LD_LIBRARY_PATH`.
+
+The final release report is
+`.workshop/journey-integration/verified-release-report/index.html`; its result
+directory is `.workshop/journey-integration/verified-release-results/`.
+The earlier core-suite evidence remains in `playwright-report/index.html`;
+earlier release failures in that report are superseded by the final release run.
+Screenshots and desktop/mobile contact sheets are under
+`.workshop/journey-integration/qa/`, alongside `visual-results.json`.
+These local artifacts stay on persistent disk and are excluded from Git.
+
+The implementation and reproduction instructions are in
+[journey-integration.md](journey-integration.md) and the repository README.
+Git publication and any resulting hosting deployment are separate from these
+local browser checks.
+
+---
+
+## Historical workshop checkpoint
+
 Date: 2026-10-03
 
 **Verdict: the evolving workshop passed local release verification.** The tested

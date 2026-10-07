@@ -31,15 +31,12 @@ import {
   MathUtils,
   ShaderMaterial,
   SRGBColorSpace,
-  Vector3,
   type Texture,
 } from "three";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
-import { WorkshopModels, type WorkshopModelProps } from "./WorkshopModels";
 
 type SceneProps = {
-  kind: "workshop" | "desktop";
-  workshop: Omit<WorkshopModelProps, "motion" | "rotation">;
+  kind: "desktop";
   resetKey: number;
   rotation?: number;
   motion: boolean;
@@ -50,40 +47,14 @@ const sceneCamera = {
   fov: 34,
 };
 
-function CameraPlacement({ kind, chapter, motion, resetKey }: { kind: SceneProps["kind"]; chapter: string; motion: boolean; resetKey: number }) {
+function CameraPlacement({ resetKey }: { resetKey: number }) {
   const camera = useThree((state) => state.camera);
   const invalidate = useThree((state) => state.invalidate);
   const controls = useThree((state) => state.controls) as OrbitControlsImpl | null;
-  const size = useThree((state) => state.size);
-  const goal = useRef({ position: new Vector3(), target: new Vector3(), moving: false });
   useLayoutEffect(() => {
-    const target = goal.current;
-    if (kind === "workshop") {
-      target.target.set(0, 1.35, -.1);
-      target.position.set(chapter === "linux" ? 7.8 : 8.2, chapter === "linux" ? 6.1 : 7, 10.1);
-      const fit = Math.max(1, 1.12 / (size.width / size.height));
-      target.position.sub(target.target).multiplyScalar(fit).add(target.target);
-    } else { target.position.set(4.3, 2.2, 7.6); target.target.set(0, 0, 0); }
-    target.moving = motion && kind === "workshop";
-    if (!target.moving) {
-      camera.position.copy(target.position); camera.lookAt(target.target);
-      controls?.target.copy(target.target); controls?.update();
-    }
-    invalidate();
-  }, [kind, chapter, camera, controls, invalidate, motion, resetKey, size.width, size.height]);
-  useEffect(() => {
-    const stop = () => { goal.current.moving = false; };
-    controls?.addEventListener("start", stop);
-    return () => controls?.removeEventListener("start", stop);
-  }, [controls]);
-  useFrame((_, delta) => {
-    if (!goal.current.moving) return;
-    const alpha = 1 - Math.exp(-5 * Math.min(delta, .05));
-    camera.position.lerp(goal.current.position, alpha);
-    if (controls) { controls.target.lerp(goal.current.target, alpha); controls.update(); }
-    else camera.lookAt(goal.current.target);
-    if (camera.position.distanceTo(goal.current.position) < .002) goal.current.moving = false;
-  }, -2);
+    camera.position.set(4.3, 2.2, 7.6); camera.lookAt(0, 0, 0);
+    controls?.target.set(0, 0, 0); controls?.update(); invalidate();
+  }, [camera, controls, invalidate, resetKey]);
   return null;
 }
 
@@ -382,21 +353,15 @@ export default function WorldScene(props: SceneProps) {
     document.addEventListener("visibilitychange", update);
     return () => document.removeEventListener("visibilitychange", update);
   }, []);
-  const workshop = props.kind === "workshop";
   return (
     <div
       className={`world-scene ${props.kind}-scene`}
       ref={wrapper}
       data-scene-ready={ready}
       data-webgl={supported && !lost ? "available" : "unavailable"}
-      data-chapter={workshop ? props.workshop.chapter : undefined}
       data-rendering={visible && documentVisible && props.motion ? "continuous" : "on-demand"}
       role="img"
-      aria-label={
-        workshop
-          ? "Miniature of DeadIndian's evolving workshop"
-          : "Retro computer and Fedora desktop sculpture"
-      }
+      aria-label="Retro computer and Fedora desktop sculpture"
     >
       {supported && !lost && (
         <Image
@@ -429,13 +394,13 @@ export default function WorldScene(props: SceneProps) {
             }}
             fallback={<Fallback kind={props.kind} />}
           >
-            <CameraPlacement kind={props.kind} chapter={props.workshop.chapter} motion={props.motion} resetKey={props.resetKey} />
-            <ambientLight intensity={workshop ? 0.7 : 1.3} />
+            <CameraPlacement resetKey={props.resetKey} />
+            <ambientLight intensity={1.3} />
             <directionalLight
-              position={workshop ? [-3, 7, 5] : [3, 7, 5]}
-              color={workshop ? "#ffe1b4" : "#ffffff"}
-              intensity={workshop ? 3.1 : 2}
-              castShadow={workshop}
+              position={[3, 7, 5]}
+              color="#ffffff"
+              intensity={2}
+              castShadow={false}
               shadow-mapSize={coarse ? [512, 512] : [1024, 1024]}
               shadow-camera-left={-5} shadow-camera-right={5}
               shadow-camera-top={5} shadow-camera-bottom={-5}
@@ -443,18 +408,18 @@ export default function WorldScene(props: SceneProps) {
             />
             <directionalLight
               position={[-5, 3, -4]}
-              color={workshop ? "#bedde4" : "#c4e6e6"}
-              intensity={workshop ? 1.2 : 2}
+              color="#c4e6e6"
+              intensity={2}
             />
             <Suspense fallback={null}>
               <Environment
                 files="/3d/studio.hdr"
-                environmentIntensity={workshop ? .35 : .6}
+                environmentIntensity={.6}
               />
-              {workshop ? <WorkshopModels {...props.workshop} motion={props.motion} rotation={props.rotation ?? 0} /> : <Computer {...props} />}
+              <Computer {...props} />
               <ContentReady onReady={onReady} />
             </Suspense>
-            {!workshop && <ContactShadows
+            <ContactShadows
               key={props.kind}
               position={[0, -1.33, 0]}
               opacity={.3}
@@ -464,16 +429,16 @@ export default function WorldScene(props: SceneProps) {
               frames={1}
               resolution={256}
               color="#303351"
-            />}
+            />
             {!coarse && (
               <OrbitControls
                 makeDefault
                 enableZoom={false}
                 enablePan={false}
-                minPolarAngle={workshop ? .6 : .7}
-                maxPolarAngle={workshop ? 1.3 : 1.5}
-                minAzimuthAngle={workshop ? -.3 : -.8}
-                maxAzimuthAngle={workshop ? 1.2 : .9}
+                minPolarAngle={.7}
+                maxPolarAngle={1.5}
+                minAzimuthAngle={-.8}
+                maxAzimuthAngle={.9}
               />
             )}
           </Canvas>

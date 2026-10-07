@@ -19,9 +19,10 @@ const fixtures = {
   leetcode: { totalSolved: 10, ranking: 900, easy: 7, medium: 3, hard: 0, totalEasy: 100, totalMedium: 100, totalHard: 100, submissions: 4, acceptanceRate: null, calendar },
 };
 
-async function enterWorkshop(page: Page) {
-  await page.getByRole("button", { name: "Meet DeadIndian", exact: true }).click();
-  await expect(page.locator(".world-root")).toHaveAttribute("data-world", "workshop");
+async function enterJourney(page: Page) {
+  await page.getByRole("button", { name: "DeadIndian", exact: true }).click();
+  await expect(page.locator(".world-root")).toHaveAttribute("data-world", "journey");
+  await expect(page.locator(".journey-root")).toBeVisible();
 }
 
 test.beforeEach(async ({ page }) => {
@@ -45,26 +46,6 @@ test("the professional desktop renders real 3D and responds to its rotation cont
   await page.getByRole("button", { name: "Rotate retro computer" }).click();
   const after = await canvas.screenshot({ style: "main { visibility: hidden !important; }" });
   expect(after.equals(before)).toBe(false);
-});
-
-test("project search, category filters, nested dossiers, and keyboard dismissal remain available", async ({ page }) => {
-  await enterWorkshop(page);
-  await page.getByRole("button", { name: "Project files", exact: true }).click();
-  const directory = page.locator(".studio-dossier");
-  await expect(directory).toBeVisible();
-  await directory.getByRole("button", { name: "Linux & FOSS", exact: true }).click();
-  await expect(directory.locator(".project-card")).toHaveCount(4);
-  await directory.getByRole("textbox", { name: "Search projects" }).fill("tailscale");
-  const project = directory.getByRole("button", { name: "Read case study: Tailscale Plasma Widget" });
-  await project.press("Enter");
-  const dossier = page.locator(".project-dialog");
-  await expect(dossier).toBeVisible();
-  await expect(dossier.getByRole("link", { name: "Explore the source" })).toHaveAttribute("href", "https://github.com/DeadIndian/tailscale-widget");
-  await page.keyboard.press("Escape");
-  await expect(dossier).not.toBeVisible();
-  await expect(project).toBeFocused();
-  await page.keyboard.press("Escape");
-  await expect(directory).not.toBeVisible();
 });
 
 test("desktop windows drag, resize, minimize, restore, maximize and open actual project files", async ({ page }, testInfo) => {
@@ -126,21 +107,26 @@ test("handmade builds, Linux, Recurse and writing retain their detailed applicat
   await expect(page.locator(".medium-panel")).toContainText("MEDIUM FEED NOT CONNECTED YET");
 });
 
-test("the terminal routes commands into the correct persona", async ({ page }) => {
-  await enterWorkshop(page);
+test("the desktop terminal keeps its commands and hands off to the journey", async ({ page }) => {
   await page.keyboard.press("/");
   const input = page.locator("#terminal-input");
   await expect(input).toBeFocused();
   await input.fill("who"); await page.keyboard.press("Tab");
   await expect(input).toHaveValue("whoami"); await page.keyboard.press("Enter");
-  await expect(page.getByRole("log")).toContainText("KDE Plasma tinkerer");
-  await input.fill("theme"); await page.keyboard.press("Enter");
-  await expect(page.locator(".personal-desktop")).toBeVisible();
+  await expect(page.locator(".terminal-dialog").getByRole("log")).toContainText("Club Head, Recurse");
+  await input.fill("projects"); await page.keyboard.press("Enter");
   await expect(page.locator(".terminal-dialog")).not.toBeVisible();
+  await expect(page.locator('[data-window-id="projects"]')).toBeVisible();
+  await page.keyboard.press("Control+k"); await expect(input).toBeFocused();
+  await input.fill("theme"); await page.keyboard.press("Enter");
+  await expect(page.locator(".world-root")).toHaveAttribute("data-world", "journey");
+  await expect(page.locator(".terminal-dialog")).not.toBeVisible();
+  await page.locator(".journey-root #journey-return").click();
+  await expect(page.locator(".personal-desktop")).toBeVisible();
   await page.keyboard.press("/"); await expect(input).toBeFocused();
   await input.fill("whoami"); await page.keyboard.press("Enter");
-  await expect(page.getByRole("log")).toContainText("Club Head, Recurse");
-  await input.fill("projects"); await page.keyboard.press("Enter");
+  await expect(page.locator(".terminal-dialog").getByRole("log")).toContainText("Club Head, Recurse");
+  await page.keyboard.press("Escape");
   await expect(page.locator(".terminal-dialog")).not.toBeVisible();
   await expect(page.locator('[data-window-id="projects"]')).toBeVisible();
 });
@@ -172,16 +158,10 @@ test("contact and print actions work without serializing private resume fields",
   await expect(page.locator("html")).toHaveAttribute("data-print-invoked", "true");
 });
 
-test("narrow viewports and reduced motion keep both experiences usable", async ({ page }) => {
+test("narrow viewports and reduced motion keep the desktop usable", async ({ page }) => {
   await expect(page.locator(".world-root")).toHaveAttribute("data-motion", "off");
-  await enterWorkshop(page);
-  for (const width of [320, 390, 768, 1024, 1440]) {
-    await page.setViewportSize({ width, height: 900 });
-    await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-  }
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.getByRole("button", { name: "Bharath's desktop", exact: true }).click();
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await expect(page.locator(".desktop-dock")).toBeInViewport();
   await page.getByRole("button", { name: "Open My Linux", exact: true }).click();
   const bounds = (await page.locator('[data-window-id="linux"]').boundingBox())!;
@@ -191,14 +171,13 @@ test("narrow viewports and reduced motion keep both experiences usable", async (
 
 test("animated persona transitions complete and return keyboard focus", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  await enterWorkshop(page);
-  await expect(page.locator(".world-transition")).not.toBeVisible({ timeout: 15000 });
-  const back = page.getByRole("button", { name: "Bharath's desktop", exact: true });
+  await page.getByRole("button", { name: "DeadIndian", exact: true }).press("Enter");
+  await expect(page.locator(".world-root")).toHaveAttribute("data-world", "journey");
+  const back = page.locator(".journey-root").getByRole("button", { name: "Return to Bharath’s desktop", exact: true });
   await expect(back).toBeFocused();
   await back.press("Enter");
   await expect(page.locator(".personal-desktop")).toBeVisible();
-  await expect(page.locator(".world-transition")).not.toBeVisible({ timeout: 15000 });
-  await expect(page.getByRole("button", { name: "Meet DeadIndian", exact: true })).toBeFocused();
+  await expect(page.getByRole("button", { name: "DeadIndian", exact: true })).toBeFocused();
 });
 
 test("both worlds and their content pass automated accessibility checks", async ({ page }) => {
@@ -207,9 +186,13 @@ test("both worlds and their content pass automated accessibility checks", async 
     expect(result.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => n.target) }))).toEqual([]);
   };
   await check();
-  await enterWorkshop(page); await check();
-  await page.getByRole("button", { name: "Full story", exact: true }).click(); await check();
+  await enterJourney(page);
+  await expect(page.locator('.journey-root .chapter[data-active="true"] h1')).toBeVisible();
+  await check();
+  await page.locator('.journey-root [data-story="0"]').click();
+  await expect(page.locator(".journey-root #story-dialog")).toBeVisible();
+  await check();
   await page.keyboard.press("Escape");
-  await page.getByRole("button", { name: "Bharath's desktop", exact: true }).click();
+  await page.locator(".journey-root #journey-return").click();
   await page.getByRole("button", { name: "Open No-AI work", exact: true }).click(); await check();
 });

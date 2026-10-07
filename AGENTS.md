@@ -1,5 +1,11 @@
 # Portfolio visual work
 
+- On 7 October 2026 the owner approved the finished six-world HTML and explicitly
+  requested its integration as DeadIndian, preserving Bharath's computer desktop,
+  followed by a push to main. This approval supersedes the preview-only checkpoint.
+- The integrated journey lives in `src/components/journey/`, `src/app/journey.css`,
+  and `public/journey/`. Preserve its approved appearance, armor disassembly, and
+  the desktop's window state. The black support figure remains removed.
 - The owner rejected the miniature workshop and its 3D style on 3 October 2026.
 - Before implementing a new visual direction in the portfolio, make a runnable
   standalone HTML demo and show it to the owner. Wait for an explicit visual

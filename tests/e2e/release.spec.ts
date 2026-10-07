@@ -132,7 +132,7 @@ test("critical portfolio journey works without live providers", async ({
   page.on("console", (message) => {
     if (message.type() === "error") consoleErrors.push(message.text());
   });
-  async function checkScene(world: string) {
+  async function checkDesktopScene(label: string) {
     const scene = page.locator(".world-scene");
     await expect(
       page.locator(
@@ -143,7 +143,7 @@ test("critical portfolio journey works without live providers", async ({
     usedFallback ||= fallback;
     testInfo.annotations.push({
       type: "scene",
-      description: `${world}: ${fallback ? "explicit static fallback (no WebGL coverage)" : "ready WebGL"}`,
+      description: `${label}: ${fallback ? "explicit static fallback (no WebGL coverage)" : "ready WebGL"}`,
     });
     if (fallback) {
       await expect(scene.locator(".scene-fallback")).toContainText(
@@ -167,55 +167,88 @@ test("critical portfolio journey works without live providers", async ({
     }
   }
 
+  async function checkJourneyScene(chapter: string) {
+    const journey = page.locator(".journey-root");
+    const host = journey.locator("#universe");
+    await expect(journey).toHaveAttribute("data-world", chapter);
+    await expect(
+      journey.locator('#universe[data-ready="true"], #universe[data-fallback="true"]'),
+    ).toBeVisible({ timeout: 45000 });
+    const fallback = (await host.getAttribute("data-fallback")) === "true";
+    usedFallback ||= fallback;
+    testInfo.annotations.push({
+      type: "scene",
+      description: `journey/${chapter}: ${fallback ? "explicit static fallback (no WebGL coverage)" : "ready WebGL"}`,
+    });
+    if (fallback) {
+      const poster = journey.locator("#scene-poster img");
+      await expect(poster).toHaveAttribute("src", new RegExp(`/${chapter}\\.webp$`));
+      await expect.poll(() => poster.evaluate((image) =>
+        (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0,
+      )).toBe(true);
+      await expect(journey.locator("#render-status")).toContainText("Static view");
+    } else {
+      await expect(host).toHaveAttribute("data-rendered-world", chapter);
+      const canvas = host.locator("canvas");
+      await expect(canvas).toBeVisible();
+      expect(await canvas.evaluate((element) => {
+        const gl = (element as HTMLCanvasElement).getContext("webgl2");
+        return !!gl && !gl.isContextLost() && gl.drawingBufferWidth > 0 && gl.drawingBufferHeight > 0;
+      })).toBe(true);
+    }
+  }
+
   await page.goto("/");
   const world = page.locator(".world-root");
   await expect(world).toHaveAttribute("data-world", "desktop");
-  await checkScene("desktop");
-  await page.getByRole("button", { name: "Meet DeadIndian", exact: true }).click();
-  await expect(world).toHaveAttribute("data-world", "workshop");
-  await expect(world).toHaveAttribute("data-motion", "off");
-  await checkScene("workshop");
-
-  const directoryTrigger = page.getByRole("button", {
-    name: "Project files", exact: true,
-  });
-  // Keyboard activation makes focus return independent of Safari's click policy.
-  await directoryTrigger.press("Enter");
-  const directory = page.getByRole("dialog", {
-    name: "Project directory",
-    exact: true,
-  });
+  await checkDesktopScene("initial desktop");
+  await page.getByRole("button", { name: "Open Projects", exact: true }).press("Enter");
+  const directory = page.locator('[data-window-id="projects"]');
   await expect(directory).toBeVisible();
-  await directory
-    .getByRole("textbox", { name: "Search projects" })
-    .fill("tailscale");
-  await expect(directory.locator(".project-card")).toHaveCount(1);
-  const projectTrigger = directory.getByRole("button", {
-    name: "Read case study: Tailscale Plasma Widget",
-    exact: true,
-  });
+  await expect(directory.locator(".project-file")).toHaveCount(20);
+  const projectTrigger = directory.locator(".project-file").filter({ hasText: "Tailscale Plasma Widget" });
   await projectTrigger.press("Enter");
-  const dossier = page.getByRole("dialog", {
-    name: "PROJECT DOSSIER",
-    exact: true,
-  });
+  const dossier = page.locator('[data-window-id="project:tailscale-widget"]');
   await expect(dossier).toBeVisible();
   await expect(
-    dossier.getByRole("link", { name: "Explore the source" }),
+    dossier.getByRole("link", { name: "Read the source", exact: true }),
   ).toHaveAttribute("href", "https://github.com/DeadIndian/tailscale-widget");
   await page.keyboard.press("Escape");
-  await expect(dossier).not.toBeVisible();
-  await expect(projectTrigger).toBeFocused();
-  await page.keyboard.press("Escape");
-  await expect(directory).not.toBeVisible();
-  await expect(directoryTrigger).toBeFocused();
+  await expect(dossier).toHaveCount(0);
+  await expect(directory).toBeVisible();
 
-  await page
-    .getByRole("button", { name: "Bharath's desktop", exact: true })
-    .click();
+  await page.getByRole("button", { name: "DeadIndian", exact: true }).press("Enter");
+  await expect(world).toHaveAttribute("data-world", "journey");
+  const journey = page.locator(".journey-root");
+  await expect(journey).toHaveAttribute("data-motion", "off");
+  await expect(page.locator("iframe")).toHaveCount(0);
+  await expect(journey.locator(".world-node")).toHaveCount(6);
+  await checkJourneyScene("blocks");
+  await journey.locator('.world-node[data-index="2"]').click();
+  await checkJourneyScene("reactor");
+
+  // Keyboard activation makes focus return independent of Safari's click policy.
+  const storyTrigger = journey.locator('[data-story="2"]');
+  await storyTrigger.press("Enter");
+  const story = journey.locator("#story-dialog");
+  await expect(story).toBeVisible();
+  await expect(story.locator(".story-source")).toHaveAttribute("href", "https://github.com/DeadIndian/Jarvis");
+  await page.keyboard.press("Escape");
+  await expect(story).not.toBeVisible();
+  await expect(storyTrigger).toBeFocused();
+  await journey.locator("#map-button").press("Enter");
+  await journey.locator('#map-dialog [data-destination="3"]').press("Enter");
+  await expect(journey.locator("#map-dialog")).not.toBeVisible();
+  await expect(journey).toHaveAttribute("data-world", "linux");
+  await expect(page).toHaveURL(/#linux$/);
+
+  await journey.getByRole("button", { name: "Return to Bharath’s desktop", exact: true }).press("Enter");
   await expect(world).toHaveAttribute("data-world", "desktop");
-  await checkScene("desktop");
-  await page.getByRole("button", { name: "Open Writing", exact: true }).click();
+  await expect(journey).not.toBeVisible();
+  await expect(directory).toBeVisible();
+  await expect(page.getByRole("button", { name: "DeadIndian", exact: true })).toBeFocused();
+  await checkDesktopScene("returned desktop");
+  await page.getByRole("navigation", { name: "Workspace dock" }).getByRole("button", { name: "Writing", exact: true }).click();
   const writing = page.getByRole("dialog", {
     name: "Technical writing",
     exact: true,
@@ -261,7 +294,7 @@ test("critical portfolio journey works without live providers", async ({
   const unexpected = consoleErrors.filter((message) => {
     if (
       usedFallback &&
-      /Error creating WebGL context|Failed to create WebGL context/i.test(message)
+      /Error creating WebGL context|Failed to create WebGL context|WebGL context could not be created/i.test(message)
     ) {
       testInfo.annotations.push({
         type: "webgl-capability",

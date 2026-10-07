@@ -430,7 +430,7 @@ export function Desktop({
             disabled={switching}
           >
             <Power size={17} />
-            <span>Meet DeadIndian</span>
+            <span>DeadIndian</span>
           </button>
         </div>
       </header>

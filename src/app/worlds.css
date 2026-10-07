@@ -27,6 +27,11 @@ html[data-world="desktop"] body {
   isolation: isolate;
   background: var(--bg);
 }
+.world-shell[hidden],
+.persistent-scene-port[hidden],
+.world-root > .skip-link[hidden] {
+  display: none !important;
+}
 .persistent-scene-port {
   position: absolute;
   left: 41%;

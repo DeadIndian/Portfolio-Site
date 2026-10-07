@@ -1,24 +1,13 @@
-# Golla Bharath / Dead Indian
+# Golla Bharath / DeadIndian
 
-## Current visual preview
+Bharath opens on the Fedora/KDE computer desktop. **DeadIndian** enters the
+approved six-world 3D journey: Minecraft, One Piece, Iron Man/JARVIS, Linux,
+community, and an open ending. **Bharath** in the journey header returns to the
+desktop with its windows and content state intact.
 
-The latest design is a standalone 3D journey through six themed worlds. Open
-[the demo instructions](design-demos/README.md) and
-[the review checkpoint](design-demos/REVIEW.md) for the current work.
-
-```sh
-python3 -m http.server 3120 --bind 0.0.0.0 --directory design-demos
-```
-
-Review it at **http://localhost:3120/**. Application integration follows the
-owner's visual feedback and approval.
-
-## Existing application
-
-Bharath's Fedora/KDE desktop opens first. **Meet DeadIndian** enters an original,
-evolving 3D workshop: five personal chapters about learning, Linux, sharing useful
-tools, his people, and the JARVIS ambition. Built with Next.js 16, React 19,
-Three.js, React Three Fiber, Drei, GSAP and hand-authored CSS.
+The owner approved this integration and publication to `main` on 7 October 2026.
+The standalone visual reference remains in `design-demos/`; the running website
+uses native components and scoped styles under `src/components/journey/`.
 
 ## Run
 
@@ -32,7 +21,7 @@ npm run dev -- --port 3110
 ```
 
 Open **http://localhost:3110** for Bharath's desktop or
-**http://localhost:3110/#workshop-learning** for the personal journey.
+**http://localhost:3110/#blocks** for the personal journey.
 The dev server binds to `0.0.0.0` for access from other devices.
 
 For a production server:
@@ -62,22 +51,18 @@ can be configured later; the portfolio clearly labels its unconnected state.
 - Bharath's dark desktop has KDE Flow wallpaper, a 3D CRT, application icons,
   a dock, and windows that drag, resize, minimize, restore, and maximize.
   The desktop stays mounted across persona switches, preserving its open windows.
-- DeadIndian's workshop is a detailed miniature room with a learning desk,
-  handmade collection, monitor, task lamp, home server, guest seat, and an
-  unfinished JARVIS workbench. The room develops as the chapters progress.
-- The monitor cycles through illustrated Kubuntu, Arch/Hyprland, and Fedora/KDE
-  desktop memories. The handmade shelf opens the six Odin builds. Tools link to
-  real projects. The guest seat pulls up to the desk. The five-layer arc reactor
-  can be taken apart and reassembled; JARVIS links to the actual prototype.
-- Direct chapter links: `#workshop-learning`, `#workshop-linux`, `#workshop-tools`,
-  `#workshop-people`, and `#workshop-future`. Browser back/forward keeps the story
-  and scene together. `#desktop` returns to Bharath.
-- One persistent WebGL renderer serves both worlds. It switches to on-demand
-  rendering for reduced motion, manual pause, overlays, and hidden documents.
-  Local scene posters and readable text remain available if WebGL is unavailable
-  or its context is lost. Every 3D interaction has an ordinary button alternative.
-- Twenty projects: an application-style file browser in the desktop, a searchable
-  directory under the workshop's **Project files**, and source-linked case studies.
+- DeadIndian's six worlds preserve the approved models, typography, lighting,
+  transitions, stories, and actions. The detailed Iron Man suit separates into
+  28 armor sections, without the rejected black support figure.
+- Direct chapter links: `#blocks`, `#voyage`, `#reactor`, `#linux`, `#connections`,
+  and `#beyond`. `#desktop` returns to Bharath. Old workshop chapter links still
+  resolve to the closest current chapter. Browser Back/Forward works across both.
+- Each persona retains its renderer and interaction state after its first visit.
+  Only the visible scene animates. Motion controls and system reduced-motion
+  settings apply to both; local posters keep every chapter usable without WebGL.
+  The journey's assets are loaded when it is first opened.
+- Twenty projects in the desktop's application-style file browser, with detailed
+  case studies, actual source links, and the existing tools and content panels.
 - Six no-AI Odin builds presented as a physical-looking floppy-disk collection.
   The owner's claim applies only to these builds, not to the portfolio or assets.
 - Experience, education, skills, certificates, Recurse leadership, Linux desktop,
@@ -91,11 +76,10 @@ can be configured later; the portfolio clearly labels its unconnected state.
 - An updated `/resume` page with print/PDF styles. It does not link to the old,
   outdated Drive resume.
 
-The workshop's **Full story** opens an accessible, continuous reading view.
-The room is an artistic interpretation of owner-confirmed accounts. Its desktop
-studies are illustrations; the calculator screenshot and portrait are actual
-portfolio artifacts. The name's origin stays undisclosed. There is no real shell
-execution, fake contact submission, invented activity count or listening state.
+Each chapter's **The story** opens an accessible reading dialog. The personal
+accounts remain the owner's own, and the name's origin stays undisclosed.
+The Linux screens are illustrations; the calculator and portrait are original
+portfolio artifacts. The terminal is an interface, not a real shell.
 
 ## Connect Medium
 
@@ -138,17 +122,20 @@ The memory server is research input only: its notes, addresses, credentials and
 administrative endpoints are not part of the app or its runtime integrations.
 
 Edit project case studies, Odin entries, writing links, community links and socials
-in `src/data/portfolio.ts`. Personal chapters and desktop memories live in
-`src/data/workshop.ts`. The interfaces and shared content live in
-`src/components/worlds/`; workshop styling is in `src/app/workshop.css` and
-desktop/shared styling is in `src/app/worlds.css`.
+in `src/data/portfolio.ts`. Personal chapters live in
+`src/components/journey/content.js`. The journey's scoped rendering controller,
+models, and React host live beside it; local assets are under `public/journey/`.
+Journey styles are in `src/app/journey.css`. The desktop and shared interfaces
+remain in `src/components/worlds/` and `src/app/worlds.css`.
 The original photo and project screenshots were recovered from the previous
-portfolio. The 3D geometry and poster renders were built for this site.
+portfolio. Five journey worlds and the desktop are procedural; the licensed Iron Man model
+and its poster renders are attributed in `/credits` and the bundled asset credits.
 
 KDE's Flow wallpaper is by Sandra Smukaste (CC BY-SA 4.0); the studio HDR lighting
 is from Poly Haven (CC0). Public attribution and source links are at `/credits`.
 The accepted personal context is in [deadindian-direction.md](docs/deadindian-direction.md).
-The active design and implementation notes are in [workshop-build.md](docs/workshop-build.md).
+The integration notes are in [journey-integration.md](docs/journey-integration.md).
+The [workshop-build.md](docs/workshop-build.md) file records the retired design.
 The earlier [design-v2.md](docs/design-v2.md) is historical.
 
 See [content sources](docs/content-sources.md) for provenance and important
@@ -180,13 +167,13 @@ server. Tests run with one worker to avoid software-3D resource contention.
   projects. It covers 320-1440px layouts, real desktop 3D, window geometry,
   nested dialogs, identity transitions, terminal commands, privacy, feed failure
   states and axe accessibility.
-- `workshop.spec.ts` covers real 3D monitor clicks, all five chapters, URL/history
-  navigation, project links, chair and reactor interactions, retained desktop
-  windows/renderer, motion controls, the reading overlay, and WebGL loss/fallback.
+- `journey.spec.ts` covers retained window geometry and content through two persona
+  round trips, chapter links/history, delayed suit loading, 28-part disassembly,
+  hidden-renderer suspension, shared motion, keyboard focus, and mobile fallback.
 - `release.spec.ts` runs in all five projects: `desktop`, `mobile`, `firefox`,
   `webkit`, and `mobile-webkit` (iPhone emulation). Its three smoke tests cover
   security headers and 404s, canonical metadata and decodable local share/icon
-  images, and the critical project-search/dossier, keyboard focus, desktop,
+  images, and the critical project-file/dossier, story/map focus, desktop,
   terminal and resume journey under reduced motion.
 - Release smoke tests record ready WebGL or an explicit static fallback in test
   annotations and fail on uncaught browser errors or unexpected console errors.

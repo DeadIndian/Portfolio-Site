@@ -1,4 +1,9 @@
 import { defineConfig, devices } from "@playwright/test";
+import { mkdirSync } from "node:fs";
+import path from "node:path";
+
+process.env.TMPDIR = path.resolve(".workshop/tmp");
+mkdirSync(process.env.TMPDIR, { recursive: true });
 
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3111";
 
