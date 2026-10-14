@@ -37,9 +37,17 @@
 			"service": "portfolio-site"
 		}
 	],
-	// ISR/R2 cache binding (NEXT_INC_CACHE_R2_BUCKET) is configured in the
-	// Cloudflare dashboard for this Worker and intentionally left out here so
-	// this file does not override the existing bucket assignment.
+	"r2_buckets": [
+		{
+			// ISR incremental cache; the bucket already exists in this account and
+			// `opennextjs-cloudflare deploy` populates it at deploy time, so the
+			// binding must be declared here (dashboard-only bindings are invisible
+			// to the deploy CLI's cache-population step).
+			// see https://opennext.js.org/cloudflare/caching
+			"binding": "NEXT_INC_CACHE_R2_BUCKET",
+			"bucket_name": "bharath-dual-portfolio-opennext-cache"
+		}
+	],
 	"observability": {
 		"enabled": true
 	}
