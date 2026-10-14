@@ -1,0 +1,46 @@
+/**
+ * Cloudflare Workers deployment config (OpenNext adapter).
+ *
+ * The WORKER_SELF_REFERENCE service binding must point at this same worker
+ * name, otherwise `wrangler deploy` fails with:
+ *   Service binding 'WORKER_SELF_REFERENCE' references Worker
+ *   'bharath-dual-portfolio' which was not found. [code: 10143]
+ *
+ * The deployed Worker in this account is named `portfolio-site`
+ * (see /workers/scripts/portfolio-site/versions in the deploy log), so both
+ * `name` and `services[0].service` pin that value here instead of letting the
+ * auto-generated config derive `bharath-dual-portfolio` from package.json.
+ *
+ * Vercel remains the production target per README; this file is ignored there.
+ * For more details, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ * https://opennext.js.org/cloudflare/get-started
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "portfolio-site",
+	"main": ".open-next/worker.js",
+	"compatibility_date": "2026-10-01",
+	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+	"assets": {
+		"binding": "ASSETS",
+		"directory": ".open-next/assets"
+	},
+	"images": {
+		"binding": "IMAGES"
+	},
+	"services": [
+		{
+			// Self-reference service binding, the service name must match the worker name
+			// see https://opennext.js.org/cloudflare/caching
+			"binding": "WORKER_SELF_REFERENCE",
+			"service": "portfolio-site"
+		}
+	],
+	// ISR/R2 cache binding (NEXT_INC_CACHE_R2_BUCKET) is configured in the
+	// Cloudflare dashboard for this Worker and intentionally left out here so
+	// this file does not override the existing bucket assignment.
+	"observability": {
+		"enabled": true
+	}
+}
